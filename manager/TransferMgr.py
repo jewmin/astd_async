@@ -33,6 +33,7 @@ async def GetPure(url: str, cookies: dict, headers: dict = None) -> ClientRespon
         async with ClientSession(cookies=cookies, headers=headers) as session:
             async with session.get(url, allow_redirects=False) as resp:
                 cookies.update(resp.cookies)
+                await resp.read()
                 return resp
     except Exception:
         Logger.LogLastExcept()
@@ -43,6 +44,7 @@ async def PostPure(url: str, data: dict, cookies: dict, headers: dict = None) ->
         async with ClientSession(cookies=cookies, headers=headers, auto_decompress=True) as session:
             async with session.post(url, data=data, allow_redirects=False) as resp:
                 cookies.update(resp.cookies)
+                await resp.read()
                 return resp
     except Exception:
         Logger.LogLastExcept()

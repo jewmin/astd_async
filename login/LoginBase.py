@@ -47,14 +47,14 @@ class LoginBase:
         self.account = account
 
     def SaveCacheFile(self, filename: str, content: str) -> None:
-        folder = "cache"
+        folder = "./bin/cache"
         if not os.path.exists(folder):
             os.mkdir(folder)
         with open(f"{folder}/{filename}", "w", encoding="utf-8") as fs:
             fs.write(content)
 
     def GetCacheFile(self, filename: str) -> str:
-        folder = "cache"
+        folder = "./bin/cache"
         if not os.path.exists(folder):
             os.mkdir(folder)
         filepath = f"{folder}/{filename}"

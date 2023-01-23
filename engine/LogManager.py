@@ -2,6 +2,7 @@ import os
 import logging
 import traceback
 from logging.handlers import TimedRotatingFileHandler
+from engine.ColorizedStreamHandler import ColorizedStreamHandler
 import engine.Dump as Dump
 
 # 日志级别
@@ -68,10 +69,10 @@ def GetLogger(module_name: str = None, log_level: int = DEBUG) -> CommonLogger:
 
 	logger = logging.getLogger(module_name)
 	logger.setLevel(log_level)
-	handler = TimedRotatingFileHandler(os.path.join(LoggerPath, f"{module_name}.log"), when="D", backupCount=7, delay=True)
-	handler.setLevel(log_level)
-	handler.setFormatter(CommonFormatter)
-	logger.addHandler(handler)
+	for handler in (TimedRotatingFileHandler(os.path.join(LoggerPath, f"{module_name}.log"), when="D", backupCount=7, delay=True), ColorizedStreamHandler()):
+		handler.setLevel(log_level)
+		handler.setFormatter(CommonFormatter)
+		logger.addHandler(handler)
 	CreatedModules.add(module_name)
 	return logger
 

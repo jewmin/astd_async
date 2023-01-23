@@ -25,7 +25,7 @@ def ReadAccountConfig(filename) -> list[Account]:
             contents = value.split(":")
             if len(contents) < 8:
                 continue
-            account = Account(eval(f"ServerType.{contents[0]}"), int(contents[1]), contents[2], base64.b64decode(contents[3]), contents[7])
+            account = Account(eval(f"ServerType.{contents[0]}"), int(contents[1]), contents[2], base64.b64decode(contents[3]).decode("utf-8"), contents[7])
             account_list.append(account)
 
     return account_list
