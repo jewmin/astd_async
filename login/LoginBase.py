@@ -1,7 +1,7 @@
 import os
+from weakref import proxy
 from urllib.parse import urlparse
 from aiohttp import ClientResponse
-import engine.LogManager as LogManager
 import manager.TransferMgr as TransferMgr
 from model.Account import Account
 from model.LoginResult import LoginResult
@@ -39,12 +39,10 @@ def MakeSureValidUrl(base_url: str, now_url: str) -> str:
 class LoginBase:
     """登录基类"""
     def __init__(self):
-        self.logger = LogManager.GetLogger(self.__class__.__name__)
         self.account: Account = None
 
     def SetAccount(self, account: Account) -> None:
-        self.logger = LogManager.CommonLoggerAdapter(self.logger, {"username": account.username, "rolename": account.rolename}, "[username: %(username)s, rolename: %(rolename)s]")
-        self.account = account
+        self.account = proxy(account)
 
     def SaveCacheFile(self, filename: str, content: str) -> None:
         folder = "./bin/cache"
@@ -75,7 +73,7 @@ class LoginBase:
         location = resp.headers.get("location")
         if location is None:
             login_result.status = LoginStatus.FailInGetSession
-            self.logger.error(await resp.text())
+            self.account.logger.error(await resp.text())
             return
 
         location = MakeSureValidUrl(redirect_url, location)
@@ -105,16 +103,16 @@ class LoginBase:
         self.Succeed()
 
     def LoggingIn(self):
-        self.logger.info("正在登录...")
+        self.account.logger.info("正在登录...")
 
     def FindingServerUrl(self):
-        self.logger.info("正在获取所在区的地址...")
+        self.account.logger.info("正在获取所在区的地址...")
 
     def GoingToGameUrl(self):
-        self.logger.info("正在跳转到所在区地址...")
+        self.account.logger.info("正在跳转到所在区地址...")
 
     def GettingSession(self):
-        self.logger.info("正在获取会话...")
+        self.account.logger.info("正在获取会话...")
 
     def Succeed(self):
-        self.logger.info("登录完成~~")
+        self.account.logger.info("登录完成~~")

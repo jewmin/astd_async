@@ -1,6 +1,8 @@
 import asyncio
 import logic.Format as Format
 import engine.LogManager as LogManager
+from manager.TimeMgr import TimeMgr
+from model.User import User
 from model.LoginResult import LoginResult
 from model.enum.ServerType import ServerType
 from model.enum.LoginStatus import LoginStatus
@@ -20,7 +22,9 @@ class Account:
         self.game_url: str = None
         self.session_id: str = None
         self.cookies: dict = None
-        self.running: bool = False
+        self.running = False
+        self.user: User = None
+        self.time_mgr: TimeMgr = None
 
     async def Login(self) -> None:
         import manager.LoginMgr as LoginMgr
@@ -37,27 +41,25 @@ class Account:
 
     def Relogin(self, wait_seconds: int):
         if wait_seconds:
-            asyncio.get_event_loop().create_task(self.Login())
-        else:
             self.logger.info("将在%s后开始重新登录", Format.GetSecondString(wait_seconds))
             asyncio.get_event_loop().call_later(wait_seconds, lambda: asyncio.get_event_loop().create_task(self.Login()))
+        else:
+            asyncio.get_event_loop().create_task(self.Login())
 
     def InitGame(self, login_result: LoginResult) -> None:
         self.status = AccountStatus.NotStart
         self.game_url = login_result.game_url
         self.session_id = login_result.session_id
         self.cookies = login_result.cookies
-        self.InitSession()
+        asyncio.get_event_loop().create_task(self.InitSession())
 
-    def InitSession(self) -> None:
-        pass
-        # self.m_objUser = User()
-        # self.m_objServiceFactory = ServiceFactory(self.m_objUser, self.m_szIndex)
-        # self.m_objProtocolMgr = ProtocolMgr(self.m_objUser, self.m_objAccount.m_szGameUrl, self.m_objAccount.m_szJSessionId, self.m_objServiceFactory, self, self.m_szIndex)
-        # self.m_objTaskMgr = TaskMgr(self.m_szIndex)
-        # self.m_objServiceFactory.get_misc_mgr().get_server_time()
-        # if self.m_objServiceFactory.get_misc_mgr().get_player_info_by_user_id(self.m_objAccount.m_szRoleName):
-        #     self.init_logging()
+    async def InitSession(self) -> None:
+        import protocol.server as server
+        self.user = User()
+        self.time_mgr = TimeMgr()
+        await server.getServerTime(self)
+        if await server.getPlayerInfoByUserId(self):
+            self.InitCompleted()
         #     self.build_services()
         #     self.build_activity()
         #     self.m_objTaskMgr.set_variables(self.m_objServiceFactory, self.m_objProtocolMgr, self.m_objUser, self)

@@ -4,6 +4,15 @@ from login.LoginBase import LoginBase
 from model.LoginResult import LoginResult
 from model.enum.LoginStatus import LoginStatus
 
+YaoWanUrl = {
+    218: "要玩218区",
+    219: "要玩219区",
+    272: "傲视争霸区",
+    470: "CJ专属服",
+    500: "虎贲营",
+    1000: "龍",
+}
+
 
 class YaoWanLogin(LoginBase):
     """要玩登录"""
@@ -61,24 +70,7 @@ class YaoWanLogin(LoginBase):
         return game_url
 
     def FindServerUrlFromString(self, content: str) -> str:
-        if self.account.server_id == 218 or self.account.server_id == 219:
-            name = f"要玩{self.account.server_id}区"
-
-        elif self.account.server_id == 272:
-            name = "傲视争霸区"
-
-        elif self.account.server_id == 470:
-            name = "CJ专属服"
-
-        elif self.account.server_id == 500:
-            name = "虎贲营"
-
-        elif self.account.server_id == 1000:
-            name = "龍"
-
-        else:
-            name = f"双线{self.account.server_id}区"
-
+        name = YaoWanUrl.get(self.account.server_id, f"双线{self.account.server_id}区")
         compiler = re.compile(f"<a.*href=\"(.*?)\".*>({name}.*)</a>")
         search = re.search(compiler, content)
         if search is None:

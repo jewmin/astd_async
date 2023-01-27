@@ -1,4 +1,5 @@
-from aiohttp import ClientSession, ClientResponse
+from zlib import decompress
+from aiohttp import ClientSession, ClientResponse, ClientTimeout
 import engine.LogManager as LogManager
 
 Logger = LogManager.GetLogger("TransferMgr")
@@ -10,7 +11,12 @@ async def Response(resp: ClientResponse) -> str:
     elif resp.status != 200 and resp.status != 304:
         return f"code:{resp.status}"
     else:
-        content = await resp.text()
+        if resp.headers["content-type"] == "application/x-gzip-compressed":
+            content = decompress(resp._body)
+            start = content.index(b'<?xml')
+            content = content[start:].decode()
+        else:
+            content = await resp.text()
         index = content.find("<results>")
         if index < 0:
             return ""
@@ -30,7 +36,7 @@ async def Post(url: str, data: dict, cookies: dict) -> str:
 
 async def GetPure(url: str, cookies: dict, headers: dict = None) -> ClientResponse:
     try:
-        async with ClientSession(cookies=cookies, headers=headers) as session:
+        async with ClientSession(cookies=cookies, headers=headers, timeout=ClientTimeout(total=3)) as session:
             async with session.get(url, allow_redirects=False) as resp:
                 cookies.update(resp.cookies)
                 await resp.read()
@@ -41,7 +47,7 @@ async def GetPure(url: str, cookies: dict, headers: dict = None) -> ClientRespon
 
 async def PostPure(url: str, data: dict, cookies: dict, headers: dict = None) -> ClientResponse:
     try:
-        async with ClientSession(cookies=cookies, headers=headers, auto_decompress=True) as session:
+        async with ClientSession(cookies=cookies, headers=headers, timeout=ClientTimeout(total=3)) as session:
             async with session.post(url, data=data, allow_redirects=False) as resp:
                 cookies.update(resp.cookies)
                 await resp.read()

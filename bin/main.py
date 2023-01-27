@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-
 import sys
 import base64
 import asyncio
 import engine.Dump as Dump
 import engine.LogManager as LogManager
 from model.Account import Account
-from model.enum.ServerType import ServerType
+from model.enum.ServerType import ServerType  # noqa: F401
 
 
 def ReadAccountConfig(filename) -> list[Account]:
