@@ -46,8 +46,8 @@ def Run(accounts: list[Account]):
 def ParseArgs(args):
     import argparse
     parser = argparse.ArgumentParser(prog="astd", description="傲视天地小助手", usage="%(prog)s [options]")
-    parser.add_argument('--user-name', default="", type=str, help="账号名，多个用逗号隔开")
-    parser.add_argument('--role-name', default="", type=str, help="角色名，多个用逗号隔开")
+    parser.add_argument('--user-name', default="", type=str, help="账号名, 多个用逗号隔开")
+    parser.add_argument('--role-name', default="", type=str, help="角色名, 多个用逗号隔开")
     parser.add_argument('--config', default="./bin/account.ini", type=str, help="账号配置")
     return parser.parse_args(args)
 

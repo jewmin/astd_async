@@ -1,4 +1,4 @@
-from model.child.BaseObject import wrapper, BaseObject, BaseObjectList
+from model.child.BaseObject import wrapper, BaseObject, BaseObjectList, BaseObjectDict
 from model.child.GeneralTower import GeneralTower
 
 SeasonString = ("", "春", "夏", "秋", "冬")
@@ -21,42 +21,55 @@ class User(BaseObject):
         self.year                  = 0      # 年份
         self.season                = 0      # 季节
         self.nation                = 0      # 国家
+
+        self.innewarea             = False  # 新区
         self.areaid                = 0      # 当前所在城池id
         self.areaname              = ""     # 当前所在城池名称
+
         self.sys_gold              = 0      # 金币
         self.user_gold             = 0      # 充值金币
         self.jyungong              = 0      # 军功
         self.prestige              = 0      # 声望
         self.copper                = 0      # 银币
-        self.maxcoin               = 0      # 银币上限
         self.food                  = 0      # 粮草
-        self.maxfood               = 0      # 粮草上限
         self.forces                = 0      # 兵力
-        self.maxforce              = 0      # 兵力上限
         self.bowlder               = 0      # 原石
-        self.maxbowlder            = 0      # 原石上限
         self.token                 = 0      # 军令
-        self.maxtoken              = 0      # 军令上限
-        self.maxattacktoken        = 0      # 攻击令上限
+        self.atttoken              = 0      # 攻击令
         self.cityhp                = 0      # 城防值
-        self.maxcityhp             = 0      # 城防值上限
+        self.tickets               = 0      # 点券
         self.curactive             = 0      # 当前行动力
-        self.maxactive             = 0      # 行动力上限
+
         self.imposecd              = 0      # 征收冷却时间
+        self.imposecdflag          = False  # 征收冷却状态
         self.tokencd               = 0      # 军令冷却时间
+        self.tokencdflag           = False  # 军令冷却状态
         self.transfercd            = 0      # 迁移冷却时间
         self.protectcd             = 0      # 保护冷却时间
         self.inspirecd             = 0      # 鼓舞冷却时间
         self.inspirestate          = 0      # 鼓舞状态
-        self.battlescore           = 0      # 战绩
-        self.arreststate           = 0      # 劳作状态 0:正常 1:劳作 10:逃跑cd 100:被抓
         self.rightcd               = 0      # 征义兵冷却时间
         self.rightnum              = 0      # 可征义兵次数
+
+        self.maxcoin               = 0      # 银币上限
+        self.maxfood               = 0      # 粮草上限
+        self.maxforce              = 0      # 兵力上限
+        self.maxbowlder            = 0      # 原石上限
+        self.maxtoken              = 0      # 军令上限
+        self.maxattacktoken        = 0      # 攻击令上限
+        self.maxcityhp             = 0      # 城防值上限
+        self.maxactive             = 0      # 行动力上限
+
+        self.battlescore           = 0      # 战绩
+        self.arreststate           = 0      # 劳作状态 0:正常 1:劳作 10:逃跑cd 100:被抓
         self.remainseniorslaves    = 0      # 剩余高级劳工(墨子改造)
 
         self.warchariot            = False  # 战车
         self.canvisit              = False  # 恭贺争霸风云榜
         self.newtechnology         = False  # 科技
+        self.cantech               = False  # 技术研究
+        self.perdayreward          = False  # 今日手气
+        self.version_gift          = False  # 版本更新奖励
 
         self.shenhuo               = False  # 百炼精铁
         self.yuandanqifu           = False  # 酒神觉醒
@@ -93,15 +106,6 @@ class User(BaseObject):
         self.showkfyz              = False
         self.hasjailevent          = False
 
-        self.innewarea             = False  # 新区
-        self.imposecdflag          = False  # 征收冷却状态
-        self.tokencdflag           = False  # 军令冷却状态
-        self.cantech               = False  # 技术研究
-        self.perdayreward          = False  # 今日手气
-        self.version_gift          = False  # 版本更新奖励
-
-        self.tickets               = 0      # 点券
-        self.atttoken              = 0      # 攻击令
         self.total_jailbaoshi      = 0      # 监狱劳作获得宝石
 
         self.generaltower   = GeneralTower()    # 将军塔
@@ -109,6 +113,7 @@ class User(BaseObject):
         self.maincitydto    = BaseObjectList()  # 主城建筑
         self.constructordto = BaseObjectList()  # 建筑建造队列
         self.mozibuilding   = BaseObjectList()  # 墨子建筑
+        self.task           = BaseObjectDict()  # 日常任务
 
     @property
     def gold(self):
@@ -134,7 +139,8 @@ class User(BaseObject):
 
     def __repr__(self) -> str:
         return ", ".join((
-            f"{self.playername}(id={self.playerid}, {self.playerlevel}级, {NationString[self.nation]})",
+            f"{self.playerlevel}级"
+            f"{NationString[self.nation]}",
             f"{self.year}年{SeasonString[self.season]}",
             f"{self.gold}金币",
             f"{self.copper}银币",
@@ -173,16 +179,3 @@ class User(BaseObject):
 
     def UpdateCityInfo(self, info: dict) -> None:
         self.HandleXml(info)
-
-#     def set_task(self, list_task):
-#         self.m_dictTasks = dict()
-#         for task in list_task:
-#             if task["taskstate"] == "1":
-#                 t = Task()
-#                 t.handle_info(task)
-#                 self.m_dictTasks[t.type] = t
-
-    # def add_task_finish_num(self, task_type, num):
-    #     task = self.m_objUser.m_dictTasks.get(task_type, None)
-    #     if task is not None:
-    #         task.finishnum += num

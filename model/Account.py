@@ -2,6 +2,7 @@ import asyncio
 import logic.Format as Format
 import engine.LogManager as LogManager
 from manager.TimeMgr import TimeMgr
+from manager.TaskMgr import TaskMgr
 from model.User import User
 from model.LoginResult import LoginResult
 from model.enum.ServerType import ServerType
@@ -25,6 +26,7 @@ class Account:
         self.running = False
         self.user: User = None
         self.time_mgr: TimeMgr = None
+        self.task_mgr: TaskMgr = None
 
     async def Login(self) -> None:
         import manager.LoginMgr as LoginMgr
@@ -57,6 +59,7 @@ class Account:
         import protocol.server as server
         self.user = User()
         self.time_mgr = TimeMgr()
+        self.task_mgr = TaskMgr()
         await server.getServerTime(self)
         if await server.getPlayerInfoByUserId(self):
             self.InitCompleted()
