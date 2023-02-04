@@ -1,7 +1,10 @@
 from login.LoginBase import LoginBase
 from login.YaoWanLogin import YaoWanLogin
-from model.Account import Account
 from model.enum.ServerType import ServerType
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from model.Account import Account
 
 
 def GetLoginImpl(server_type: ServerType) -> LoginBase:
@@ -10,7 +13,7 @@ def GetLoginImpl(server_type: ServerType) -> LoginBase:
     raise NotImplementedError(f"未知服务器类型{server_type}")
 
 
-async def Login(account: Account, cookies: dict):
+async def Login(account: 'Account', cookies: dict):
     partner = GetLoginImpl(account.server_type)
     partner.SetAccount(account)
     return await partner.Login(cookies)

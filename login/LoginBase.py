@@ -3,9 +3,12 @@ from weakref import proxy
 from urllib.parse import urlparse
 from aiohttp import ClientResponse
 import manager.TransferMgr as TransferMgr
-from model.Account import Account
 from model.LoginResult import LoginResult
 from model.enum.LoginStatus import LoginStatus
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from model.Account import Account
 
 
 def MakeSureValidUrl(base_url: str, now_url: str) -> str:
@@ -41,7 +44,7 @@ class LoginBase:
     def __init__(self):
         self.account: Account = None
 
-    def SetAccount(self, account: Account) -> None:
+    def SetAccount(self, account) -> None:
         self.account = proxy(account)
 
     def SaveCacheFile(self, filename: str, content: str) -> None:

@@ -4,7 +4,7 @@ from task.BaseTask import BaseTask
 
 class TaskMgr:
     """任务管理"""
-    def ___init__(self):
+    def __init__(self):
         self.tasks: dict[str, BaseTask] = {}
 
     def AddTask(self, task: BaseTask):
@@ -17,8 +17,7 @@ class TaskMgr:
             task.Run()
 
     def RunTask(self, name: str):
-        task = self.tasks.get(name)
-        if task is not None:
+        if (task := self.tasks.get(name)) is not None:
             task.Cancel()
             task.Run()
 

@@ -1,8 +1,11 @@
 from functools import wraps
 import manager.TransferMgr as TransferMgr
-from model.Account import Account
 from model.ServerResult import ServerResult
 from model.enum.AccountStatus import AccountStatus
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from model.Account import Account
 
 GET  = 1
 POST = 2
@@ -14,7 +17,7 @@ def Protocol(method: int, desc: str):
     def request(func):
 
         @wraps(func)
-        async def call(account: Account, *args, **kwargs):
+        async def call(account: 'Account', *args, **kwargs):
             module = func.__module__.replace("protocol.", "")
             real_url = f"{account.game_url}root/{module}!{func.__name__}.action?{account.time_mgr.GetTimestamp()}"
 
@@ -32,15 +35,15 @@ def Protocol(method: int, desc: str):
     return request
 
 
-async def _GetXml(url: str, desc: str, cookies: dict) -> ServerResult:
+async def _GetXml(url: str, desc: str, cookies: dict) -> 'ServerResult':
     return ServerResult(url, await TransferMgr.Get(url, cookies))
 
 
-async def _PostXml(url: str, data: dict, desc: str, cookies: dict) -> ServerResult:
+async def _PostXml(url: str, data: dict, desc: str, cookies: dict) -> 'ServerResult':
     return ServerResult(url, await TransferMgr.Post(url, data, cookies))
 
 
-def _HandleResult(account: Account, server_result: ServerResult, desc: str, data: dict = None):
+def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, data: dict = None):
     log_dict = {}
     if data is None:
         log_dict["type"] = "GET"

@@ -1,8 +1,11 @@
 import asyncio
-import logic.Format as Format
 import engine.LogManager as LogManager
+import logic.Format as Format
 from manager.TimeMgr import TimeMgr
 from manager.TaskMgr import TaskMgr
+import manager.LoginMgr as LoginMgr
+import protocol.server as server
+import task
 from model.User import User
 from model.LoginResult import LoginResult
 from model.enum.ServerType import ServerType
@@ -29,7 +32,6 @@ class Account:
         self.task_mgr: TaskMgr = None
 
     async def Login(self) -> None:
-        import manager.LoginMgr as LoginMgr
         cookies = {}
         login_result = await LoginMgr.Login(self, cookies)
         if login_result is None:
@@ -56,18 +58,18 @@ class Account:
         asyncio.get_event_loop().create_task(self.InitSession())
 
     async def InitSession(self) -> None:
-        import protocol.server as server
         self.user = User()
         self.time_mgr = TimeMgr()
         self.task_mgr = TaskMgr()
         await server.getServerTime(self)
         if await server.getPlayerInfoByUserId(self):
+            self.AddTasks()
             self.InitCompleted()
-        #     self.build_services()
-        #     self.build_activity()
-        #     self.m_objTaskMgr.set_variables(self.m_objServiceFactory, self.m_objProtocolMgr, self.m_objUser, self)
-        #     self.m_objTaskMgr.init()
-        #     self.init_completed()
 
     def InitCompleted(self) -> None:
         self.running = True
+        self.task_mgr.RunAllTasks()
+
+    def AddTasks(self) -> None:
+        for task_class in task.__all__:
+            self.task_mgr.AddTask(task_class(self))

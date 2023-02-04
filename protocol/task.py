@@ -1,11 +1,14 @@
 import manager.ProtocolMgr as ProtocolMgr
-from model.Account import Account
-from model.ServerResult import ServerResult
 from model.child.RewardInfo import RewardInfo
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from model.Account import Account
+    from model.ServerResult import ServerResult
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.GET, "日常任务")
-async def getNewPerdayTask(account: Account, result: ServerResult):
+async def getNewPerdayTask(account: 'Account', result: 'ServerResult'):
     if result.success:
         dayboxstate: str = result.result["dayboxstate"]
         for k, v in enumerate(dayboxstate.split(","), 1):
@@ -22,7 +25,7 @@ async def getNewPerdayTask(account: Account, result: ServerResult):
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.POST, "日常任务 - 开启宝箱")
-async def openDayBox(account: Account, result: ServerResult):
+async def openDayBox(account: 'Account', result: 'ServerResult'):
     if result.success:
         reward_info = RewardInfo()
         reward_info.HandleXml(result.result["rewardinfo"])
@@ -30,7 +33,7 @@ async def openDayBox(account: Account, result: ServerResult):
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.GET, "日常任务 - 开启活跃红包")
-async def openWeekRedPacket(account: Account, result: ServerResult):
+async def openWeekRedPacket(account: 'Account', result: 'ServerResult'):
     if result.success:
         reward_info = RewardInfo()
         reward_info.HandleXml(result.result["rewardinfo"])
@@ -38,7 +41,7 @@ async def openWeekRedPacket(account: Account, result: ServerResult):
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.POST, "日常任务 - 领奖")
-async def getNewPerdayTaskReward(account: Account, result: ServerResult):
+async def getNewPerdayTaskReward(account: 'Account', result: 'ServerResult'):
     if result.success:
         reward_info = RewardInfo()
         reward_info.HandleXml(result.result["rewardinfo"])

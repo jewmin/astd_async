@@ -9,9 +9,9 @@ class CommonTask(BaseTask):
         self.name = "通用"
 
     async def _Exec(self):
-        await server.getExtraInfo()
-        await server.getPlayerExtraInfo2()
-        return self.next_half_hour()
+        await server.getExtraInfo(self.account)
+        await server.getPlayerExtraInfo2(self.account)
+        return self.next_half_hour
         # city_mgr.get_main_city()
         # equip_mgr.get_upgrade_info()
 

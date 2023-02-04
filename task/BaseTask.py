@@ -2,13 +2,18 @@ import asyncio
 import datetime
 from weakref import proxy
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from manager.TaskMgr import TaskMgr
+    from model.Account import Account
+
 
 class BaseTask:
     """任务基类"""
     def __init__(self, account):
         self.name = "任务名称"
-        self.task_mgr = None
-        self.account = proxy(account)
+        self.task_mgr: TaskMgr = None
+        self.account: Account = proxy(account)
         self.handle: asyncio.Handle = None
 
     def Cancel(self):

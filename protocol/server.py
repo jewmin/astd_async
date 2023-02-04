@@ -1,11 +1,14 @@
 import manager.ProtocolMgr as ProtocolMgr
 import protocol.mainCity as mainCity
-from model.Account import Account
-from model.ServerResult import ServerResult
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from model.Account import Account
+    from model.ServerResult import ServerResult
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.GET, "获取系统时间")
-async def getServerTime(account: Account, result: ServerResult):
+async def getServerTime(account: 'Account', result: 'ServerResult'):
     if result.success:
         server_time = int(result.result["time"])
         account.time_mgr.SetTimestamp(server_time)
@@ -13,7 +16,7 @@ async def getServerTime(account: Account, result: ServerResult):
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.GET, "获取玩家信息")
-async def getPlayerInfoByUserId(account: Account, result: ServerResult):
+async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult'):
     if not result.success:
         account.logger.warning("获取用户信息失败，请重试")
         return False
@@ -56,17 +59,17 @@ async def getPlayerInfoByUserId(account: Account, result: ServerResult):
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.POST, "选择玩家角色")
-async def chooseRole(account: Account, result: ServerResult):
+async def chooseRole(account: 'Account', result: 'ServerResult'):
     return result.success
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.GET, "获取额外信息")
-async def getExtraInfo(account: Account, result: ServerResult):
+async def getExtraInfo(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.user.UpdatePlayerExtraInfo(result.result["player"])
 
 
 @ProtocolMgr.Protocol(ProtocolMgr.GET, "获取玩家额外信息")
-async def getPlayerExtraInfo2(account: Account, result: ServerResult):
+async def getPlayerExtraInfo2(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.user.UpdatePlayerExtraInfo2(result.result["player"])
