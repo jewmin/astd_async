@@ -16,7 +16,10 @@ class BaseObjectDict(dict):
         for v in lst:
             o = clazz()
             o.HandleXml(v)
-            self[getattr(o, clazz.KEY)] = o
+            kv = getattr(o, clazz.KEY)
+            while isinstance(kv, BaseObject):
+                kv = getattr(kv, kv.__class__.KEY)
+            self[kv] = o
 
 
 class BaseObjectList(list):
@@ -36,6 +39,8 @@ class BaseObject:
     """对象基类"""
 
     def HandleXml(self, info: dict) -> None:
+        if not info:
+            return
         for k, v in info.items():
             if not hasattr(self, k):
                 continue

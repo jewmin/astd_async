@@ -1,4 +1,5 @@
 from model.child.BaseObject import wrapper, BaseObject, BaseObjectList
+import logic.Format as Format
 
 RewardString = (
     "type:0", "银币", "玉石", "type:3", "type:4", "宝石", "兵器", "兵器碎片", "征收次数", "纺织次数",
@@ -15,9 +16,10 @@ RewardString = (
 @wrapper
 class RewardInfo(BaseObject):
     """奖励"""
-    def __init__(self):
+    def __init__(self, info: dict = None):
         super().__init__()
         self.reward: list['Reward'] = BaseObjectList()
+        self.HandleXml(info)
 
     def __repr__(self) -> str:
         rewards = []
@@ -37,4 +39,4 @@ class Reward(BaseObject):
         self.num = 0
 
     def __repr__(self) -> str:
-        return f"{RewardString[self.type]}(lv.{self.lv})+{self.num}"
+        return f"{RewardString[self.type]}(lv.{self.lv})+{Format.GetShortReadable(self.num)}"

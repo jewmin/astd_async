@@ -1,6 +1,8 @@
 import asyncio
 import datetime
 from weakref import proxy
+from logic.Config import config
+import manager.ProtocolMgr as ProtocolMgr
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -35,15 +37,27 @@ class BaseTask:
 
         try:
             next_running_time = await self._Exec()
+        except ProtocolMgr.ProtocolError as ex:
+            self.account.logger.error(ex)
+            next_running_time = self.next_half_hour
+        except ProtocolMgr.ReloginError as ex:
+            self.account.logger.error(ex)
+            self.account.running = False
+            self.account.Relogin(1800)
         except Exception:
             self.account.logger.LogLastExcept()
-            next_running_time = self.next_half_hour()
+            next_running_time = self.next_half_hour
 
         if not self.account.running:
             self.task_mgr.StopAllTasks()
             return
 
         asyncio.get_event_loop().call_later(next_running_time, self.Run)
+
+    def get_available(self, key):
+        value = getattr(self.account.user, key)
+        reserve = config["global"]["reserve"].get(key, 0)
+        return max(value - reserve, 0)
 
     @property
     def immediate(self) -> int:

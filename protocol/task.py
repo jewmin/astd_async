@@ -1,5 +1,5 @@
 import manager.ProtocolMgr as ProtocolMgr
-from model.child.RewardInfo import RewardInfo
+from model.child import *  # noqa: F403
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -7,8 +7,8 @@ if TYPE_CHECKING:
     from model.ServerResult import ServerResult
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.GET, "日常任务")
-async def getNewPerdayTask(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("日常任务")
+async def getNewPerdayTask(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
         dayboxstate: str = result.result["dayboxstate"]
         for k, v in enumerate(dayboxstate.split(","), 1):
@@ -24,25 +24,19 @@ async def getNewPerdayTask(account: 'Account', result: 'ServerResult'):
                 await getNewPerdayTaskReward(rewardId=task.taskid)
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.POST, "日常任务 - 开启宝箱")
-async def openDayBox(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("日常任务 - 开启宝箱", ("rewardId",))
+async def openDayBox(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
-        reward_info = RewardInfo()
-        reward_info.HandleXml(result.result["rewardinfo"])
-        account.logger.info("日常任务, 开启宝箱, 获得%s", reward_info)
+        account.logger.info("日常任务, 开启宝箱, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.GET, "日常任务 - 开启活跃红包")
-async def openWeekRedPacket(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("日常任务 - 开启活跃红包")
+async def openWeekRedPacket(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
-        reward_info = RewardInfo()
-        reward_info.HandleXml(result.result["rewardinfo"])
-        account.logger.info("日常任务, 开启活跃红包, 获得%s", reward_info)
+        account.logger.info("日常任务, 开启活跃红包, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.POST, "日常任务 - 领奖")
-async def getNewPerdayTaskReward(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("日常任务 - 领奖", ("rewardId",))
+async def getNewPerdayTaskReward(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
-        reward_info = RewardInfo()
-        reward_info.HandleXml(result.result["rewardinfo"])
-        account.logger.info("日常任务, 领奖, 获得%s", reward_info)
+        account.logger.info("日常任务, 领奖, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405

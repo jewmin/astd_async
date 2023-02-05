@@ -1,5 +1,5 @@
-from model.child.BaseObject import wrapper, BaseObject, BaseObjectList, BaseObjectDict
-from model.child.GeneralTower import GeneralTower
+from model.child import *  # noqa: F403
+from model.enum.TaskType import TaskType
 
 SeasonString = ("", "春", "夏", "秋", "冬")
 
@@ -10,8 +10,8 @@ FormationString = ("不变阵", "鱼鳞阵", "长蛇阵", "锋矢阵", "偃月�
 ImposeEvent = ("金币", "征收", "民忠", "银币", "威望")  # 征收事件回答优先顺序
 
 
-@wrapper
-class User(BaseObject):
+@wrapper  # noqa: F405
+class User(BaseObject):  # noqa: F405
     """角色"""
     def __init__(self):
         super().__init__()
@@ -40,8 +40,6 @@ class User(BaseObject):
         self.tickets               = 0      # 点券
         self.curactive             = 0      # 当前行动力
 
-        self.imposecd              = 0      # 征收冷却时间
-        self.imposecdflag          = False  # 征收冷却状态
         self.tokencd               = 0      # 军令冷却时间
         self.tokencdflag           = False  # 军令冷却状态
         self.transfercd            = 0      # 迁移冷却时间
@@ -106,14 +104,13 @@ class User(BaseObject):
         self.showkfyz              = False
         self.hasjailevent          = False
 
-        self.total_jailbaoshi      = 0      # 监狱劳作获得宝石
-
-        self.generaltower   = GeneralTower()    # 将军塔
-
-        self.maincitydto    = BaseObjectList()  # 主城建筑
-        self.constructordto = BaseObjectList()  # 建筑建造队列
-        self.mozibuilding   = BaseObjectList()  # 墨子建筑
-        self.task           = BaseObjectDict()  # 日常任务
+        self.total_jailbaoshi                   = 0                 # 监狱劳作获得宝石
+        self.imposedto                          = ImposeDto()       # 征收  # noqa: F405
+        self.maincitydto                        = BaseObjectList()  # 主城建筑  # noqa: F405
+        self.constructordto                     = BaseObjectList()  # 建筑建造队列  # noqa: F405
+        self.mozibuilding                       = BaseObjectList()  # 墨子建筑  # noqa: F405
+        self.task: dict[TaskType, Task]         = BaseObjectDict()  # 日常任务  # noqa: F405
+        self.ticket_exchange: dict[str, Ticket] = BaseObjectDict()  # 点券兑换资源  # noqa: F405
 
     @property
     def gold(self):
@@ -136,6 +133,15 @@ class User(BaseObject):
     @staticmethod
     def get_formation_by_id(formation_id: int) -> str:
         return FormationString[formation_id]
+
+    def is_finish_task(self, task_type: TaskType):
+        if (task := self.task.get(task_type)) is not None:
+            return task.finishnum >= task.finishline
+        return True
+
+    def add_task_finish_num(self, task_type: TaskType, num: int) -> None:
+        if (task := self.task.get(task_type)) is not None:
+            task.finishnum += num
 
     def __repr__(self) -> str:
         return ", ".join((

@@ -1,5 +1,5 @@
 from zlib import decompress
-from aiohttp import ClientSession, ClientResponse, ClientTimeout
+from aiohttp import ClientSession, ClientResponse, ClientTimeout  # noqa: F401
 import engine.LogManager as LogManager
 
 Logger = LogManager.GetLogger("TransferMgr")
@@ -36,7 +36,8 @@ async def Post(url: str, data: dict, cookies: dict) -> str:
 
 async def GetPure(url: str, cookies: dict, headers: dict = None) -> ClientResponse:
     try:
-        async with ClientSession(cookies=cookies, headers=headers, timeout=ClientTimeout(total=3)) as session:
+        # async with ClientSession(cookies=cookies, headers=headers, timeout=ClientTimeout(total=3)) as session:
+        async with ClientSession(cookies=cookies, headers=headers) as session:
             async with session.get(url, allow_redirects=False) as resp:
                 cookies.update(resp.cookies)
                 await resp.read()
@@ -47,7 +48,8 @@ async def GetPure(url: str, cookies: dict, headers: dict = None) -> ClientRespon
 
 async def PostPure(url: str, data: dict, cookies: dict, headers: dict = None) -> ClientResponse:
     try:
-        async with ClientSession(cookies=cookies, headers=headers, timeout=ClientTimeout(total=3)) as session:
+        # async with ClientSession(cookies=cookies, headers=headers, timeout=ClientTimeout(total=3)) as session:
+        async with ClientSession(cookies=cookies, headers=headers) as session:
             async with session.post(url, data=data, allow_redirects=False) as resp:
                 cookies.update(resp.cookies)
                 await resp.read()

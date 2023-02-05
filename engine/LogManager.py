@@ -29,7 +29,7 @@ CreatedModules = set()
 class CommonLogger(logging.Logger):
 	"""通用日志"""
 
-	def LogLastExcept(self, exc_info=None) -> None:
+	def _handle_msg(self, exc_info=None) -> str:
 		if exc_info:
 			trace_info = "".join(traceback.format_exception(*exc_info))
 		else:
@@ -40,8 +40,11 @@ class CommonLogger(logging.Logger):
 		except Exception:
 			trace_var = ""
 
-		self.critical("\n".join([trace_info, trace_var]))
 		Dump.SaveDump(trace_info, trace_var)
+		return "\n".join([trace_info, trace_var])
+
+	def LogLastExcept(self, exc_info=None) -> None:
+		self.critical(self._handle_msg(exc_info))
 
 
 class CommonLoggerAdapter(logging.LoggerAdapter):
@@ -54,7 +57,7 @@ class CommonLoggerAdapter(logging.LoggerAdapter):
 			handler.setFormatter(formatter)
 
 	def LogLastExcept(self, exc_info=None) -> None:
-		self.logger.LogLastExcept(exc_info)
+		self.critical(self.logger._handle_msg(exc_info))
 
 
 def SetLoggerPath(log_path: str) -> None:
@@ -69,7 +72,7 @@ def GetLogger(module_name: str = None, log_level: int = DEBUG) -> CommonLogger:
 
 	logger = logging.getLogger(module_name)
 	logger.setLevel(log_level)
-	for handler in (TimedRotatingFileHandler(os.path.join(LoggerPath, f"{module_name}.log"), when="D", backupCount=7, delay=True), ColorizedStreamHandler()):
+	for handler in (TimedRotatingFileHandler(os.path.join(LoggerPath, f"{module_name}.log"), when="D", backupCount=7, encoding='utf-8', delay=True), ColorizedStreamHandler()):
 		handler.setLevel(log_level)
 		handler.setFormatter(CommonFormatter)
 		logger.addHandler(handler)

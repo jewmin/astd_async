@@ -7,16 +7,16 @@ if TYPE_CHECKING:
     from model.ServerResult import ServerResult
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.GET, "获取系统时间")
-async def getServerTime(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("获取系统时间")
+async def getServerTime(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
         server_time = int(result.result["time"])
         account.time_mgr.SetTimestamp(server_time)
         account.logger.debug("got timestamp = %d", server_time)
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.GET, "获取玩家信息")
-async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("获取玩家信息")
+async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult', kwargs: dict):
     if not result.success:
         account.logger.warning("获取用户信息失败，请重试")
         return False
@@ -51,25 +51,25 @@ async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult'):
     else:
         account.user.UpdateLimits(result.result["message"]["limitvalue"])
 
-    account.logger.info(account.user)
     if account.user.version_gift:
         await mainCity.getUpdateReward(account)
 
+    account.logger.info(account.user)
     return True
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.POST, "选择玩家角色")
-async def chooseRole(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("选择玩家角色", ("playerId", "code"))
+async def chooseRole(account: 'Account', result: 'ServerResult', kwargs: dict):
     return result.success
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.GET, "获取额外信息")
-async def getExtraInfo(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("获取额外信息")
+async def getExtraInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
         account.user.UpdatePlayerExtraInfo(result.result["player"])
 
 
-@ProtocolMgr.Protocol(ProtocolMgr.GET, "获取玩家额外信息")
-async def getPlayerExtraInfo2(account: 'Account', result: 'ServerResult'):
+@ProtocolMgr.Protocol("获取玩家额外信息")
+async def getPlayerExtraInfo2(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
         account.user.UpdatePlayerExtraInfo2(result.result["player"])

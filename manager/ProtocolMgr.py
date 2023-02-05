@@ -7,28 +7,43 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from model.Account import Account
 
-GET  = 1
-POST = 2
+# GET  = 1
+# POST = 2
 
 
-def Protocol(method: int, desc: str):
-    assert method in (GET, POST), "请求类型必须是GET或POST"
+class ProtocolError(RuntimeError):
+    pass
+
+
+class ReloginError(RuntimeError):
+    pass
+
+
+def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
+    # assert method in (GET, POST), "请求类型必须是GET或POST"
 
     def request(func):
 
         @wraps(func)
         async def call(account: 'Account', *args, **kwargs):
-            module = func.__module__.replace("protocol.", "")
-            real_url = f"{account.game_url}root/{module}!{func.__name__}.action?{account.time_mgr.GetTimestamp()}"
+            data = {}
+            for param in params:
+                assert param in kwargs, f"POST请求需要参数[{param}]"
+                data[param] = kwargs[param]
 
-            if method == GET:
+            module = func.__module__.replace("protocol.", "")
+            if sub_module:
+                module += f"!{func.__name__}"
+            real_url = f"{account.game_url}root/{module}.action?{account.time_mgr.GetTimestamp()}"
+
+            if data:
+                server_result = await _PostXml(real_url, data, desc, account.cookies)
+                _HandleResult(account, server_result, desc, data)
+            else:
                 server_result = await _GetXml(real_url, desc, account.cookies)
                 _HandleResult(account, server_result, desc)
-            else:
-                server_result = await _PostXml(real_url, kwargs, desc, account.cookies)
-                _HandleResult(account, server_result, desc, kwargs)
 
-            return await func(account, server_result)
+            return await func(account, server_result, kwargs)
 
         return call
 
@@ -65,15 +80,11 @@ def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, 
             account.user.UpdatePlayerBattleInfo(server_result.result["playerbattleinfo"])
 
     elif "验证码" in server_result.error:
-        account.running = False
         account.status = AccountStatus.StoppedGameVerify
-        account.Relogin(1800)
-        raise RuntimeError("需要验证码")
+        raise ReloginError("需要验证码")
 
     elif "连接已超时" in server_result.error or "用户已在别处登陆" in server_result.error:
-        account.running = False
-        account.Relogin(1800)
-        raise RuntimeError("需要重新登录")
+        raise ReloginError("需要重新登录")
 
     else:
-        raise RuntimeError(server_result.error)
+        raise ProtocolError(f"{server_result.GetUrl()} - {desc}: {server_result.error}")
