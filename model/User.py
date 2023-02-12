@@ -111,8 +111,8 @@ class User(BaseObject):  # noqa: F405
         self.total_jailbaoshi                          = 0                 # 监狱劳作获得宝石
         self.imposedto                                 = ImposeDto()       # 征收  # noqa: F405
         self.generaltower                              = GeneralTower()    # 将军塔  # noqa: F405
-        self.maincitydto                               = BaseObjectList()  # 主城建筑  # noqa: F405
-        self.constructordto                            = BaseObjectList()  # 建筑建造队列  # noqa: F405
+        self.maincitydto: list[MainCityDto]            = BaseObjectList()  # 主城建筑  # noqa: F405
+        self.constructordto: list[ConstructorDto]      = BaseObjectList()  # 建筑建造队列  # noqa: F405
         self.mozibuilding                              = BaseObjectList()  # 墨子建筑  # noqa: F405
         self.task: dict[TaskType, Task]                = BaseObjectDict()  # 日常任务  # noqa: F405
         self.ticket_exchange: dict[str, Ticket]        = BaseObjectDict()  # 点券兑换资源  # noqa: F405

@@ -1,6 +1,7 @@
+# flake8: noqa
 from logic.Config import config
 from task.BaseTask import BaseTask
-import protocol.dinner as dinner
+from protocol import *
 
 
 class DinnerTask(BaseTask):

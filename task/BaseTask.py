@@ -43,7 +43,7 @@ class BaseTask:
         except ProtocolMgr.ReloginError as ex:
             self.account.logger.error(ex)
             self.account.running = False
-            self.account.Relogin(1800)
+            self.account.Relogin(config["global"]["relogin"])
         except Exception:
             self.account.logger.LogLastExcept()
             next_running_time = self.next_half_hour
@@ -52,6 +52,7 @@ class BaseTask:
             self.task_mgr.StopAllTasks("停止挂机")
             return
 
+        self.task = None
         asyncio.get_event_loop().call_later(next_running_time, self.Run)
 
     def get_available(self, key):

@@ -1,5 +1,6 @@
+# flake8: noqa
 from task.BaseTask import BaseTask
-import protocol.server as server
+from protocol import *
 
 
 class PingTask(BaseTask):

@@ -6,6 +6,7 @@ config = {
             "gold": 300,           # 保留金币
             "tickets": 100000000,  # 保留点券
         },
+        "relogin": 1800  # 重登等待时间
     },
     "mainCity": {
         "auto_get_login_reward": True,  # 自动领取登录奖励(今日手气、礼包、登录送礼、恭贺、俸禄)
@@ -234,7 +235,7 @@ config = {
     },
     "dayTreasureGame": {  # 王朝寻宝
         "enable": True,  # 自动寻宝
-        "active_proportion": 0.75,  # 行动力比例<=N
+        "active_proportion": 0.5,  # 行动力比例<=N
     },
     "world": {  # 世界
         "apply_att_token": {  # 领取攻击令

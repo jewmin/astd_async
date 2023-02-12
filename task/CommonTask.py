@@ -1,15 +1,7 @@
+# flake8: noqa
 from logic.Config import config
 from task.BaseTask import BaseTask
-import protocol.server as server
-import protocol.mainCity as mainCity
-import protocol.task as task
-import protocol.newGift as newGift
-import protocol.outCity as outCity
-import protocol.secretary as secretary
-import protocol.market as market
-import protocol.jail as jail
-import protocol.officer as officer
-import protocol.equip as equip
+from protocol import *
 
 
 class CommonTask(BaseTask):
