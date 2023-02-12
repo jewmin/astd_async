@@ -23,7 +23,7 @@ class SupperMarketTask(BaseTask):
                             if supper_market_dto.quality >= quality:
                                 continue
                         await market.offSupperMarketCommodity(self.account, commodityId=supper_market_dto.id, supper_market_dto=supper_market_dto)
-                        with_draw_supper_market_dto_set.append(supper_market_dto)
+                        with_draw_supper_market_dto_set.add(supper_market_dto)
                 supper_market_dto_set -= with_draw_supper_market_dto_set
 
             # 排除还价失败商品
@@ -34,7 +34,7 @@ class SupperMarketTask(BaseTask):
                     price_type, price = supper_market_dto.get_price()
                     if config_withdraw_discount_fail[price_type] and supper_market_dto.finalprice > price:
                         await market.offSupperMarketCommodity(self.account, commodityId=supper_market_dto.id, supper_market_dto=supper_market_dto)
-                        with_draw_supper_market_dto_set.append(supper_market_dto)
+                        with_draw_supper_market_dto_set.add(supper_market_dto)
                 supper_market_dto_set -= with_draw_supper_market_dto_set
 
             # 购买商品
@@ -45,11 +45,11 @@ class SupperMarketTask(BaseTask):
                     if price > self.get_available("copper"):
                         await tickets.doGetTicketsReward(self.account, "银币", 1)
                     await market.buySupperMarketCommodity(self.account, commodityId=supper_market_dto.id, supper_market_dto=supper_market_dto)
-                    with_draw_supper_market_dto_set.append(supper_market_dto)
+                    with_draw_supper_market_dto_set.add(supper_market_dto)
                 elif price_type == "gold" and config["market"]["buy_gold_item"]:
                     if price <= self.get_available("gold"):
                         await market.buySupperMarketCommodity(self.account, commodityId=supper_market_dto.id, supper_market_dto=supper_market_dto)
-                        with_draw_supper_market_dto_set.append(supper_market_dto)
+                        with_draw_supper_market_dto_set.add(supper_market_dto)
             supper_market_dto_set -= with_draw_supper_market_dto_set
 
             # 进货

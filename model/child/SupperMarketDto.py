@@ -17,11 +17,11 @@ class SupperMarketDto(BaseObject):
         self.HandleXml(info)
 
     def get_price(self):
-        price_type, price = self.price.split(":")
+        _, price_type, price = self.price.split(":")
         return price_type, int(price)
 
     def get_finalprice(self):
-        price_type, _ = self.price.split(":")
+        _, price_type, _ = self.price.split(":")
         return price_type, int(self.finalprice)
 
     def __repr__(self) -> str:
@@ -43,7 +43,7 @@ class SupperMarketSpecialDto(BaseObject):
         self.state = 0
 
     def get_price(self):
-        price_type, price = self.price.split(":")
+        _, price_type, price = self.price.split(":")
         return price_type, int(price)
 
     def __repr__(self) -> str:

@@ -10,7 +10,8 @@ class BaseObjectDict(dict):
     """对象基类字典"""
 
     def HandleXml(self, class_name: str, lst: list) -> None:
-        clazz = ModelType[class_name]
+        self.clear()
+        clazz = ModelType[class_name.lower()]
         if not isinstance(lst, list):
             lst = [lst]
         for v in lst:
@@ -26,7 +27,8 @@ class BaseObjectList(list):
     """对象基类列表"""
 
     def HandleXml(self, class_name: str, lst: list) -> None:
-        clazz = ModelType[class_name]
+        self.clear()
+        clazz = ModelType[class_name.lower()]
         if not isinstance(lst, list):
             lst = [lst]
         for v in lst:

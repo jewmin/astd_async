@@ -28,7 +28,7 @@ async def fete(account: 'Account', result: 'ServerResult', kwargs: dict):
     free_all_fete = 0
     if result and result.success:
         fete_list.HandleXml('fete', result.result["fetelist"]["fete"])
-        free_all_fete = result.GetValue("fetelist.freeallfete")
+        free_all_fete = result.GetValue("fetelist.freeallfete", 0)
     return fete_list, free_all_fete
 
 

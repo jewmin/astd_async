@@ -13,7 +13,11 @@ async def Response(resp: ClientResponse) -> str:
     else:
         if resp.headers["content-type"] == "application/x-gzip-compressed":
             content = decompress(resp._body)
-            start = content.index(b'<?xml')
+            try:
+                start = content.index(b'<?xml')
+            except ValueError:
+                Logger.LogLastExcept()
+                return ""
             content = content[start:].decode()
         else:
             content = await resp.text()

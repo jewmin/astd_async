@@ -3,7 +3,7 @@ from model.child.BaseObject import wrapper, BaseObject
 
 @wrapper
 class EquipDto(BaseObject):
-    """专属玉佩"""
+    """专属"""
     def __init__(self):
         super().__init__()
         self.storeid = 0
@@ -12,4 +12,4 @@ class EquipDto(BaseObject):
         self.equiplevel = 0
 
     def __repr__(self) -> str:
-        return f"专属玉佩[id={self.storeid} name={self.equipname} quality={self.quality} lv={self.equiplevel}]"
+        return f"专属[id={self.storeid} name={self.equipname} quality={self.quality} lv={self.equiplevel}]"

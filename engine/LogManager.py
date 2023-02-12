@@ -73,7 +73,10 @@ def GetLogger(module_name: str = None, log_level: int = DEBUG) -> CommonLogger:
 	logger = logging.getLogger(module_name)
 	logger.setLevel(log_level)
 	for handler in (TimedRotatingFileHandler(os.path.join(LoggerPath, f"{module_name}.log"), when="D", backupCount=7, encoding='utf-8', delay=True), ColorizedStreamHandler()):
-		handler.setLevel(log_level)
+		if isinstance(handler, ColorizedStreamHandler):
+			handler.setLevel(INFO)
+		else:
+			handler.setLevel(log_level)
 		handler.setFormatter(CommonFormatter)
 		logger.addHandler(handler)
 	CreatedModules.add(module_name)
