@@ -16,23 +16,23 @@ class BaseTask:
         self.name = "任务名称"
         self.task_mgr: TaskMgr = None
         self.account: Account = proxy(account)
-        self.handle: asyncio.Handle = None
+        self.task: asyncio.Task = None
 
-    def Cancel(self):
-        if not self.handle:
+    def Cancel(self, msg=None):
+        if not self.task:
             return
-        self.handle.cancel()
-        self.handle = None
+        self.task.cancel(msg)
+        self.task = None
 
     def Run(self):
-        asyncio.get_event_loop().create_task(self._Run())
+        self.task = asyncio.get_event_loop().create_task(self._Run())
 
     async def _Exec(self):
         raise NotImplementedError("必须实现此函数")
 
     async def _Run(self):
         if not self.account.running:
-            self.task_mgr.StopAllTasks()
+            self.task_mgr.StopAllTasks("停止挂机")
             return
 
         try:
@@ -49,7 +49,7 @@ class BaseTask:
             next_running_time = self.next_half_hour
 
         if not self.account.running:
-            self.task_mgr.StopAllTasks()
+            self.task_mgr.StopAllTasks("停止挂机")
             return
 
         asyncio.get_event_loop().call_later(next_running_time, self.Run)

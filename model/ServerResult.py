@@ -95,9 +95,8 @@ class ServerResult:
             return value
 
         if isinstance(value, list):
-            new_value = {}
             for k, v in enumerate(value):
-                new_value[str(k)] = self._HandleKeyValue(v)
+                value[k] = self._HandleKeyValue(v)
             return value
 
         try:

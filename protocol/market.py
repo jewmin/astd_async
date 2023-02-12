@@ -86,7 +86,7 @@ async def doRecvSupperMarketGift(account: 'Account', supper_market_dto: SupperMa
 async def getPlayerMerchant(account: 'Account', result: 'ServerResult', kwargs: dict):
     if result.success:
         if result.result["free"] == "1":
-            await trade(result.result["merchant"][0])
+            await trade(account, result.result["merchant"][0])
 
 
 @ProtocolMgr.Protocol("委派", ("gold", "merchantId"))

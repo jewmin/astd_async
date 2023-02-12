@@ -13,15 +13,15 @@ async def getNewPerdayTask(account: 'Account', result: 'ServerResult', kwargs: d
         dayboxstate: str = result.result["dayboxstate"]
         for k, v in enumerate(dayboxstate.split(","), 1):
             if v == "0":
-                await openDayBox(rewardId=k)
+                await openDayBox(account, rewardId=k)
 
         if result.result["redpacketinfo"]["redpacket"] == "0":
-            await openWeekRedPacket()
+            await openWeekRedPacket(account)
 
         account.user.task.HandleXml("task", result.result["task"])
         for task in account.user.task.values():
             if task.taskstate == 3:
-                await getNewPerdayTaskReward(rewardId=task.taskid)
+                await getNewPerdayTaskReward(account, rewardId=task.taskid)
 
 
 @ProtocolMgr.Protocol("日常任务 - 开启宝箱", ("rewardId",))
