@@ -1,4 +1,5 @@
 import manager.ProtocolMgr as ProtocolMgr
+import logic.Format as Format
 from model.child import *  # noqa: F403
 
 from typing import TYPE_CHECKING
@@ -27,7 +28,7 @@ async def specialEquipCast(account: 'Account', result: 'ServerResult', kwargs: d
     if result and result.success:
         special_equip_cast_list = BaseObjectList()  # noqa: F405
         special_equip_cast_list.HandleXml('specialequipcast', result.result["specialequipcast"])
-        account.logger.info("铸造, 获得%s", ", ".join(special_equip_cast.rewardinfo for special_equip_cast in special_equip_cast_list))
+        account.logger.info("%s, 获得%s", kwargs["msg"], ", ".join(special_equip_cast.rewardinfo for special_equip_cast in special_equip_cast_list))
 
 
 @ProtocolMgr.Protocol("水晶石")
@@ -69,7 +70,7 @@ async def getUpgradeInfo(account: 'Account', result: 'ServerResult', kwargs: dic
         account.user.tickets = int(result.result["ticketnumber"])
         account.user.maxtaozhuanglv = int(result.result["taozhuang"]["maxtaozhuanglv"])
         account.user.playerequipdto.HandleXml('playerequipdto', result.result["playerequipdto"])
-        account.logger.info("魔力值: %d, 磨砺石: %d, 点券: %d", account.user.magic, account.user.molistone, account.user.tickets)
+        account.logger.info("魔力值: %d, 磨砺石: %d, 点券: %s", account.user.magic, account.user.molistone, Format.GetShortReadable(account.user.tickets))
         for playerequipdto in account.user.playerequipdto.values():
             account.logger.info(playerequipdto)
 

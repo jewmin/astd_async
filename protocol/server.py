@@ -54,7 +54,6 @@ async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult', kwar
     if account.user.version_gift:
         await mainCity.getUpdateReward(account)
 
-    account.logger.info(account.user)
     return True
 
 

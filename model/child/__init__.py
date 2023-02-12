@@ -1,6 +1,7 @@
 from model.child.BaseObject import wrapper, BaseObject, BaseObjectDict, BaseObjectList
 from model.child.ConstructorDto import ConstructorDto
 from model.child.EquipDto import EquipDto
+from model.child.Fete import Fete
 from model.child.GeneralTower import GeneralTower
 from model.child.ImposeDto import ImposeDto
 from model.child.LeDto import LeDto
@@ -17,6 +18,7 @@ __all__ = (
     "wrapper", "BaseObject", "BaseObjectDict", "BaseObjectList",
     "ConstructorDto",
     "EquipDto",
+    "Fete",
     "GeneralTower",
     "ImposeDto",
     "LeDto",

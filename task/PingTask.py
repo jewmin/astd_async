@@ -11,4 +11,5 @@ class PingTask(BaseTask):
     async def _Exec(self):
         await server.getServerTime(self.account)
         await server.getPlayerExtraInfo2(self.account)
+        self.account.logger.info(self.account.user)
         return self.two_minute

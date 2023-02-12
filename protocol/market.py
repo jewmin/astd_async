@@ -24,7 +24,7 @@ async def getPlayerSupperMarket(account: 'Account', result: 'ServerResult', kwar
         if "giftdto" in result.result:
             await doRecvSupperMarketGift(account, SupperMarketDto(result.result["giftdto"]))  # noqa: F405
 
-    return supper_market_dto_list, supper_market_special_dto_list, fresh_time, supplement_num
+    return set(supper_market_dto_list), set(supper_market_special_dto_list), fresh_time, supplement_num
 
 
 @ProtocolMgr.Protocol("商品还价", ("commodityId",))

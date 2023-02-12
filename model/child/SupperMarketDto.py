@@ -17,12 +17,16 @@ class SupperMarketDto(BaseObject):
         self.HandleXml(info)
 
     def get_price(self):
+        price_type, price = self.price.split(":")
+        return price_type, int(price)
+
+    def get_finalprice(self):
         price_type, _ = self.price.split(":")
         return price_type, int(self.finalprice)
 
     def __repr__(self) -> str:
         num = Format.GetShortReadable(self.baoshinum) if self.baoshinum > 0 else Format.GetShortReadable(self.num)
-        price_type, price = self.get_price()
+        price_type, price = self.get_finalprice()
         cost = "银币" if price_type == "copper" else "金币"
         return f"[{self.name}+{num}]({cost}-{Format.GetShortReadable(price)})"
 

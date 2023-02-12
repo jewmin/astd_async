@@ -11,8 +11,6 @@ class CommonTask(BaseTask):
 
     async def _Exec(self):
         await server.getExtraInfo(self.account)
-        await server.getPlayerExtraInfo2(self.account)
-        await mainCity.mainCity(self.account)
         await equip.getUpgradeInfo(self.account)
 
         # 登录奖励

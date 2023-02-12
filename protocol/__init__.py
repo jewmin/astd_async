@@ -12,20 +12,22 @@ import protocol.server as server
 import protocol.task as task
 import protocol.tickets as tickets
 import protocol.warbeastTemple as warbeastTemple
+import protocol.fete as fete
 
 __all__ = (
-    dayTreasureGame,
-    dinner,
-    equip,
-    jail,
-    mainCity,
-    market,
-    newGift,
-    officer,
-    outCity,
-    secretary,
-    server,
-    task,
-    tickets,
-    warbeastTemple,
+    'dayTreasureGame',
+    'dinner',
+    'equip',
+    'jail',
+    'mainCity',
+    'market',
+    'newGift',
+    'officer',
+    'outCity',
+    'secretary',
+    'server',
+    'task',
+    'tickets',
+    'warbeastTemple',
+    "fete",
 )

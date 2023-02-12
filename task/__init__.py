@@ -5,6 +5,9 @@ from task.CityTask import CityTask
 from task.ImposeTask import ImposeTask
 from task.WarbeastTempleTask import WarbeastTempleTask
 from task.DayTreasureGameTask import DayTreasureGameTask
+from task.FeteTask import FeteTask
+from task.SupperMarketTask import SupperMarketTask
+from task.SpecialEquipTask import SpecialEquipTask
 
 __all__ = (
     CommonTask,
@@ -14,4 +17,7 @@ __all__ = (
     ImposeTask,
     WarbeastTempleTask,
     DayTreasureGameTask,
+    FeteTask,
+    SupperMarketTask,
+    SpecialEquipTask,
 )

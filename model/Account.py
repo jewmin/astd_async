@@ -5,6 +5,9 @@ from manager.TimeMgr import TimeMgr
 from manager.TaskMgr import TaskMgr
 import manager.LoginMgr as LoginMgr
 import protocol.server as server
+import protocol.mainCity as mainCity
+import protocol.equip as equip
+import protocol.tickets as tickets
 import task
 from model.User import User
 from model.LoginResult import LoginResult
@@ -63,6 +66,7 @@ class Account:
         self.task_mgr = TaskMgr()
         await server.getServerTime(self)
         if await server.getPlayerInfoByUserId(self):
+            await self.RunFirst()
             self.AddTasks()
             self.InitCompleted()
 
@@ -73,3 +77,9 @@ class Account:
     def AddTasks(self) -> None:
         for task_class in task.__all__:
             self.task_mgr.AddTask(task_class(self))
+
+    async def RunFirst(self) -> None:
+        await server.getPlayerExtraInfo2(self)
+        await mainCity.mainCity(self)
+        await equip.getUpgradeInfo(self)
+        await tickets.tickets(self)
