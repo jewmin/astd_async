@@ -9,10 +9,10 @@ import protocol.secretary as secretary
 import protocol.market as market
 import protocol.jail as jail
 import protocol.officer as officer
+import protocol.equip as equip
 
 
 class CommonTask(BaseTask):
-    """通用任务"""
     def __init__(self, account):
         super().__init__(account)
         self.name = "通用"
@@ -21,7 +21,7 @@ class CommonTask(BaseTask):
         await server.getExtraInfo(self.account)
         await server.getPlayerExtraInfo2(self.account)
         await mainCity.mainCity(self.account)
-        # equip_mgr.get_upgrade_info()
+        await equip.getUpgradeInfo(self.account)
 
         # 登录奖励
         if config["mainCity"]["auto_get_login_reward"]:
@@ -35,13 +35,13 @@ class CommonTask(BaseTask):
             # 恭贺
             await mainCity.getChampionInfo(self.account)
             # 俸禄
-            officer.officer(self.account)
+            await officer.officer(self.account)
 
         # 将军塔
-        tower = await mainCity.getGeneralTowerInfo(self.account)
+        await mainCity.getGeneralTowerInfo(self.account)
         if config["mainCity"]["auto_build_general_tower"]:
-            while tower.buildingstone > 0:
-                tower = await mainCity.useBuildingStone(self.account, buildMode=1)
+            while self.account.user.generaltower.buildingstone > 100:
+                await mainCity.useBuildingStone(self.account, buildMode=1)
 
         # 免费征兵
         if config["mainCity"]["auto_right_army"]:

@@ -1,4 +1,5 @@
 import manager.ProtocolMgr as ProtocolMgr
+from model.child import *  # noqa: F403
 import protocol.mainCity as mainCity
 
 from typing import TYPE_CHECKING

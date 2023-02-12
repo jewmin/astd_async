@@ -1,6 +1,6 @@
 import manager.ProtocolMgr as ProtocolMgr
-import logic.Format as Format
 from model.child import *  # noqa: F403
+import logic.Format as Format
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:

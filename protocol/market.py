@@ -1,6 +1,6 @@
 import manager.ProtocolMgr as ProtocolMgr
-from logic.Config import config
 from model.child import *  # noqa: F403
+from logic.Config import config
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:

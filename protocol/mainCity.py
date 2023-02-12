@@ -1,7 +1,7 @@
 import manager.ProtocolMgr as ProtocolMgr
+from model.child import *  # noqa: F403
 import protocol.tickets as tickets
 import logic.Format as Format
-from model.child import *  # noqa: F403
 from model.enum.TaskType import TaskType
 
 from typing import TYPE_CHECKING
@@ -74,20 +74,16 @@ async def visitChampion(account: 'Account', result: 'ServerResult', kwargs: dict
 
 @ProtocolMgr.Protocol("将军塔")
 async def getGeneralTowerInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
-    tower = GeneralTower()  # noqa: F405
     if result.success:
-        tower.HandleXml(result.result["generaltower"])
-        account.logger.info("今天获得宝石+%s", Format.GetShortReadable(tower.gemstonenum))
-    return tower
+        account.user.generaltower.HandleXml(result.result["generaltower"])
+        account.logger.info("今天获得宝石+%s", Format.GetShortReadable(account.user.generaltower.gemstonenum))
 
 
 @ProtocolMgr.Protocol("筑造将军塔", ("buildMode",))
 async def useBuildingStone(account: 'Account', result: 'ServerResult', kwargs: dict):
-    tower = GeneralTower()  # noqa: F405
     if result.success:
-        tower.HandleXml(result.result["generaltower"])
-        account.logger.info("筑造将军塔, 进度增加%d, %d级将军塔(%d/%d), 剩余%d筑造石", tower.addprogress, tower.generaltowerlevel, tower.buildingprogress, tower.leveluprequirement, tower.buildingstone)
-    return tower
+        account.user.generaltower.HandleXml(result.result["generaltower"])
+        account.logger.info("筑造将军塔, %s", account.user.generaltower)
 
 
 @ProtocolMgr.Protocol("征义兵")

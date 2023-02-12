@@ -14,3 +14,6 @@ class GeneralTower(BaseObject):
         self.generaltowerlevel = 0
         self.addprogress = 0
         self.levelup = 0
+
+    def __repr__(self) -> str:
+        return f"进度+{self.addprogress}, 等级+{self.levelup}, {self.generaltowerlevel}级将军塔({self.buildingprogress}/{self.leveluprequirement}), 剩余{self.buildingstone}筑造石"

@@ -18,6 +18,7 @@ class ServerResult:
         self.xml = ""
         self.error = ""
         self.result: dict = None
+        self.result_map: dict = {}
         self._HandleXmlString(result)
 
     def _HandleXmlString(self, result: str) -> None:
@@ -68,3 +69,38 @@ class ServerResult:
 
     def GetUrl(self) -> str:
         return self.url
+
+    def GetValue(self, key: str, default=None):
+        if not self.result_map:
+            self.result_map = self._HandleKeyValue(self.result)
+
+        value = self.result_map
+        try:
+            for k in key.split("."):
+                value = value[k]
+        except Exception:
+            value = default
+        return value
+
+    def GetValueList(self, key: str):
+        value = self.GetValue(key, [])
+        if not isinstance(value, list):
+            value = [value]
+        return value
+
+    def _HandleKeyValue(self, value):
+        if isinstance(value, dict):
+            for k, v in value.items():
+                value[k] = self._HandleKeyValue(v)
+            return value
+
+        if isinstance(value, list):
+            new_value = {}
+            for k, v in enumerate(value):
+                new_value[str(k)] = self._HandleKeyValue(v)
+            return value
+
+        try:
+            return eval(value)
+        except Exception:
+            return value
