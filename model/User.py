@@ -1,3 +1,4 @@
+import logic.Format as Format
 from model.child import *  # noqa: F403
 from model.enum.TaskType import TaskType
 
@@ -156,8 +157,8 @@ class User(BaseObject):  # noqa: F405
             f"{NationString[self.nation]}",
             f"{self.year}年{SeasonString[self.season]}",
             f"{self.gold}金币",
-            f"{self.copper}银币",
-            f"{self.tickets}点券",
+            f"{Format.GetShortReadable(self.copper)}银币",
+            f"{Format.GetShortReadable(self.tickets)}点券",
             f"{self.curactive}行动力",
             f"{self.token}军令",
             f"{self.atttoken}攻击令",

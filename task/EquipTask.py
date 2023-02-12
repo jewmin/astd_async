@@ -107,7 +107,8 @@ class EquipTask(BaseTask):
         merge_config = config["equip"]["merge"]
         if merge_config["enable"]:
             for level in range(1, merge_config["level"]):
-                await equip.updateBaoshiWholeLevel(self.account, baoshiId=level)
+                if not await equip.updateBaoshiWholeLevel(self.account, baoshiId=level):
+                    break
 
         return self.ten_minute
 

@@ -167,3 +167,4 @@ async def updateBaoshiWholeLevel(account: 'Account', result: 'ServerResult', kwa
         numup = result.result["numup"]
         baoshilevelup = result.result["baoshilevelup"]
         account.logger.info("%s宝石lv.%s -> %s宝石lv.%s", num, baoshilevel, numup, baoshilevelup)
+        return True

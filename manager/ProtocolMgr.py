@@ -87,4 +87,5 @@ def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, 
         raise ReloginError("需要重新登录")
 
     else:
-        raise ProtocolError(f"{server_result.GetUrl()} - {desc}: {server_result.error}")
+        # raise ProtocolError(f"{server_result.GetUrl()} - {desc}: {server_result.error}")
+        account.logger.error("%s - %s: %s", server_result.GetUrl(), desc, server_result.error)

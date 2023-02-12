@@ -16,4 +16,8 @@ def GetLoginImpl(server_type: ServerType) -> LoginBase:
 async def Login(account: 'Account', cookies: dict):
     partner = GetLoginImpl(account.server_type)
     partner.SetAccount(account)
-    return await partner.Login(cookies)
+    try:
+        return await partner.Login(cookies)
+    except Exception:
+        account.logger.LogLastExcept()
+        return None

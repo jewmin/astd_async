@@ -14,7 +14,8 @@ def GetShortReadable(value: int) -> str:
     result = []
     for number_string in NumberString:
         if value >= 10000:
-            result.append(f"{value % 10000}{number_string}")
+            if (valid_value := value % 10000) > 0:
+                result.append(f"{valid_value}{number_string}")
             value //= 10000
         else:
             result.append(f"{value}{number_string}")

@@ -16,6 +16,8 @@ async def Response(resp: ClientResponse) -> str:
             try:
                 start = content.index(b'<?xml')
             except ValueError:
+                if content == b"\x06\x01":
+                    return ""
                 Logger.LogLastExcept()
                 return ""
             content = content[start:].decode()
