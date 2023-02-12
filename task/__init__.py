@@ -8,6 +8,7 @@ from task.DayTreasureGameTask import DayTreasureGameTask
 from task.FeteTask import FeteTask
 from task.SupperMarketTask import SupperMarketTask
 from task.SpecialEquipTask import SpecialEquipTask
+from task.EquipTask import EquipTask
 
 __all__ = (
     CommonTask,
@@ -20,4 +21,5 @@ __all__ = (
     FeteTask,
     SupperMarketTask,
     SpecialEquipTask,
+    EquipTask,
 )

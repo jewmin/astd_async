@@ -3,8 +3,8 @@
 config = {
     "global": {
         "reserve": {
-            "gold": 300,           # 保留金币
-            "tickets": 100000000,  # 保留点券
+            "gold": 300,            # 保留金币
+            "tickets": 1000000000,  # 保留点券
         },
         "relogin": 1800  # 重登等待时间
     },
@@ -366,7 +366,6 @@ config = {
         "monkey": {  # 套装
             "enable": True,  # 开启
             "use_tickets": 300000,  # 花费点券<=N
-            "reverse_tickets": 1000000000,  # 保留点券
         },
         "crystal": {  # 水晶石进阶
             "enable": True,  # 开启

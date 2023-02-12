@@ -71,8 +71,9 @@ async def getUpgradeInfo(account: 'Account', result: 'ServerResult', kwargs: dic
         account.user.maxtaozhuanglv = int(result.result["taozhuang"]["maxtaozhuanglv"])
         account.user.playerequipdto.HandleXml('playerequipdto', result.result["playerequipdto"])
         account.logger.info("魔力值: %d, 磨砺石: %d, 点券: %s", account.user.magic, account.user.molistone, Format.GetShortReadable(account.user.tickets))
-        for playerequipdto in account.user.playerequipdto.values():
-            account.logger.info(playerequipdto)
+        if kwargs.get("show", False):
+            for playerequipdto in account.user.playerequipdto.values():
+                account.logger.info(playerequipdto)
 
 
 @ProtocolMgr.Protocol("套装强化", ("composite", "num"))
@@ -80,7 +81,7 @@ async def upgradeMonkeyTao(account: 'Account', result: 'ServerResult', kwargs: d
     if result and result.success:
         changeinfo = result.result["changeinfo"]
         account.user.tickets = int(changeinfo["remaintickets"])
-        kwargs["playerequipdto"].HandleXml(changeinfo)
+        kwargs["equipdto"].HandleXml(changeinfo)
 
         if isinstance(result.result["addinfo"], list):
             addinfo = result.result["addinfo"]

@@ -13,6 +13,7 @@ import protocol.task as task
 import protocol.tickets as tickets
 import protocol.warbeastTemple as warbeastTemple
 import protocol.fete as fete
+import protocol.goods as goods
 
 __all__ = (
     'dayTreasureGame',
@@ -30,4 +31,5 @@ __all__ = (
     'tickets',
     'warbeastTemple',
     "fete",
+    "goods",
 )

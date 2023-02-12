@@ -21,6 +21,8 @@ class PlayerEquipDto(BaseObject):
         self.powerstr = ""
         self.tickets = 0
         self.ticketsstatus = 0
+        self.monkeylv = 0
+        self.powertao = 0
 
     def __repr__(self) -> str:
         power = self.powerstr.split(";")
