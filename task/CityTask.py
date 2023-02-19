@@ -38,7 +38,7 @@ class CityTask(BaseTask):
                 cd_time = constructor_dto.ctime
 
         if constructor is None:
-            return cd_time
+            return cd_time // 1000
 
         if constructor.ctime > 0:
             city_dto_list_list = (high_city_dto_list, low_city_dto_list)

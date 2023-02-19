@@ -11,6 +11,7 @@ from task.SpecialEquipTask import SpecialEquipTask
 from task.EquipTask import EquipTask
 from task.WarChariotTask import WarChariotTask
 from task.ActiveTask import ActiveTask
+from task.GeneralTask import GeneralTask
 
 __all__ = (
     PingTask,
@@ -26,4 +27,5 @@ __all__ = (
     EquipTask,
     WarChariotTask,
     ActiveTask,
+    GeneralTask,
 )

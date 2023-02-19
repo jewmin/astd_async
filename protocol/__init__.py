@@ -19,6 +19,8 @@ import protocol.warDrum as warDrum
 import protocol.refine as refine
 import protocol.make as make
 import protocol.caravan as caravan
+import protocol.general as general
+import protocol.tech as tech
 
 __all__ = (
     'dayTreasureGame',
@@ -42,4 +44,6 @@ __all__ = (
     "refine",
     "make",
     "caravan",
+    "general",
+    "tech",
 )
