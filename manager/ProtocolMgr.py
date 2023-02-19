@@ -36,20 +36,29 @@ def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
                 module += f"!{func.__name__}"
             real_url = f"{account.game_url}root/{module}.action?{account.time_mgr.GetTimestamp()}"
 
+            retries = 3
             if data:
-                server_result = await _PostXml(real_url, data, desc, account.cookies)
-                try:
-                    _HandleResult(account, server_result, desc, data)
-                except ProtocolError:
-                    server_result = await _PostXml(real_url, data, desc, account.cookies)
-                    _HandleResult(account, server_result, desc, data)
+                while True:
+                    try:
+                        server_result = await _PostXml(real_url, data, desc, account.cookies)
+                        _HandleResult(account, server_result, desc, data)
+                    except ProtocolError:
+                        retries -= 1
+                        if retries <= 0:
+                            raise
+                    else:
+                        break
             else:
-                server_result = await _GetXml(real_url, desc, account.cookies)
-                try:
-                    _HandleResult(account, server_result, desc)
-                except ProtocolError:
-                    server_result = await _GetXml(real_url, desc, account.cookies)
-                    _HandleResult(account, server_result, desc)
+                while True:
+                    try:
+                        server_result = await _GetXml(real_url, desc, account.cookies)
+                        _HandleResult(account, server_result, desc)
+                    except ProtocolError:
+                        retries -= 1
+                        if retries <= 0:
+                            raise
+                    else:
+                        break
 
             return await func(account, server_result, **kwargs)
 
