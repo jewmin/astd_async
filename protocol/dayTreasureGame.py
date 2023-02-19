@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("王朝寻宝")
-async def getNewTreasureGameInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getNewTreasureGameInfo(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dice_num = result.GetValue("dicenum", 0)
         account.logger.info("王朝寻宝, 当前骰子: %d", dice_num)
@@ -16,7 +16,7 @@ async def getNewTreasureGameInfo(account: 'Account', result: 'ServerResult', kwa
 
 
 @ProtocolMgr.Protocol("开始探宝")
-async def startNewTGame(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def startNewTGame(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
             "当前骰子": result.GetValue("dicenum", 0),
@@ -56,16 +56,15 @@ def _handle_treasure_event(dict_info: dict, result: dict):
 
 
 @ProtocolMgr.Protocol("执行探宝事件", ("open",))
-async def handlerEvent(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def handlerEvent(account: 'Account', result: 'ServerResult', open, msg):
     if result and result.success:
-        msg = kwargs["msg"]
         if "rewardinfo" in result.result:
             msg += f", 获得{RewardInfo(result.result['rewardinfo'])}"  # noqa: F405
         account.logger.info(msg)
 
 
 @ProtocolMgr.Protocol("掷骰子")
-async def useNewTDice(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def useNewTDice(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         msg = f"掷到{result.GetValue('movenum')}点"
         if "pointreward" in result.result:
@@ -90,7 +89,7 @@ def _handle_point_reward(point_reward_list: list):
 
 
 @ProtocolMgr.Protocol("换地图")
-async def transfer(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def transfer(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         msg = "更换寻宝地图"
         if "pointreward" in result.result:
@@ -99,6 +98,6 @@ async def transfer(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("探宝完毕")
-async def awayNewTGame(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def awayNewTGame(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         account.logger.info("探宝完毕")

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("秘书", sub_module=False)
-async def secretary(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def secretary(account: 'Account', result: 'ServerResult'):
     if result.success:
         max_token_num = int(result.result.get("maxtokennum", 0))
         token_num = int(result.result.get("tokennum", 0))
@@ -17,7 +17,7 @@ async def secretary(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("领取每日军令")
-async def applyToken(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def applyToken(account: 'Account', result: 'ServerResult'):
     if result.success:
         max_token_num = int(result.result.get("maxtokennum", 0))
         token_num = int(result.result.get("tokennum", 0))

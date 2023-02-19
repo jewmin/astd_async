@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("日常任务")
-async def getNewPerdayTask(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getNewPerdayTask(account: 'Account', result: 'ServerResult'):
     if result.success:
         dayboxstate: str = result.result["dayboxstate"]
         for k, v in enumerate(dayboxstate.split(","), 1):
@@ -25,18 +25,18 @@ async def getNewPerdayTask(account: 'Account', result: 'ServerResult', kwargs: d
 
 
 @ProtocolMgr.Protocol("日常任务 - 开启宝箱", ("rewardId",))
-async def openDayBox(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def openDayBox(account: 'Account', result: 'ServerResult', rewardId):
     if result.success:
         account.logger.info("日常任务, 开启宝箱, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("日常任务 - 开启活跃红包")
-async def openWeekRedPacket(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def openWeekRedPacket(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.logger.info("日常任务, 开启活跃红包, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("日常任务 - 领奖", ("rewardId",))
-async def getNewPerdayTaskReward(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getNewPerdayTaskReward(account: 'Account', result: 'ServerResult', rewardId):
     if result.success:
         account.logger.info("日常任务, 领奖, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405

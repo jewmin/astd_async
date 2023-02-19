@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import IntEnum, unique
 
 
 @unique
-class ServerType(Enum):
+class ServerType(IntEnum):
     """登录服务器类型"""
     YaoWan = 1  # 要玩
     PeiYou = 2  # 陪游

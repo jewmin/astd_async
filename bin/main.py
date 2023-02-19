@@ -35,10 +35,14 @@ def FindAccount(account_list: list[Account], username: str, rolename: str) -> Ac
             return account
 
 
+async def Login(accounts: list[Account]):
+    for account in accounts:
+        await account.Login()
+
+
 def Run(accounts: list[Account]):
     loop = asyncio.get_event_loop()
-    for account in accounts:
-        loop.create_task(account.Login())
+    loop.create_task(Login(accounts))
     loop.run_forever()
     loop.close()
 

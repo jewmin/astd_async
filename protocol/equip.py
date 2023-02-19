@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("装备铸造")
-async def getSpecialEquipCastInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getSpecialEquipCastInfo(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
             "免费铸造次数": int(result.result["freetimes"]),
@@ -24,15 +24,15 @@ async def getSpecialEquipCastInfo(account: 'Account', result: 'ServerResult', kw
 
 
 @ProtocolMgr.Protocol("铸造", ("type",))
-async def specialEquipCast(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def specialEquipCast(account: 'Account', result: 'ServerResult', type, msg):
     if result and result.success:
         special_equip_cast_list = BaseObjectList()  # noqa: F405
         special_equip_cast_list.HandleXml('specialequipcast', result.result["specialequipcast"])
-        account.logger.info("%s, 获得%s", kwargs["msg"], ", ".join(special_equip_cast.rewardinfo for special_equip_cast in special_equip_cast_list))
+        account.logger.info("%s, 获得%s", msg, ", ".join(str(special_equip_cast.rewardinfo) for special_equip_cast in special_equip_cast_list))
 
 
 @ProtocolMgr.Protocol("水晶石")
-async def getCrystal(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getCrystal(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
             "水晶石": result.result["baoshidto"],
@@ -41,9 +41,8 @@ async def getCrystal(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("水晶石进阶", ("storeId",))
-async def upgradeCrystal(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def upgradeCrystal(account: 'Account', result: 'ServerResult', storeId, baoshidto):
     if result and result.success:
-        baoshidto = kwargs["baoshidto"]
         account.logger.info("水晶石lv.%s[%s(%s)]进阶成功", baoshidto["baoshilevel"], baoshidto["goodsname"], baoshidto["generalname"])
         return True
 
@@ -52,9 +51,8 @@ async def upgradeCrystal(account: 'Account', result: 'ServerResult', kwargs: dic
 
 
 @ProtocolMgr.Protocol("水晶石融合", ("storeId", "baoshiId"))
-async def meltCrystal(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def meltCrystal(account: 'Account', result: 'ServerResult', storeId, baoshiId, baoshidto):
     if result and result.success:
-        baoshidto = kwargs["baoshidto"]
         account.logger.info("水晶石lv.%s[%s(%s)]融合1颗宝石lv.18成功", baoshidto["baoshilevel"], baoshidto["goodsname"], baoshidto["generalname"])
         return True
 
@@ -63,7 +61,7 @@ async def meltCrystal(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("套装")
-async def getUpgradeInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getUpgradeInfo(account: 'Account', result: 'ServerResult', show=False):
     if result and result.success:
         account.user.magic = int(result.result["magic"])
         account.user.molistone = int(result.result["molistone"])
@@ -71,27 +69,27 @@ async def getUpgradeInfo(account: 'Account', result: 'ServerResult', kwargs: dic
         account.user.maxtaozhuanglv = int(result.result["taozhuang"]["maxtaozhuanglv"])
         account.user.playerequipdto.HandleXml('playerequipdto', result.result["playerequipdto"])
         account.logger.info("魔力值: %d, 磨砺石: %d, 点券: %s", account.user.magic, account.user.molistone, Format.GetShortReadable(account.user.tickets))
-        if kwargs.get("show", False):
+        if show:
             for playerequipdto in account.user.playerequipdto.values():
                 account.logger.info(playerequipdto)
 
 
 @ProtocolMgr.Protocol("套装强化", ("composite", "num"))
-async def upgradeMonkeyTao(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def upgradeMonkeyTao(account: 'Account', result: 'ServerResult', composite, num, equipdto):
     if result and result.success:
         changeinfo = result.result["changeinfo"]
         account.user.tickets = int(changeinfo["remaintickets"])
-        kwargs["equipdto"].HandleXml(changeinfo)
+        equipdto.HandleXml(changeinfo)
 
         if isinstance(result.result["addinfo"], list):
             addinfo = result.result["addinfo"]
         else:
             addinfo = [result.result["addinfo"]]
-        account.logger.info("套装强化, %s倍暴击, %s", result.result.get("baoji", "1"), ", ".join(f"{v['name']+{v['val']}}" for v in addinfo))
+        account.logger.info("套装强化, %s倍暴击, %s", result.result.get("baoji", "1"), ", ".join(f"{v['name']}+{v['val']}" for v in addinfo))
 
 
 @ProtocolMgr.Protocol("套装蓄力", ("composite",))
-async def useXuli(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def useXuli(account: 'Account', result: 'ServerResult', composite):
     if result and result.success:
         if "addinfo" in result.result["xuliinfo"]:
             addinfo = result.result["xuliinfo"]["addinfo"]
@@ -101,7 +99,7 @@ async def useXuli(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("专属仓库")
-async def getAllSpecialEquip(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getAllSpecialEquip(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         equipdto_list = BaseObjectList()  # noqa: F405
         equipdto_list.HandleXml("equipdto", result.result["equipdto"])
@@ -109,21 +107,20 @@ async def getAllSpecialEquip(account: 'Account', result: 'ServerResult', kwargs:
 
 
 @ProtocolMgr.Protocol("熔炼专属", ("specialId", "all"))
-async def smeltSpecialEquip(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def smeltSpecialEquip(account: 'Account', result: 'ServerResult', specialId, all, equipdto):
     if result and result.success:
-        equipdto = kwargs["equipdto"]
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("熔炼%s, 获得%s", equipdto, reward_info)
 
 
 @ProtocolMgr.Protocol("武将装备")
-async def getEquip(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getEquip(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         return result.result["general"]
 
 
 @ProtocolMgr.Protocol("淬炼详情", ("generalId",))
-async def getXiZhugeInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getXiZhugeInfo(account: 'Account', result: 'ServerResult', generalId):
     if result and result.success:
         dict_info = {
             "免费淬炼次数": int(result.result.get("freenum", 0)),
@@ -136,7 +133,7 @@ async def getXiZhugeInfo(account: 'Account', result: 'ServerResult', kwargs: dic
 
 
 @ProtocolMgr.Protocol("淬炼", ("storeId",))
-async def xiZhuge(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def xiZhuge(account: 'Account', result: 'ServerResult', storeId):
     if result and result.success:
         attrs = map(int, result.result["newattr"].split(","))
         dict_info = {
@@ -146,21 +143,21 @@ async def xiZhuge(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("淬炼确认", ("storeId", "type"))
-async def xiZhugeConfirm(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def xiZhugeConfirm(account: 'Account', result: 'ServerResult', storeId, type):
     if result and result.success:
-        if kwargs["type"] == 1:
+        if type == 1:
             account.logger.info("淬炼成功, 替换属性")
         else:
             account.logger.info("淬炼失败, 保持原样")
 
 
 @ProtocolMgr.Protocol("套装磨砺", ("composite", "num"))
-async def moli(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def moli(account: 'Account', result: 'ServerResult', composite, num):
     pass
 
 
 @ProtocolMgr.Protocol("同级合成", ("baoshiId",))
-async def updateBaoshiWholeLevel(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def updateBaoshiWholeLevel(account: 'Account', result: 'ServerResult', baoshiId):
     if result and result.success:
         num = result.result["num"]
         baoshilevel = result.result["baoshilevel"]

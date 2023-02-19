@@ -43,7 +43,7 @@ def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
                 server_result = await _GetXml(real_url, desc, account.cookies)
                 _HandleResult(account, server_result, desc)
 
-            return await func(account, server_result, kwargs)
+            return await func(account, server_result, **kwargs)
 
         return call
 

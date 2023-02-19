@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("监狱", sub_module=False)
-async def jail(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def jail(account: 'Account', result: 'ServerResult'):
     if result.success:
         if "remaintime" not in result.result:
             per_gold = int(result.result["pergold"])
@@ -30,14 +30,14 @@ async def doJail(account: 'Account', get_baoshi: bool):
 
 
 @ProtocolMgr.Protocol("技术研究")
-async def techResearch(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def techResearch(account: 'Account', result: 'ServerResult'):
     if result.success:
         remain_time = int(result.result["remaintime"])
         account.logger.info("监狱技术研究, 剩余时间: %s", account.time_mgr.GetDatetimeString(remain_time))
 
 
 @ProtocolMgr.Protocol("监狱劳作", ("type", "weizhi"))
-async def recvJailWork(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def recvJailWork(account: 'Account', result: 'ServerResult', type, weizhi):
     if result.success:
         if "baoshi" in result.result:
             account.logger.info("监狱劳作, 获得宝石+%s", Format.GetShortReadable(result.result["baoshi"]))
@@ -46,7 +46,7 @@ async def recvJailWork(account: 'Account', result: 'ServerResult', kwargs: dict)
 
 
 @ProtocolMgr.Protocol("从监狱逃跑")
-async def escape(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def escape(account: 'Account', result: 'ServerResult'):
     if result.success:
         cd = int(result.result["cd"])
         account.logger.info("从监狱逃跑, 冷却时间：%d秒", cd)

@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import IntEnum, unique
 
 
 @unique
-class TaskType(Enum):
+class TaskType(IntEnum):
     """任务类型"""
     Impose      = 1  # 征收
     ForceImpose = 2  # 强征

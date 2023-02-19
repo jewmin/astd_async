@@ -11,8 +11,8 @@ from task.SpecialEquipTask import SpecialEquipTask
 from task.EquipTask import EquipTask
 
 __all__ = (
-    CommonTask,
     PingTask,
+    CommonTask,
     DinnerTask,
     CityTask,
     ImposeTask,

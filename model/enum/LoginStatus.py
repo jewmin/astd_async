@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import IntEnum, unique
 
 
 @unique
-class LoginStatus(Enum):
+class LoginStatus(IntEnum):
     """登录状态"""
     Success              = 0  # 成功
     NeedVerifyCode       = 1  # 需要验证码

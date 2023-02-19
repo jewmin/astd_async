@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("集市")
-async def getPlayerSupperMarket(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getPlayerSupperMarket(account: 'Account', result: 'ServerResult'):
     supper_market_dto_list = BaseObjectList()  # noqa: F405
     supper_market_special_dto_list = BaseObjectList()  # noqa: F405
     fresh_time = None
     supplement_num = 0
     if result.success:
-        fresh_time = int(result.result["freshtime"])
+        fresh_time = int(result.result["freshtime"]) // 1000
         supplement_num = int(result.result["supplementnum"])
         if "suppermarketdto" in result.result:
             supper_market_dto_list.HandleXml("suppermarketdto", result.result["suppermarketdto"])
@@ -28,45 +28,45 @@ async def getPlayerSupperMarket(account: 'Account', result: 'ServerResult', kwar
 
 
 @ProtocolMgr.Protocol("商品还价", ("commodityId",))
-async def bargainSupperMarketCommodity(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def bargainSupperMarketCommodity(account: 'Account', result: 'ServerResult', commodityId):
     if result.success:
         account.logger.info("商品还价")
 
 
 @ProtocolMgr.Protocol("下架商品", ("commodityId",))
-async def offSupperMarketCommodity(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def offSupperMarketCommodity(account: 'Account', result: 'ServerResult', commodityId, supper_market_dto):
     if result.success:
-        account.logger.info("下架商品: %s", kwargs["supper_market_dto"])
+        account.logger.info("下架商品: %s", supper_market_dto)
 
 
 @ProtocolMgr.Protocol("购买商品", ("commodityId",))
-async def buySupperMarketCommodity(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def buySupperMarketCommodity(account: 'Account', result: 'ServerResult', commodityId, supper_market_dto):
     if result.success:
-        account.logger.info("购买商品: %s", kwargs["supper_market_dto"])
+        account.logger.info("购买商品: %s", supper_market_dto)
         if "giftdto" in result.result:
             await doRecvSupperMarketGift(account, SupperMarketDto(result.result["giftdto"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("购买每日特供", ("commodityId",))
-async def buySupperMarketSpecialGoods(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def buySupperMarketSpecialGoods(account: 'Account', result: 'ServerResult', commodityId, supper_market_special_dto):
     if result.success:
-        account.logger.info("购买每日特供, 获得%s", kwargs["supper_market_special_dto"])
+        account.logger.info("购买每日特供, 获得%s", supper_market_special_dto)
 
 
 @ProtocolMgr.Protocol("使用进货令")
-async def supplementSupperMarket(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def supplementSupperMarket(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.logger.info("使用进货令")
 
 
 @ProtocolMgr.Protocol("放弃赠送商品")
-async def abandonSupperMarketGift(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def abandonSupperMarketGift(account: 'Account', result: 'ServerResult', name):
     if result.success:
-        account.logger.info("放弃赠送商品[%s]", kwargs["name"])
+        account.logger.info("放弃赠送商品[%s]", name)
 
 
 @ProtocolMgr.Protocol("领取赠送商品")
-async def recvSupperMarketGift(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def recvSupperMarketGift(account: 'Account', result: 'ServerResult'):
     if result.success:
         if "num" in result.result:
             account.logger.info("领取赠送商品, 获得%s+%s", result.result["name"], result.result["num"])
@@ -79,23 +79,23 @@ async def doRecvSupperMarketGift(account: 'Account', supper_market_dto: SupperMa
         if supper_market_dto.name in config["market"]["gift"]["list"]:
             return await recvSupperMarketGift(account)
 
-    await abandonSupperMarketGift(account)
+    await abandonSupperMarketGift(account, name=supper_market_dto.name)
 
 
 @ProtocolMgr.Protocol("委派商人")
-async def getPlayerMerchant(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getPlayerMerchant(account: 'Account', result: 'ServerResult'):
     if result.success:
         if result.result["free"] == "1":
-            await trade(account, result.result["merchant"][0])
+            await trade(account, gold=0, merchantId=result.result["merchant"][0]["merchantid"])
 
 
 @ProtocolMgr.Protocol("委派", ("gold", "merchantId"))
-async def trade(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def trade(account: 'Account', result: 'ServerResult', gold, merchantId):
     if result.success:
         await confirm(account, tradeSN=result.result["tradesn"], merchandise=result.result["merchandise"])
 
 
 @ProtocolMgr.Protocol("卖出委派商品", ("tradeSN",))
-async def confirm(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def confirm(account: 'Account', result: 'ServerResult', tradeSN, merchandise):
     if result.success:
-        account.logger.info("卖出委派商品[%s], 获得银币+%s", kwargs["merchandise"], result.result["cost"])
+        account.logger.info("卖出委派商品[%s], 获得银币+%s", merchandise["merchandisename"], result.result["cost"])

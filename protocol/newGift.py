@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("礼包", ("type",))
-async def getNewGiftList(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getNewGiftList(account: 'Account', result: 'ServerResult', type):
     if result.success:
         if "weekendgift" in result.result:
             gift = result.result["weekendgift"]
@@ -27,7 +27,7 @@ async def doGetNewGiftList(account: 'Account'):
 
 
 @ProtocolMgr.Protocol("领取礼包", ("giftId",))
-async def getNewGiftReward(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getNewGiftReward(account: 'Account', result: 'ServerResult'):
     if result.success:
         content = result.result.get("content", "无效奖励")
         account.logger.info("领取礼包, 获得%s", content)

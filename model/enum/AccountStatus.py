@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import IntEnum, unique
 
 
 @unique
-class AccountStatus(Enum):
+class AccountStatus(IntEnum):
     """账号状态"""
     NotStart           =   0  # 挂机未运行
     Initial            =   1  # 初始化

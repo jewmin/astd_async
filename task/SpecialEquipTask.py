@@ -37,8 +37,8 @@ class SpecialEquipTask(BaseTask):
             if equipdto_list is not None:
                 for equipdto in equipdto_list:
                     if equipdto.quality <= special_equip_config["smelt"]["quality"]:
-                        await equip.smeltSpecialEquip(self.account, specialId=equipdto.storeid, all=1)
+                        await equip.smeltSpecialEquip(self.account, specialId=equipdto.storeid, all=1,  equipdto=equipdto)
                     elif equipdto.equiplevel <= special_equip_config["smelt"]["level"]:
-                        await equip.smeltSpecialEquip(self.account, specialId=equipdto.storeid, all=1)
+                        await equip.smeltSpecialEquip(self.account, specialId=equipdto.storeid, all=1, equipdto=equipdto)
 
         return self.next_half_hour

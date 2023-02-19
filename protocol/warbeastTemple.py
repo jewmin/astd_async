@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("战兽圣殿")
-async def getInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getInfo(account: 'Account', result: 'ServerResult'):
     if result.success:
         dict_info = {
             "购买1次": result.GetValue("warbeasttemple.buyonecost", 999),
@@ -18,10 +18,10 @@ async def getInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("购买", ("type",))
-async def buy(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def buy(account: 'Account', result: 'ServerResult', type, cost):
     if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
-        if (cost := kwargs["cost"]) > 0:
+        if cost > 0:
             account.logger.info("花费%s金币购买, 获得%s", cost, reward_info)
         else:
-            account.logger.info("免费购买, 获得%s", cost, reward_info)
+            account.logger.info("免费购买, 获得%s", reward_info)

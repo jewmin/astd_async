@@ -9,18 +9,17 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("点券商城", sub_module=False)
-async def tickets(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def tickets(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.user.tickets = int(result.result["tickets"])
         account.user.ticket_exchange.HandleXml('Ticket', result.result["rewards"]["reward"])
 
 
 @ProtocolMgr.Protocol("兑换奖励", ("rewardId", "num"))
-async def getTicketsReward(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getTicketsReward(account: 'Account', result: 'ServerResult', rewardId, num, ticket: 'Ticket'):  # noqa: F405
     if result.success:
-        ticket: Ticket = kwargs["ticket"]  # noqa: F405
-        use_tickets = Format.GetShortReadable(ticket.tickets * kwargs["num"])
-        get_num = Format.GetShortReadable(ticket.item.num * kwargs["num"])
+        use_tickets = Format.GetShortReadable(ticket.tickets * num)
+        get_num = Format.GetShortReadable(ticket.item.num * num)
         account.logger.info("兑换奖励, 花费%s点券, 获得%s+%s", use_tickets, ticket.item.name, get_num)
 
 

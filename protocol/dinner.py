@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("宴会")
-async def getAllDinner(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getAllDinner(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
             "宴会期间": result.GetValue("indinnertime", 0) == 1,
@@ -22,8 +22,8 @@ async def getAllDinner(account: 'Account', result: 'ServerResult', kwargs: dict)
 
 
 @ProtocolMgr.Protocol("加入宴会队伍", ("teamId",))
-async def joinDinner(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def joinDinner(account: 'Account', result: 'ServerResult', teamId, creator):
     if result and result.success:
-        account.logger.info("加入宴会队伍[%s]", kwargs["creator"])
+        account.logger.info("加入宴会队伍[%s]", creator)
         return True
     return False

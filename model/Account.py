@@ -5,9 +5,6 @@ from manager.TimeMgr import TimeMgr
 from manager.TaskMgr import TaskMgr
 import manager.LoginMgr as LoginMgr
 import protocol.server as server
-import protocol.mainCity as mainCity
-import protocol.equip as equip
-import protocol.tickets as tickets
 import task
 from model.User import User
 from model.LoginResult import LoginResult
@@ -41,7 +38,7 @@ class Account:
             self.logger.info("登录失败，请重试")
             self.Relogin(30)
         elif login_result.status == LoginStatus.Success:
-            self.InitGame(login_result)
+            await self.InitGame(login_result)
         else:
             self.logger.info(login_result)
             self.Relogin(30)
@@ -53,12 +50,12 @@ class Account:
         else:
             asyncio.get_event_loop().create_task(self.Login())
 
-    def InitGame(self, login_result: LoginResult) -> None:
+    async def InitGame(self, login_result: LoginResult) -> None:
         self.status = AccountStatus.NotStart
         self.game_url = login_result.game_url
         self.session_id = login_result.session_id
         self.cookies = login_result.cookies
-        asyncio.get_event_loop().create_task(self.InitSession())
+        await self.InitSession()
 
     async def InitSession(self) -> None:
         self.user = User()
@@ -66,20 +63,15 @@ class Account:
         self.task_mgr = TaskMgr()
         await server.getServerTime(self)
         if await server.getPlayerInfoByUserId(self):
-            await self.RunFirst()
-            self.AddTasks()
+            await self.AddTasks()
             self.InitCompleted()
 
     def InitCompleted(self) -> None:
         self.running = True
         self.task_mgr.RunAllTasks()
 
-    def AddTasks(self) -> None:
+    async def AddTasks(self) -> None:
         for task_class in task.__all__:
             self.task_mgr.AddTask(task_class(self))
-
-    async def RunFirst(self) -> None:
-        await server.getPlayerExtraInfo2(self)
-        await mainCity.mainCity(self)
-        await equip.getUpgradeInfo(self)
-        await tickets.tickets(self)
+        for t in self.task_mgr.tasks.values():
+            await t.Init()

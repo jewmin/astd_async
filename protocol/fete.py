@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("祭祀活动")
-async def getFeteEventInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getFeteEventInfo(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
             "神": result.result["god"]
@@ -17,13 +17,13 @@ async def getFeteEventInfo(account: 'Account', result: 'ServerResult', kwargs: d
 
 
 @ProtocolMgr.Protocol("领取祭祀活动奖励", ("feteId",))
-async def recvFeteTicket(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def recvFeteTicket(account: 'Account', result: 'ServerResult', feteId):
     if result and result.success:
         account.logger.info("领取祭祀活动奖励, 获得宝石+%s", result.result["godticket"]["baoshi"])
 
 
 @ProtocolMgr.Protocol("祭祀神庙", sub_module=False)
-async def fete(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def fete(account: 'Account', result: 'ServerResult'):
     fete_list = BaseObjectList()  # noqa: F405
     free_all_fete = 0
     if result and result.success:
@@ -33,9 +33,9 @@ async def fete(account: 'Account', result: 'ServerResult', kwargs: dict):
 
 
 @ProtocolMgr.Protocol("祭祀", ("feteId",))
-async def dofete(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def dofete(account: 'Account', result: 'ServerResult', feteId, gold, god):
     if result and result.success:
-        account.logger.info("花费%d金币祭祀[%s]", kwargs["gold"], kwargs["god"])
+        account.logger.info("花费%d金币祭祀[%s]", gold, god)
         gains = result.GetValueList("gains.gain")
         for gain in gains:
             account.logger.info("%d倍暴击, 获得%s+%d", gain["pro"], gain["addtype"], gain["addvalue"])

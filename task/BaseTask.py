@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 from weakref import proxy
+import logic.Format as Format
 from logic.Config import config
 import manager.ProtocolMgr as ProtocolMgr
 
@@ -26,6 +27,9 @@ class BaseTask:
 
     def Run(self):
         self.task = asyncio.get_event_loop().create_task(self._Run())
+
+    async def Init(self):
+        pass
 
     async def _Exec(self):
         raise NotImplementedError("必须实现此函数")
@@ -53,12 +57,14 @@ class BaseTask:
             return
 
         self.task = None
+        if next_running_time >= 3600:
+            self.account.logger.error("%s后执行异步任务[%s]", Format.GetSecondString(next_running_time), self.name)
+        else:
+            self.account.logger.info("%s后执行异步任务[%s]", Format.GetSecondString(next_running_time), self.name)
         asyncio.get_event_loop().call_later(next_running_time, self.Run)
 
     def get_available(self, key):
-        value = getattr(self.account.user, key)
-        reserve = config["global"]["reserve"].get(key, 0)
-        return max(value - reserve, 0)
+        return self.account.user.get_available(key)
 
     @property
     def immediate(self) -> int:

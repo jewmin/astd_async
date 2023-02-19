@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("获取系统时间")
-async def getServerTime(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getServerTime(account: 'Account', result: 'ServerResult'):
     if result.success:
         server_time = int(result.result["time"])
         account.time_mgr.SetTimestamp(server_time)
@@ -16,7 +16,7 @@ async def getServerTime(account: 'Account', result: 'ServerResult', kwargs: dict
 
 
 @ProtocolMgr.Protocol("获取玩家信息")
-async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult'):
     if not result.success:
         account.logger.warning("获取用户信息失败，请重试")
         return False
@@ -58,17 +58,17 @@ async def getPlayerInfoByUserId(account: 'Account', result: 'ServerResult', kwar
 
 
 @ProtocolMgr.Protocol("选择玩家角色", ("playerId", "code"))
-async def chooseRole(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def chooseRole(account: 'Account', result: 'ServerResult', playerId, code):
     return result.success
 
 
 @ProtocolMgr.Protocol("获取额外信息")
-async def getExtraInfo(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getExtraInfo(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.user.UpdatePlayerExtraInfo(result.result["player"])
 
 
 @ProtocolMgr.Protocol("获取玩家额外信息")
-async def getPlayerExtraInfo2(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getPlayerExtraInfo2(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.user.UpdatePlayerExtraInfo2(result.result["player"])

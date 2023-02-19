@@ -9,9 +9,13 @@ class CommonTask(BaseTask):
         super().__init__(account)
         self.name = "通用"
 
+    async def Init(self):
+        await self._Exec()
+
     async def _Exec(self):
         await server.getExtraInfo(self.account)
-        await equip.getUpgradeInfo(self.account)
+        await mainCity.mainCity(self.account)
+        await equip.getUpgradeInfo(self.account, show=True)
 
         # 登录奖励
         if config["mainCity"]["auto_get_login_reward"]:

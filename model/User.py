@@ -1,4 +1,5 @@
 import logic.Format as Format
+from logic.Config import config
 from model.child import *  # noqa: F403
 from model.enum.TaskType import TaskType
 
@@ -119,6 +120,11 @@ class User(BaseObject):  # noqa: F405
         self.task: dict[TaskType, Task]                = BaseObjectDict()  # 日常任务  # noqa: F405
         self.ticket_exchange: dict[str, Ticket]        = BaseObjectDict()  # 点券兑换资源  # noqa: F405
         self.playerequipdto: dict[int, PlayerEquipDto] = BaseObjectDict()  # 套装  # noqa: F405
+
+    def get_available(self, key):
+        value = getattr(self, key)
+        reserve = config["global"]["reserve"].get(key, 0)
+        return max(value - reserve, 0)
 
     @property
     def gold(self):

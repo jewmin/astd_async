@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("升官", sub_module=False)
-async def officer(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def officer(account: 'Account', result: 'ServerResult'):
     if result.success:
         if result.result["savesalary_cd"] == "0":
             await saveSalary(account)
 
 
 @ProtocolMgr.Protocol("领取俸禄")
-async def saveSalary(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def saveSalary(account: 'Account', result: 'ServerResult'):
     if result.success:
-        account.logger.info("领取俸禄, 获得银币+%s, %s, %s", Format.GetShortReadable(result.result["gain"]), result.result["troop"], RewardInfo(result.result["rewardinfo"]))  # noqa: F405
+        account.logger.info("领取俸禄, 获得银币+%s, %s %s", Format.GetShortReadable(result.result["gain"]), result.result["troop"], RewardInfo(result.result["rewardinfo"]))  # noqa: F405

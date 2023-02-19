@@ -8,10 +8,10 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("宝石矿洞")
-async def getPickSpace(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def getPickSpace(account: 'Account', result: 'ServerResult', percent):
     if result.success:
         for v in result.result["playerpickdto"]:
-            if float(v["output"]) / float(v["limit"]) >= kwargs["percent"]:
+            if float(v["output"]) / float(v["limit"]) >= percent:
                 await endBaoshiPick(account, pickSpaceId=v["id"])
 
 
@@ -20,6 +20,6 @@ async def doGetPickSpace(account: 'Account', percent: float):
 
 
 @ProtocolMgr.Protocol("采集宝石", ("pickSpaceId",))
-async def endBaoshiPick(account: 'Account', result: 'ServerResult', kwargs: dict):
+async def endBaoshiPick(account: 'Account', result: 'ServerResult', pickSpaceId):
     if result.success:
         account.logger.info("采集宝石, 获得宝石+%s", Format.GetShortReadable(result.result["baoshi"]))
