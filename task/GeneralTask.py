@@ -36,7 +36,7 @@ class GeneralTask(BaseTask):
                                 else:
                                     result = await general.refreshGeneral(self.account, generalId=g["generalid"], refreshModel=3)
                                 if result is not None:
-                                    await self.refresh_general_confirm(g, detail["原始属性"], detail["新属性"])
+                                    await self.refresh_general_confirm(g, detail["原始属性"], result["新属性"])
                                 return self.immediate
 
                 # isfull maxlevel liquornum freeliquornum needliquornum needbaoshinum isawaken maxnum invalidnum

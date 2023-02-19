@@ -38,10 +38,18 @@ def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
 
             if data:
                 server_result = await _PostXml(real_url, data, desc, account.cookies)
-                _HandleResult(account, server_result, desc, data)
+                try:
+                    _HandleResult(account, server_result, desc, data)
+                except ProtocolError:
+                    server_result = await _PostXml(real_url, data, desc, account.cookies)
+                    _HandleResult(account, server_result, desc, data)
             else:
                 server_result = await _GetXml(real_url, desc, account.cookies)
-                _HandleResult(account, server_result, desc)
+                try:
+                    _HandleResult(account, server_result, desc)
+                except ProtocolError:
+                    server_result = await _GetXml(real_url, desc, account.cookies)
+                    _HandleResult(account, server_result, desc)
 
             return await func(account, server_result, **kwargs)
 
@@ -71,7 +79,7 @@ def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, 
     account.logger.debug(log_dict)
 
     if not server_result.IsHttpSucceed():
-        return
+        raise ProtocolError(server_result.GetHttpErrorInfo())
 
     if server_result.success:
         if "playerupdateinfo" in server_result.result:
@@ -88,4 +96,4 @@ def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, 
 
     else:
         # raise ProtocolError(f"{server_result.GetUrl()} - {desc}: {server_result.error}")
-        account.logger.error("%s - %s: %s", server_result.GetUrl(), desc, server_result.error)
+        account.logger.error("%s - %s - %s: %s", server_result.GetUrl(), data, desc, server_result.error)
