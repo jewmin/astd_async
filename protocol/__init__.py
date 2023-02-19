@@ -14,6 +14,11 @@ import protocol.tickets as tickets
 import protocol.warbeastTemple as warbeastTemple
 import protocol.fete as fete
 import protocol.goods as goods
+import protocol.warChariot as warChariot
+import protocol.warDrum as warDrum
+import protocol.refine as refine
+import protocol.make as make
+import protocol.caravan as caravan
 
 __all__ = (
     'dayTreasureGame',
@@ -32,4 +37,9 @@ __all__ = (
     'warbeastTemple',
     "fete",
     "goods",
+    "warChariot",
+    "warDrum",
+    "refine",
+    "make",
+    "caravan",
 )

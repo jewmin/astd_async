@@ -146,7 +146,7 @@ config = {
             "enable": True,  # 开启功能
             "finish_task": True,  # 完成日常任务
             "do_high": True,  # 高效状态
-            "do_tired": True,  # 疲劳状态
+            "do_tired": False,  # 疲劳状态
             "refresh": 0,  # 刷新换购商人花费金币<=N
             "list": [  # 换购商人列表
                 # "皇家南越商人",
@@ -215,13 +215,13 @@ config = {
             "enable": True,  # 开启功能
             "finish_task": True,  # 完成日常任务
             "event": {  # 通商事件
-                "1": {  # 西域国王
+                1: {  # 西域国王
                     "double_cost": 0,  # 双倍领取金币<=N
                 },
-                "2": {  # 神秘商人
+                2: {  # 神秘商人
                     "use_cost": 0,  # 花费金币<=N
                 },
-                "3": {  # 西域通商
+                3: {  # 西域通商
                     "double_cost": 0,  # 双倍领取金币<=N
                 },
             },
@@ -379,7 +379,7 @@ config = {
             "enable": True,  # 开启
         },
         "merge": {  # 宝石合成
-            "enable": True,  # 开启
+            "enable": False,  # 开启
             "level": 18,  # 最高合成等级<=N
         },
     },

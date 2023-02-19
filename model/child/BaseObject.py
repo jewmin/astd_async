@@ -52,8 +52,8 @@ class BaseObject:
             elif isinstance(o, (BaseObjectList, BaseObjectDict)):
                 o.HandleXml(k, v)
             elif isinstance(o, bool):
-                setattr(self, k, v == "1")
+                setattr(self, k, str(v) == "1")
             elif isinstance(o, (int, float)):
-                setattr(self, k, eval(v))
+                setattr(self, k, eval(str(v)))
             else:
-                setattr(self, k, v)
+                setattr(self, k, str(v))

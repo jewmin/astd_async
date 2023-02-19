@@ -27,6 +27,20 @@ class RewardInfo(BaseObject):
             rewards.append(repr(reward))
         return " ".join(rewards)
 
+    def get_reward(self, index):
+        if 0 <= index < len(self.reward):
+            return self.reward[index]
+
+    def HandleXml(self, info: dict) -> None:
+        new_info = {}
+        if isinstance(info, list):
+            for i in info:
+                for k, v in i.items():
+                    lst = new_info.setdefault(k, [])
+                    lst.append(v)
+            info = new_info
+        super().HandleXml(info)
+
 
 @wrapper
 class Reward(BaseObject):

@@ -9,8 +9,8 @@ class DayTreasureGameTask(BaseTask):
         super().__init__(account)
         self.name = "王朝寻宝"
 
-    async def Init(self):
-        await dayTreasureGame.getNewTreasureGameInfo(self.account)
+    # async def Init(self):
+    #     await dayTreasureGame.getNewTreasureGameInfo(self.account)
 
     async def _Exec(self):
         if config["dayTreasureGame"]["enable"]:
