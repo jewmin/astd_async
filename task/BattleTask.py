@@ -34,15 +34,15 @@ class BattleTask(BaseTask):
                     dict_info["免费强攻令"] -= 1
                 return self.immediate
 
-            state = dict_info["征战事件"].get("state", 0)
-            if state == 1:
+            state = dict_info["征战事件"].get("state", "0")
+            if state == "1":
                 process = list(map(int, dict_info["征战事件"]["process"].split("/")))
                 while process[0] < process[1]:
                     await battle.doBattleEvent(self.account)
                     process[0] += 1
                 return self.immediate
 
-            elif state == 2:
+            elif state == "2":
                 await battle.recvBattleEventReward(self.account)
                 return self.immediate
 

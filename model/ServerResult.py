@@ -1,3 +1,4 @@
+import copy
 import engine.LogManager as LogManager
 import logic.XmlParse as XmlParse
 
@@ -72,7 +73,7 @@ class ServerResult:
 
     def GetValue(self, key: str, default=None):
         if not self.result_map:
-            self.result_map = self._HandleKeyValue(self.result)
+            self.result_map = self._HandleKeyValue(copy.deepcopy(self.result))
 
         value = self.result_map
         try:

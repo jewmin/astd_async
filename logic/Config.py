@@ -481,7 +481,7 @@ config = {
     "battle": {  # 征战
         "enable": True,  # 开启
         "armyid": 14919,  # 征战NPC
-        "powerid": [315],  # 征战地图从434刀耕火种开始, 492媚娘入宫
+        "powerid": [305],  # 征战地图从434刀耕火种开始, 492媚娘入宫, 500女皇传奇
         "auto": {  # 过图
             "enable": False,  # 开启
             "armyid": 19920,  # 过图NPC(370李白19920)

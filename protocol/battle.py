@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 async def battle(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
-            "征战事件": result.GetValue("battleevent", {}),
+            "征战事件": result.result["battleevent"] if result.result["battleevent"] else {},
             "免费强攻令": result.GetValue("freeattnum", 0),
         }
         return dict_info
@@ -42,8 +42,8 @@ async def battleArmy(account: 'Account', result: 'ServerResult', armyId):
 @ProtocolMgr.Protocol("进行征战事件")
 async def doBattleEvent(account: 'Account', result: 'ServerResult'):
     if result and result.success:
-        if process := result.GetValue("battleevent.process"):
-            account.logger.info("进行征战事件: %s", process)
+        if "process" in result.result["battleevent"]:
+            account.logger.info("进行征战事件: %s", result.result["battleevent"]["process"])
         else:
             account.logger.info("进行征战事件: 完毕")
 
