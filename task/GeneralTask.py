@@ -177,7 +177,7 @@ class GeneralTask(BaseTask):
                 train_info = await general.getBigTrainInfo(self.account)
                 for train in train_info["训练位"]:
                     while train_info["免费次数"] >= big_config["fast_train"]:
-                        await general.fastTrainBigGeneral(self.account, generalId=train["generalid"], general=train)
+                        await general.fastTrainBigGeneral(self.account, generalId=train["generalid"], general=train, num=big_config["fast_train"])
                         train_info["免费次数"] -= big_config["fast_train"]
                     for expbook in train_info["经验书"]:
                         if expbook["type"] == train["generaltype"] and expbook["num"] > 0:

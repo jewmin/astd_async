@@ -21,6 +21,8 @@ import protocol.make as make
 import protocol.caravan as caravan
 import protocol.general as general
 import protocol.tech as tech
+import protocol.battle as battle
+import protocol.multiBattle as multiBattle
 
 __all__ = (
     'dayTreasureGame',
@@ -46,4 +48,6 @@ __all__ = (
     "caravan",
     "general",
     "tech",
+    "battle",
+    "multiBattle",
 )
