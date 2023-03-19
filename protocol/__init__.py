@@ -23,6 +23,8 @@ import protocol.general as general
 import protocol.tech as tech
 import protocol.battle as battle
 import protocol.multiBattle as multiBattle
+import protocol.polish as polish
+import protocol.stoneMelt as stoneMelt
 
 __all__ = (
     'dayTreasureGame',
@@ -50,4 +52,6 @@ __all__ = (
     "tech",
     "battle",
     "multiBattle",
+    "polish",
+    "stoneMelt",
 )

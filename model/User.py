@@ -2,6 +2,7 @@ import logic.Format as Format
 from logic.Config import config
 from model.child import *  # noqa: F403
 from model.enum.TaskType import TaskType
+from model.enum.ActivityType import ActivityTypeString
 
 SeasonString = ("", "春", "夏", "秋", "冬")
 
@@ -171,6 +172,13 @@ class User(BaseObject):  # noqa: F405
             f"{self.cityhp}城防值",
             f"状态: {self.arreststate}",
         ))
+
+    def HaveActivities(self):
+        activities = []
+        for k, v in ActivityTypeString.type2name.items():
+            if getattr(self, k, False):
+                activities.append(v)
+        return ",".join(activities)
 
     def HandleXml(self, info: dict) -> None:
         super().HandleXml(info)
