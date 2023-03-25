@@ -28,6 +28,7 @@ class User(BaseObject):  # noqa: F405
         self.innewarea             = False  # 新区
         self.areaid                = 0      # 当前所在城池id
         self.areaname              = ""     # 当前所在城池名称
+        self.spy_areaid            = 0      # 间谍所在城池id
 
         self.sys_gold              = 0      # 金币
         self.user_gold             = 0      # 充值金币
@@ -68,6 +69,20 @@ class User(BaseObject):  # noqa: F405
         self.battlescore           = 0      # 战绩
         self.arreststate           = 0      # 劳作状态 0:正常 1:劳作 10:逃跑cd 100:被抓
         self.remainseniorslaves    = 0      # 剩余高级劳工(墨子改造)
+
+        self.remaintutimes         = 0      # 屠城剩余次数
+        self.tucd                  = 0      # 屠城冷却时间
+        self.transfer_fail_num     = 0      # 移动失败次数
+
+        self.area_map              = [      # 地图
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0]
+        ]
+        self.astar                 = AreaAStar(self.area_map)  # A*算法 # noqa: F405
 
         self.warchariot            = False  # 战车
         self.canvisit              = False  # 恭贺争霸风云榜
@@ -115,12 +130,14 @@ class User(BaseObject):  # noqa: F405
         self.total_jailbaoshi                          = 0                 # 监狱劳作获得宝石
         self.imposedto                                 = ImposeDto()       # 征收  # noqa: F405
         self.generaltower                              = GeneralTower()    # 将军塔  # noqa: F405
+        self.fengdi                                    = FengDi()          # 封地  # noqa: F405
         self.maincitydto: list[MainCityDto]            = BaseObjectList()  # 主城建筑  # noqa: F405
         self.constructordto: list[ConstructorDto]      = BaseObjectList()  # 建筑建造队列  # noqa: F405
         self.mozibuilding                              = BaseObjectList()  # 墨子建筑  # noqa: F405
         self.task: dict[TaskType, Task]                = BaseObjectDict()  # 日常任务  # noqa: F405
         self.ticket_exchange: dict[str, Ticket]        = BaseObjectDict()  # 点券兑换资源  # noqa: F405
         self.playerequipdto: dict[int, PlayerEquipDto] = BaseObjectDict()  # 套装  # noqa: F405
+        self.tokenlist: list[Token]                    = BaseObjectList()  # 个人令 -1:未解锁 0:已使用 1:建造令 2:破坏令 3: 4:鼓舞令 5:诽谤令 6: 7:窃取令 8:战绩令 9:横扫令  # noqa: F405
 
     def get_available(self, key):
         value = getattr(self, key)

@@ -13,6 +13,9 @@ from model.child.SpecialEquipCast import SpecialEquipCast
 from model.child.SupperMarketDto import SupperMarketDto, SupperMarketSpecialDto
 from model.child.Task import Task
 from model.child.Ticket import Ticket, TicketItem
+from model.child.Token import Token
+from model.child.FengDi import FengDi
+from model.child.AreaAStar import AreaAStar
 
 __all__ = (
     "wrapper", "BaseObject", "BaseObjectDict", "BaseObjectList",
@@ -30,4 +33,7 @@ __all__ = (
     "SupperMarketDto", "SupperMarketSpecialDto",
     "Task",
     "Ticket", "TicketItem",
+    "Token",
+    "FengDi",
+    "AreaAStar",
 )

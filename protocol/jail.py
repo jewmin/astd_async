@@ -50,4 +50,4 @@ async def escape(account: 'Account', result: 'ServerResult'):
     if result.success:
         cd = int(result.result["cd"])
         account.logger.info("从监狱逃跑, 冷却时间：%d秒", cd)
-        return cd * 1000
+        return cd

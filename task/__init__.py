@@ -13,6 +13,9 @@ from task.WarChariotTask import WarChariotTask
 from task.ActiveTask import ActiveTask
 from task.GeneralTask import GeneralTask
 from task.BattleTask import BattleTask
+from task.PolishTask import PolishTask
+from task.WorldTask import WorldTask
+
 
 __all__ = (
     PingTask,
@@ -30,4 +33,6 @@ __all__ = (
     ActiveTask,
     GeneralTask,
     BattleTask,
+    PolishTask,
+    WorldTask,
 )
