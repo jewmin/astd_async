@@ -259,7 +259,7 @@ async def draw5NewAreaTreasure(account: 'Account', result: 'ServerResult'):
                 rs[7] = rs.get(7, 0) + baowu
             if (tickets := reward.get("tickets", 0)) > 0:
                 rs[8] = rs.get(8, 0) + tickets
-        account.logger.info("连开5个国家宝箱, %s", ", ".join(f"{t2n[k]+{v}}" for k, v in rs.items()))
+        account.logger.info("连开5个国家宝箱, %s", ", ".join(f"{t2n[k]}+{v}" for k, v in rs.items()))
 
 
 @ProtocolMgr.Protocol("攻击敌人", ("areaId", "scopeId", "cityId"))

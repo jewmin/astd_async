@@ -72,8 +72,8 @@ class WorldTask(BaseTask):
         if self.account.user.arreststate == 100:
             cd = await jail.escape(self.account)
             if cd:
-                self.account.logger.info("等待逃跑冷却时间: %s", self.account.time_mgr.GetDatetimeString(cd))
-                return cd // 1000
+                self.account.logger.info("等待逃跑冷却时间: %s", self.account.time_mgr.GetDatetimeString(cd * 1000))
+                return cd
 
         area_info = await world.getNewArea(self.account)
         await world.getNewAreaToken(self.account)
@@ -188,7 +188,7 @@ class WorldTask(BaseTask):
                                         break
                                 else:
                                     if self.account.user.spy_areaid > 0:
-                                        await self.attack_spy(self.account.user.spy_areaid)
+                                        await self.attack_spy(self.account.user.spy_areaid, area_info)
                                     if attack_back:
                                         attack_num += 1
                                         break

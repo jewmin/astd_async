@@ -14,7 +14,7 @@ class ServerResult:
     def __init__(self, url: str, action: str, result: str):
         self.logger = LogManager.GetLogger(self.__class__.__name__)
         self.url = url
-        self.action = action
+        self.action = action.replace("!", ".")
         self.http_code = 0
         self.success = False
         self.xml = ""
