@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 @ProtocolMgr.Protocol("攻坚战")
-def getNationTaskNewInfo(account: 'Account', result: 'ServerResult'):
+async def getNationTaskNewInfo(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         dict_info = {
             "状态": result.GetValue("status"),
@@ -17,6 +17,6 @@ def getNationTaskNewInfo(account: 'Account', result: 'ServerResult'):
 
 
 @ProtocolMgr.Protocol("领取攻坚战奖励")
-def getNationTaskNewReward(account: 'Account', result: 'ServerResult'):
+async def getNationTaskNewReward(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         account.logger.info("领取攻坚战奖励, 国家宝箱+%d", result.GetValue("box", 0))

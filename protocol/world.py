@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 @ProtocolMgr.Protocol("世界")
 async def getNewArea(account: 'Account', result: 'ServerResult'):
     if result and result.success:
+        account.user.astar.ignore_barrier(False)
         account.user.fengdi.HandleXml(result.result["fengdi"])
         dict_info = {
             "决斗战旗": result.GetValue("daoju.flagnum"),
@@ -28,7 +29,8 @@ async def getNewArea(account: 'Account', result: 'ServerResult'):
         }
 
         for area in result.GetValueList("newarea"):
-            coordinate = list(map(int, area["coordinate"].split(",")))
+            # coordinate = list(map(int, area["coordinate"].split(",")))
+            coordinate = area["coordinate"]
             y, x = coordinate[0] - 1, coordinate[1] - 1
             if "areaid" in area:
                 areaid = area["areaid"]

@@ -40,7 +40,7 @@ def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
             if data:
                 while True:
                     try:
-                        server_result = await _PostXml(real_url, data, desc, account.cookies)
+                        server_result = await _PostXml(real_url, module, data, desc, account.cookies)
                         _HandleResult(account, server_result, desc, data)
                     except ProtocolError:
                         retries -= 1
@@ -51,7 +51,7 @@ def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
             else:
                 while True:
                     try:
-                        server_result = await _GetXml(real_url, desc, account.cookies)
+                        server_result = await _GetXml(real_url, module, desc, account.cookies)
                         _HandleResult(account, server_result, desc)
                     except ProtocolError:
                         retries -= 1
@@ -67,12 +67,12 @@ def Protocol(desc: str, params: tuple = (), sub_module: bool = True):
     return request
 
 
-async def _GetXml(url: str, desc: str, cookies: dict) -> 'ServerResult':
-    return ServerResult(url, await TransferMgr.Get(url, cookies))
+async def _GetXml(url: str, action: str, desc: str, cookies: dict) -> 'ServerResult':
+    return ServerResult(url, action, await TransferMgr.Get(url, cookies))
 
 
-async def _PostXml(url: str, data: dict, desc: str, cookies: dict) -> 'ServerResult':
-    return ServerResult(url, await TransferMgr.Post(url, data, cookies))
+async def _PostXml(url: str, action: str, data: dict, desc: str, cookies: dict) -> 'ServerResult':
+    return ServerResult(url, action, await TransferMgr.Post(url, data, cookies))
 
 
 def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, data: dict = None):
@@ -105,4 +105,4 @@ def _HandleResult(account: 'Account', server_result: 'ServerResult', desc: str, 
 
     else:
         # raise ProtocolError(f"{server_result.GetUrl()} - {desc}: {server_result.error}")
-        account.logger.error("%s - %s - %s: %s", server_result.GetUrl(), data, desc, server_result.error)
+        account.logger.error("%s - %s - %s: %s", server_result.GetAction(), data, desc, server_result.error)

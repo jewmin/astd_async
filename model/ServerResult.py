@@ -11,9 +11,10 @@ HttpCodeString = {
 
 class ServerResult:
     """返回结果"""
-    def __init__(self, url: str, result: str):
+    def __init__(self, url: str, action: str, result: str):
         self.logger = LogManager.GetLogger(self.__class__.__name__)
         self.url = url
+        self.action = action
         self.http_code = 0
         self.success = False
         self.xml = ""
@@ -70,6 +71,9 @@ class ServerResult:
 
     def GetUrl(self) -> str:
         return self.url
+
+    def GetAction(self) -> str:
+        return self.action
 
     def GetValue(self, key: str, default=None):
         if not self.result_map:

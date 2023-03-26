@@ -106,7 +106,6 @@ class WorldTask(BaseTask):
 
         # 城防恢复
         if (cityhprecovercd := area_info["城防恢复cd"]) > 0:
-            cityhprecovercd
             self.account.logger.info("等待城防恢复时间: %s", self.account.time_mgr.GetDatetimeString(cityhprecovercd))
             return cityhprecovercd // 1000
 
@@ -141,7 +140,7 @@ class WorldTask(BaseTask):
 
                 # 搜索敌人
                 if attack_config["enable"] and attack_config["main_city"][self.account.user.nation] != self.account.user.areaid:
-                    can_attack_area_list = self.attack_player(self.account.user.areaid)
+                    can_attack_area_list = await self.attack_player(self.account.user.areaid, area_info)
                     for a_area in can_attack_area_list:
                         # 屠城
                         attack_num = 0
@@ -214,7 +213,7 @@ class WorldTask(BaseTask):
                         break
 
         # 决斗
-        area_list = await self.get_neighbors_area(self.account.user.areaid)
+        area_list = self.get_neighbors_area(self.account.user.areaid, area_info)
         for a_area in area_list:
             if a_area["areaname"] in attack_config["exculde"] and a_area["areaid"] != attack_config["main_city"][self.account.user.nation]:
                 await self.duel(a_area, area_info, attack_config["diff_level"], attack_config["duel_city_hp_limit"])
@@ -359,7 +358,8 @@ class WorldTask(BaseTask):
         a_area = area_info["城池ID"][area_id]
         if include_me:
             neighbors_area_list.append(a_area)
-        coordinate = list(map(int, a_area["coordinate"].split(",")))
+        # coordinate = list(map(int, a_area["coordinate"].split(",")))
+        coordinate = a_area["coordinate"]
         y, x = coordinate[0] - 1, coordinate[1] - 1
         astar = self.account.user.astar
         for ny, nx in [(y, x - 1), (y, x + 1), (y - 1, x), (y + 1, x)]:
@@ -439,9 +439,11 @@ class WorldTask(BaseTask):
             self.account.logger.info("已在城池[%s]", current_area["areaname"])
             return None
 
-        coordinate = list(map(int, current_area["coordinate"].split(",")))
+        # coordinate = list(map(int, current_area["coordinate"].split(",")))
+        coordinate = current_area["coordinate"]
         current_y, current_x = coordinate[0] - 1, coordinate[1] - 1
-        coordinate = list(map(int, goal_area["coordinate"].split(",")))
+        # coordinate = list(map(int, goal_area["coordinate"].split(",")))
+        coordinate = goal_area["coordinate"]
         goal_y, goal_x = coordinate[0] - 1, coordinate[1] - 1
         paths = self.account.user.astar.astar((current_y, current_x), (goal_y, goal_x))
         if paths is None:
