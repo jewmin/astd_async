@@ -148,7 +148,7 @@ class WorldTask(BaseTask):
                         attack_arrest = False
                         if tu_city_config["enable"] and a_area["屠城"] and self.account.user.tucd == 0 and self.account.user.remaintutimes > 0:
                             if total_num <= tu_city_config["people_num"]:
-                                await world.tuCity(self.account, areaId=a_area["areaid"])
+                                await world.tuCity(self.account, areaId=a_area["城池"])
                                 attack_arrest = True
                         attack_list = []
                         attack_list.extend(a_area["英雄帖玩家列表"])
