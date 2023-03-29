@@ -72,7 +72,7 @@ class WorldTask(BaseTask):
         if self.account.user.arreststate == 100:
             cd = await jail.escape(self.account)
             if cd:
-                self.account.logger.info("等待逃跑冷却时间: %s", self.account.time_mgr.GetDatetimeString(cd * 1000))
+                self.logger.info("等待逃跑冷却时间: %s", self.account.time_mgr.GetDatetimeString(cd * 1000))
                 return cd
 
         area_info = await world.getNewArea(self.account)
@@ -106,12 +106,12 @@ class WorldTask(BaseTask):
 
         # 城防恢复
         if (cityhprecovercd := area_info["城防恢复cd"]) > 0:
-            self.account.logger.info("等待城防恢复时间: %s", self.account.time_mgr.GetDatetimeString(cityhprecovercd))
+            self.logger.info("等待城防恢复时间: %s", self.account.time_mgr.GetDatetimeString(cityhprecovercd))
             return cityhprecovercd // 1000
 
         # 冷却时间
         if self.account.user.tokencdflag and (tokencd := self.account.user.tokencd) > 0:
-            self.account.logger.info("等待军令冷却时间: %s", self.account.time_mgr.GetDatetimeString(tokencd))
+            self.logger.info("等待军令冷却时间: %s", self.account.time_mgr.GetDatetimeString(tokencd))
             return tokencd // 1000
 
         # 攻击令
@@ -195,7 +195,7 @@ class WorldTask(BaseTask):
                                     elif arrest_state and not attack_arrest:
                                         break
                         if attack_arrest and attack_num == total_num:
-                            self.account.logger.info("完成屠城")
+                            self.logger.info("完成屠城")
                             next_area = self.get_next_move_area(a_area["城池"], area_info)
                             if next_area is not None:
                                 await world.cdMoveRecoverConfirm(self.account)
@@ -242,7 +242,7 @@ class WorldTask(BaseTask):
 
         # 集结
         if nation_task_info["集结城池"]:
-            self.account.logger.info("发现集结城池[%s]", nation_task_info["集结城池"])
+            self.logger.info("发现集结城池[%s]", nation_task_info["集结城池"])
             next_area = await self.get_next_move_area(nation_task_info["集结城池"], area_info)
             if next_area is not None:
                 await world.transferInNewArea(self.account, areaId=next_area["areaid"], area=next_area)
@@ -298,7 +298,7 @@ class WorldTask(BaseTask):
                 gong = pk_info["攻"]
                 fang = pk_info["防"]
                 target = pk_info["目标"]
-                self.account.logger.info("%s(%d/%d) VS %s(%d/%d)", gong["玩家"], gong["城防"], gong["最大城防"], fang["玩家"], fang["城防"], fang["最大城防"])
+                self.logger.info("%s(%d/%d) VS %s(%d/%d)", gong["玩家"], gong["城防"], gong["最大城防"], fang["玩家"], fang["城防"], fang["最大城防"])
                 await world.attackOtherAreaCity(self.account, areaId=target["城池"], scopeId=target["区域"], cityId=target["城市"])
             else:
                 break
@@ -432,11 +432,11 @@ class WorldTask(BaseTask):
             goal_area = area_info["所有城池"][area_id]
 
         if goal_area is None or current_area is None:
-            self.account.logger.info("area type is %s, not str or int or tuple", type(area_id))
+            self.logger.info("area type is %s, not str or int or tuple", type(area_id))
             return None
 
         if current_area["areaid"] == goal_area["areaid"]:
-            self.account.logger.info("已在城池[%s]", current_area["areaname"])
+            self.logger.info("已在城池[%s]", current_area["areaname"])
             return None
 
         # coordinate = list(map(int, current_area["coordinate"].split(",")))
@@ -447,10 +447,10 @@ class WorldTask(BaseTask):
         goal_y, goal_x = coordinate[0] - 1, coordinate[1] - 1
         paths = self.account.user.astar.astar((current_y, current_x), (goal_y, goal_x))
         if paths is None:
-            self.account.logger.warning("从城池[%s]无法到达城池[%s]", current_area["areaname"], goal_area["areaname"])
+            self.logger.warning("从城池[%s]无法到达城池[%s]", current_area["areaname"], goal_area["areaname"])
             return None
 
         path_list = list(paths)
         path_list.pop(0)
-        self.account.logger.info("从城池[%s]到达城池[%s], 需要经过城池%s", current_area["areaname"], goal_area["areaname"], " ".join(area_info["所有城池"][path]["areaname"] for path in path_list))
+        self.logger.info("从城池[%s]到达城池[%s], 需要经过城池%s", current_area["areaname"], goal_area["areaname"], " ".join(area_info["所有城池"][path]["areaname"] for path in path_list))
         return area_info["所有城池"][path_list[0]]

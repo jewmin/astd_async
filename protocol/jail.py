@@ -51,3 +51,5 @@ async def escape(account: 'Account', result: 'ServerResult'):
         cd = int(result.result["cd"])
         account.logger.info("从监狱逃跑, 冷却时间：%d秒", cd)
         return cd
+    elif result.error == "你已被释放，不在典狱中":
+        account.user.arreststate = 0

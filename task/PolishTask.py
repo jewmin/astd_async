@@ -31,7 +31,7 @@ class PolishTask(BaseTask):
                 additionalattribute = specialtreasure["additionalattribute"]["attribute"]
                 if isinstance(additionalattribute, list) and len(additionalattribute) >= 3:
                     attribute_msg = ",".join(attribute for attribute in additionalattribute)
-                    self.account.logger.warning("3属性超过10且有3个技能以上的专属玉佩[%s](%s)", specialtreasure["storeid"], attribute_msg)
+                    self.logger.warning("3属性超过10且有3个技能以上的专属玉佩[%s](%s)", specialtreasure["storeid"], attribute_msg)
 
         baowu_config = config["equip"]["polish"]["baowu"]
         dict_info["装备的家传玉佩"] = []

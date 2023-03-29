@@ -13,11 +13,12 @@ if TYPE_CHECKING:
 
 class BaseTask:
     """任务基类"""
-    def __init__(self, account):
+    def __init__(self, account: 'Account'):
         self.name = "任务名称"
         self.task_mgr: TaskMgr = None
         self.account: Account = proxy(account)
         self.task: asyncio.Task = None
+        self.logger = account.logger
 
     def Cancel(self, msg=None):
         if not self.task:
@@ -42,14 +43,14 @@ class BaseTask:
         try:
             next_running_time = await self._Exec()
         except ProtocolMgr.ProtocolError as ex:
-            self.account.logger.error(ex)
+            self.logger.error(ex)
             next_running_time = self.next_half_hour
         except ProtocolMgr.ReloginError as ex:
-            self.account.logger.error(ex)
+            self.logger.error(ex)
             self.account.running = False
             self.account.Relogin(config["global"]["relogin"])
         except Exception:
-            self.account.logger.LogLastExcept()
+            self.logger.LogLastExcept()
             next_running_time = self.next_half_hour
 
         if not self.account.running:
@@ -58,9 +59,9 @@ class BaseTask:
 
         self.task = None
         if next_running_time >= 3600:
-            self.account.logger.error("%s后执行异步任务[%s]", Format.GetSecondString(next_running_time), self.name)
+            self.logger.error("%s后执行异步任务[%s]", Format.GetSecondString(next_running_time), self.name)
         else:
-            self.account.logger.info("%s后执行异步任务[%s]", Format.GetSecondString(next_running_time), self.name)
+            self.logger.info("%s后执行异步任务[%s]", Format.GetSecondString(next_running_time), self.name)
         asyncio.get_event_loop().call_later(next_running_time, self.Run)
 
     def get_available(self, key):
