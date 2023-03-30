@@ -24,3 +24,4 @@ class TaskMgr:
     def StopAllTasks(self, msg=None):
         for task in self.tasks.values():
             task.Cancel(msg)
+        self.tasks.clear()

@@ -60,6 +60,7 @@ def Main(argv):
     args = ParseArgs(argv[1:])
     Dump.SetDumpPath("./bin/dumps")
     LogManager.SetLoggerPath("./bin/logs")
+    sys.excepthook = lambda t, v, tb: LogManager.GetLogger('main').LogLastExcept((t, v, tb))
     account_list = ReadAccountConfig(args.config)
     usernames = args.user_name.split(",")
     rolenames = args.role_name.split(",")

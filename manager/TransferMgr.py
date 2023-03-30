@@ -2,8 +2,6 @@ from zlib import decompress
 from aiohttp import ClientSession, ClientResponse, ClientTimeout  # noqa: F401
 import engine.LogManager as LogManager
 
-Logger = LogManager.GetLogger("TransferMgr")
-
 
 async def Response(resp: ClientResponse) -> str:
     if resp is None or resp.status == 0:
@@ -18,7 +16,7 @@ async def Response(resp: ClientResponse) -> str:
             except ValueError:
                 if content == b"\x06\x01":
                     return ""
-                Logger.LogLastExcept()
+                LogManager.GetLogger("TransferMgr").LogLastExcept()
                 return ""
             content = content[start:].decode()
         else:
@@ -49,7 +47,7 @@ async def GetPure(url: str, cookies: dict, headers: dict = None) -> ClientRespon
                 await resp.read()
                 return resp
     except Exception:
-        Logger.LogLastExcept()
+        LogManager.GetLogger("TransferMgr").LogLastExcept()
 
 
 async def PostPure(url: str, data: dict, cookies: dict, headers: dict = None) -> ClientResponse:
@@ -61,4 +59,4 @@ async def PostPure(url: str, data: dict, cookies: dict, headers: dict = None) ->
                 await resp.read()
                 return resp
     except Exception:
-        Logger.LogLastExcept()
+        LogManager.GetLogger("TransferMgr").LogLastExcept()
