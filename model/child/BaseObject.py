@@ -41,7 +41,7 @@ class BaseObject:
     """对象基类"""
 
     def HandleXml(self, info: dict) -> None:
-        if not info:
+        if not isinstance(info, dict):
             return
         for k, v in info.items():
             if not hasattr(self, k):
