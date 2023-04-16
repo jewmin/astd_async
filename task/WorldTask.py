@@ -196,7 +196,7 @@ class WorldTask(BaseTask):
                                         break
                         if attack_arrest and attack_num == total_num:
                             self.logger.info("完成屠城")
-                            next_area = self.get_next_move_area(a_area["城池"], area_info)
+                            next_area = await self.get_next_move_area(a_area["城池"], area_info)
                             if next_area is not None:
                                 await world.cdMoveRecoverConfirm(self.account)
                                 await world.transferInNewArea(self.account, areaId=next_area["areaid"], area=next_area)

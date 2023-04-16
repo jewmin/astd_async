@@ -3,7 +3,7 @@ from task.activity.ActivityTask import ActivityTask
 from protocol import *
 
 
-class BoatEvent(ActivityTask):
+class MemoryEvent(ActivityTask):
     def __init__(self, account):
         super().__init__(account)
         self.name = "活动<新春拜年>"
