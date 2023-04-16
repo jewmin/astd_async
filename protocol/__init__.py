@@ -33,6 +33,8 @@ import protocol.event as event
 import protocol.training as training
 import protocol.memoryEvent as memoryEvent
 import protocol.kfwd as kfwd
+import protocol.borrowingArrowsEvent as borrowingArrowsEvent
+import protocol.ringEvent as ringEvent
 
 __all__ = (
     'dayTreasureGame',
@@ -69,4 +71,6 @@ __all__ = (
     "training",
     "memoryEvent",
     "kfwd",
+    "borrowingArrowsEvent",
+    "ringEvent",
 )

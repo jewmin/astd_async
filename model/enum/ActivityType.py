@@ -35,4 +35,7 @@ class ActivityTypeString:
         "showkfyz": "showkfyz",
         "hasjailevent": "hasjailevent",
         "feteevent": "祭祀活动",
+        "borrowingarrowsevent": "草船借箭",
+        "ringevent": "新年敲钟",
+        "kfrank": "对战",
     }

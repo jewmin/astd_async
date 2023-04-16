@@ -126,6 +126,9 @@ class User(BaseObject):  # noqa: F405
         self.showkfyz              = False
         self.hasjailevent          = False
         self.feteevent             = False  # 祭祀活动
+        self.borrowingarrowsevent  = False  # 草船借箭
+        self.ringevent             = False  # 新年敲钟
+        self.kfrank                = True   # 对战
 
         self.total_jailbaoshi                          = 0                 # 监狱劳作获得宝石
         self.imposedto                                 = ImposeDto()       # 征收  # noqa: F405
