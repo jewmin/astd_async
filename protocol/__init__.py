@@ -29,6 +29,11 @@ import protocol.world as world
 import protocol.nation as nation
 import protocol.area as area
 
+import protocol.event as event
+import protocol.training as training
+import protocol.memoryEvent as memoryEvent
+import protocol.kfwd as kfwd
+
 __all__ = (
     'dayTreasureGame',
     'dinner',
@@ -60,4 +65,8 @@ __all__ = (
     "world",
     "nation",
     "area",
+    "event",
+    "training",
+    "memoryEvent",
+    "kfwd",
 )
