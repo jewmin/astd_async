@@ -40,7 +40,7 @@ class KFRank(ActivityTask):
             await kfrank.syncData(self.account)
             await kfrank.ready(self.account)
             await general.doSaveDefaultFormation(self.account, old_formation)
-            return info["下次战斗冷却时间"]
+            return info["下次战斗冷却时间"] // 1000
         elif info["状态"] == 2:
             return self.next_half_hour
         elif info["对战状态"] == 2:
