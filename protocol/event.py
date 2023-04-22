@@ -146,3 +146,39 @@ async def doBGEvent(account: 'Account', result: 'ServerResult', cost=0):
     if result and result.success:
         reward_info = RewardInfo(result.result["bginfo"]["rewardinfo"])  # noqa: F405
         account.logger.info("花费%d金币, 宴请群雄, 获得%s", cost, reward_info)
+
+
+@ProtocolMgr.Protocol("赏月送礼")
+async def getMGEventInfo(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        info = {
+            "免费轮数": result.GetValue("freeround"),
+            "购买轮数花费金币": result.GetValue("buyroundcost"),
+            "宝物领取状态": result.GetValue("baowuget"),
+            "红宝领取状态": result.GetValue("cangetbao"),
+            "送礼免费次数": result.GetValue("gmginfo.freecakenum"),
+            "送礼花费金币": result.GetValue("gmginfo.cakecost", 0),
+            "有下一位武将": result.GetValue("gmginfo.havenextg", 0) == 1,
+            "武将": result.GetValue("gmginfo.name"),
+            "士气奖励列表": result.GetValueList("gmginfo.moralinfo"),
+        }
+        return info
+
+
+@ProtocolMgr.Protocol("领取士气奖励", ("rewardId",))
+async def recvMoralReward(account: 'Account', result: 'ServerResult', rewardId):
+    if result and result.success:
+        reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
+        account.logger.info("领取士气奖励, 获得%s", reward_info)
+
+
+@ProtocolMgr.Protocol("吃月饼")
+async def eatMoonCake(account: 'Account', result: 'ServerResult', name, cost):
+    if result and result.success:
+        account.logger.info("武将[%s]: 花费%d金币, 吃月饼", name, cost)
+
+
+@ProtocolMgr.Protocol("下一位")
+async def nextGeneral(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        account.logger.info("下一位武将[%s]", result.GetValue("gmginfo.name"))

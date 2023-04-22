@@ -11,6 +11,8 @@ from task.activity.EatMoonCakeEvent import EatMoonCakeEvent
 from task.activity.SuperFanPai import SuperFanPai
 from task.activity.TowerStage import TowerStage
 from task.activity.SpringFestivalWishEvent import SpringFestivalWishEvent
+from task.activity.MoonGeneralEvent import MoonGeneralEvent
+from task.activity.KFRank import KFRank
 
 __all__ = (
     BoatEvent,
@@ -26,4 +28,6 @@ __all__ = (
     SuperFanPai,
     TowerStage,
     SpringFestivalWishEvent,
+    MoonGeneralEvent,
+    KFRank,
 )

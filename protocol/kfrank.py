@@ -19,16 +19,14 @@ async def getMatchDetail(account: 'Account', result: 'ServerResult'):
             "状态": result.GetValue("message.globalstate"),
             "准备状态": result.GetValue("message.canready", 0) == 1,
             "下次战斗冷却时间": result.GetValue("message.nextbattlecd"),
+            "排名": 0,
+            "积分": 0,
         }
-        if "account" in result.result["message"]:
-            for player_info in result.GetValue("message.account.loggerrank.playerinfo"):
-                if player_info.get("account.logger", 0) == 1:
-                    info["排名"] = player_info["rank"]
-                    info["积分"] = player_info["score"]
-                    break
-        else:
-            info["排名"] = 0
-            info["积分"] = 0
+        for player_info in result.GetValue("message.selfrank.playerinfo"):
+            if player_info.get("self", 0) == 1:
+                info["排名"] = player_info["rank"]
+                info["积分"] = player_info["score"]
+                break
         return info
 
 

@@ -7,7 +7,7 @@ class BombNianEvent(ActivityTask):
     def __init__(self, account):
         super().__init__(account)
         self.name = "活动<抓年兽>"
-        self.type = "boatevent"
+        self.type = "bombnianevent"
 
     async def _Exec(self):
         if not self.Enable():

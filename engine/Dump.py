@@ -102,9 +102,9 @@ def RecordVar(exc_info=None) -> str:
 	list_records.append("  Local Var:")
 
 	done, dlist = {}, []
-	for k, v in frame.f_globals.items():
-		if not k.startswith("__"):
-			dlist.append(f"    {k} = {pydoc.text.repr(v)}")
+	# for k, v in frame.f_globals.items():
+	# 	if not k.startswith("__"):
+	# 		dlist.append(f"    {k} = {pydoc.text.repr(v)}")
 
 	for name, where, value in listvars:
 		if name in done:

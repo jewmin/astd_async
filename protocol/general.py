@@ -182,4 +182,4 @@ async def doSaveDefaultFormation(account: 'Account', formation: str):
     formation_id = account.user.get_formation_by_name(formation)
     if formation_id > 0:
         formation_id *= 20
-        await saveDefaultFormation(account, formationId=formation_id)
+        await saveDefaultFormation(account, formationId=formation_id, formation=formation)
