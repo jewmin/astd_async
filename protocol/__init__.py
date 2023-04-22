@@ -35,6 +35,12 @@ import protocol.memoryEvent as memoryEvent
 import protocol.kfwd as kfwd
 import protocol.borrowingArrowsEvent as borrowingArrowsEvent
 import protocol.ringEvent as ringEvent
+import protocol.bombNianEvent as bombNianEvent
+import protocol.eatMooncakeEvent as eatMooncakeEvent
+import protocol.superFanpai as superFanpai
+import protocol.festaval as festaval
+import protocol.springFestivalWish as springFestivalWish
+import protocol.kfrank as kfrank
 
 __all__ = (
     'dayTreasureGame',
@@ -73,4 +79,10 @@ __all__ = (
     "kfwd",
     "borrowingArrowsEvent",
     "ringEvent",
+    "bombNianEvent",
+    "eatMooncakeEvent",
+    "superFanpai",
+    "festaval",
+    "springFestivalWish",
+    "kfrank",
 )

@@ -122,3 +122,27 @@ async def eatRiceDumpling(account: 'Account', result: 'ServerResult'):
 async def buyArrestToken(account: 'Account', result: 'ServerResult', cost):
     if result and result.success:
         account.logger.info("花费%d金币, 购买抓捕令", cost)
+
+
+@ProtocolMgr.Protocol("大宴群雄")
+async def getBGEventInfo(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        info = {
+            "花费金币": result.GetValue("goldcost"),
+            "宴请奖励": result.GetValueList("progressstate"),
+        }
+        return info
+
+
+@ProtocolMgr.Protocol("开启宴请宝箱", ("rewardId",))
+async def getBanquetReward(account: 'Account', result: 'ServerResult', rewardId):
+    if result and result.success:
+        reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
+        account.logger.info("开启宴请宝箱, 获得%s", reward_info)
+
+
+@ProtocolMgr.Protocol("宴请群雄")
+async def doBGEvent(account: 'Account', result: 'ServerResult', cost=0):
+    if result and result.success:
+        reward_info = RewardInfo(result.result["bginfo"]["rewardinfo"])  # noqa: F405
+        account.logger.info("花费%d金币, 宴请群雄, 获得%s", cost, reward_info)

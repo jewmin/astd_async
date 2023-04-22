@@ -38,4 +38,7 @@ class ActivityTypeString:
         "borrowingarrowsevent": "草船借箭",
         "ringevent": "新年敲钟",
         "kfrank": "对战",
+        "eatmooncaketevent": "中秋月饼",
+        "superfanpai": "超级翻牌",
+        "springfestivalwishevent": "许愿",
     }

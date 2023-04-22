@@ -31,7 +31,7 @@ activity_config = {
     # 抓年兽
     "BombNianEvent": {
         "enable": True,  # 开启
-        "reward_index": {"58": 1, "56": 2, "57": 3, "48": 4, "38": 5},  # 奖励领取顺序
+        "reward_index": {58: 1, 56: 2, 57: 3, 48: 4, 38: 5},  # 奖励领取顺序
         "hp": [120, 60, 10],  # 血量不同
         "bomb": [{3: 1, 2: 2, 1: 3}, {2: 1, 1: 2, 3: 3}, {1: 1, 2: 2, 3: 3}],  # 使用不同鞭炮
         "gold": {1: 1, 2: 0, 3: 0},  # 花费金币<=N
@@ -121,9 +121,9 @@ activity_config = {
     # 超级翻牌
     "SuperFanPai": {
         "enable": True,  # 开启
-        "buyall": 20,  # 卡牌全开花费金币<=N
+        "buyall": 0,  # 卡牌全开花费金币<=N
         "superlv": 18,  # 卡牌全开限制，宝石等级>=N
-        "buyone": 5,  # 购买次数花费金币<=N
+        "buyone": 0,  # 购买次数花费金币<=N
     },
     # 消费送礼
     "DoubleElevenEvent": {

@@ -11,3 +11,4 @@ class TaskType(IntEnum):
     Refine       =  9  # 精炼
     RefineBintie = 10  # 炼制
     Weave        = 12  # 纺织
+    KfRank       = 21  # 对战

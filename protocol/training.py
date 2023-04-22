@@ -13,8 +13,8 @@ async def getInfo(account: 'Account', result: 'ServerResult'):
         info = {
             "状态": result.GetValue("training.trainingstate"),
             "第几轮": result.GetValue("training.round"),
-            "部队": result.GetValue("training.aramy"),
-            "战旗": result.GetValue("training.flags"),
+            "部队": list(map(int, result.result["training"]["aramy"])),
+            "战旗": list(map(int, result.result["training"]["flags"])),
             "红包": result.GetValue("training.hongbao"),
             "免费重置奖励次数": result.GetValue("training.resettime"),
         }
@@ -46,7 +46,7 @@ async def resetReward(account: 'Account', result: 'ServerResult'):
         account.logger.info("重置大练兵奖励")
 
 
-@ProtocolMgr.Protocol("打开大练兵红包", ("notice",))
+@ProtocolMgr.Protocol("打开大练兵红包")
 async def getReward(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
