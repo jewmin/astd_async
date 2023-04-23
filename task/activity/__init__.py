@@ -13,6 +13,7 @@ from task.activity.TowerStage import TowerStage
 from task.activity.SpringFestivalWishEvent import SpringFestivalWishEvent
 from task.activity.MoonGeneralEvent import MoonGeneralEvent
 from task.activity.KFRank import KFRank
+from task.activity.GemCard import GemCard
 
 __all__ = (
     BoatEvent,
@@ -30,4 +31,5 @@ __all__ = (
     SpringFestivalWishEvent,
     MoonGeneralEvent,
     KFRank,
+    GemCard,
 )

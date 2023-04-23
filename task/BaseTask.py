@@ -108,7 +108,7 @@ class BaseTask:
     def next_day(self) -> int:
         """第二天跳点"""
         now_time = self.account.time_mgr.GetDatetime()
-        if now_time < 8:
+        if now_time.hour < 8:
             next_time = datetime.datetime(now_time.year, now_time.month, now_time.day, 8, 0, 0, now_time.microsecond, tzinfo=now_time.tzinfo)
         else:
             next_time = datetime.datetime(now_time.year, now_time.month, now_time.day, 8, 0, 0, now_time.microsecond, tzinfo=now_time.tzinfo) + datetime.timedelta(days=1)

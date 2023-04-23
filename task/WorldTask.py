@@ -206,7 +206,7 @@ class WorldTask(BaseTask):
         if city_event_config["enable"]:
             event_info = await world.getNewCityEventInfo(self.account)
             # 领取悬赏任务
-            if not event_info["悬赏已完成"] and event_info["悬赏剩余次数"] > city_event_config["reserve"] and len(event_info["悬赏任务列表"]) > 0:
+            if not event_info["悬赏已完成"] and event_info["悬赏剩余时间"] <= 0 and event_info["悬赏剩余次数"] > city_event_config["reserve"] and len(event_info["悬赏任务列表"]) > 0:
                 for task in event_info["悬赏任务列表"]:
                     if task["星级"] <= city_event_config["star"]:
                         await world.acceptNewCityEvent(self.account, pos=task["位置"], task=task)

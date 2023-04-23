@@ -19,7 +19,7 @@ class TowerStage(ActivityTask):
 
         if info["阶段"] == 1 and info["选中宝塔"] == 0:
             await festaval.doAcceptByTowerId(self.account, tower=info["宝塔"][self.GetConfig("tower")])
-        elif info["阶段"] == 2 and info["宝石"] >= info["宝塔"]["baoshi"]:
+        elif info["阶段"] == 2 and info["状态"] == 0 and info["宝石"] >= info["宝塔"]["baoshi"]:
             await festaval.finishTower(self.account)
 
         return self.next_half_hour

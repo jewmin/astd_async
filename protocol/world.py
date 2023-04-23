@@ -175,7 +175,7 @@ async def generateBigG(account: 'Account', result: 'ServerResult', areaId):
     if result and result.success:
         for produceinfo in result.GetValueList("produceinfo"):
             if produceinfo["resid"] == 4:
-                await startProduce(account, areaId=areaId, resId=4)
+                await startProduce(account, areaId=areaId, resId=4, produceinfo=produceinfo)
                 break
 
 
