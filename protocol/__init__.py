@@ -42,6 +42,8 @@ import protocol.festaval as festaval
 import protocol.springFestivalWish as springFestivalWish
 import protocol.kfrank as kfrank
 import protocol.gemCard as gemCard
+import protocol.paradeEvent as paradeEvent
+import protocol.kfEvent as kfEvent
 
 __all__ = (
     'dayTreasureGame',
@@ -87,4 +89,6 @@ __all__ = (
     "springFestivalWish",
     "kfrank",
     "gemCard",
+    "paradeEvent",
+    "kfEvent",
 )
