@@ -310,6 +310,9 @@ config = {
             "enable": True,  # 开启
             "gold": 10,  # 花费金币<=N
         },
+        "war_beast": {  # 战兽
+            "enable": True,  # 开启
+        },
         "special_equip": {  # 装备铸造
             "enable": True,  # 开启
             "firstcost": 0,  # 铸造花费金币<=N

@@ -28,6 +28,7 @@ import protocol.stoneMelt as stoneMelt
 import protocol.world as world
 import protocol.nation as nation
 import protocol.area as area
+import protocol.warbeast as warbeast
 
 import protocol.event as event
 import protocol.training as training
@@ -91,4 +92,5 @@ __all__ = (
     "gemCard",
     "paradeEvent",
     "kfEvent",
+    "warbeast",
 )

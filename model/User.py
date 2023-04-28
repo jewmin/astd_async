@@ -134,6 +134,8 @@ class User(BaseObject):  # noqa: F405
         self.springfestivalwishevent = False  # 许愿
         self.paradeevent             = False  # 排兵布阵
         self.kfwdeventreward         = False  # 武斗庆典
+        self.shenhuo                 = False  # 百炼精铁
+        
 
         self.total_jailbaoshi                          = 0                 # 监狱劳作获得宝石
         self.imposedto                                 = ImposeDto()       # 征收  # noqa: F405

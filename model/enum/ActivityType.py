@@ -43,4 +43,5 @@ class ActivityTypeString:
         "springfestivalwishevent": "许愿",
         "paradeevent": "排兵布阵",
         "kfwdeventreward": "武斗庆典",
+        "shenhuo": "百炼精铁",
     }
