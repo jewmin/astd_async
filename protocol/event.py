@@ -182,3 +182,42 @@ async def eatMoonCake(account: 'Account', result: 'ServerResult', name, cost):
 async def nextGeneral(account: 'Account', result: 'ServerResult'):
     if result and result.success:
         account.logger.info("下一位武将[%s]", result.GetValue("gmginfo.name"))
+
+
+@ProtocolMgr.Protocol("群雄煮酒")
+async def getQingmingInfo(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        info = {
+            "购买轮数花费金币": result.GetValue("buycost"),
+            "酒仙附体花费金币": result.GetValue("golddrinkcost"),
+            "醉意": result.GetValue("winenum"),
+            "最大醉意": result.GetValue("maxnum"),
+            "轮数": result.GetValue("roundnum"),
+            "酒": result.GetValueList("wineinfo.wine"),
+            "大奖": result.GetValue("havebigreward") == 1,
+            "武将": result.GetValueList("generalinfo"),
+        }
+        return info
+
+
+@ProtocolMgr.Protocol("群雄煮酒大礼")
+async def getQingmingBigReward(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
+        account.logger.info("领取群雄煮酒大礼, 获得%s", reward_info)
+
+
+@ProtocolMgr.Protocol("购买群雄煮酒轮数")
+async def buyQingmingRound(account: 'Account', result: 'ServerResult', cost=0):
+    if result and result.success:
+        account.logger.info("花费%d金币, 购买群雄煮酒轮数", cost)
+
+
+@ProtocolMgr.Protocol("饮酒", ("wineId", "gold"))
+async def qingmingDrink(account: 'Account', result: 'ServerResult', wineId, gold, cost=0):
+    if result and result.success:
+        reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
+        msg = "饮酒"
+        if gold:
+            msg = "使用酒仙附体, " + msg
+        account.logger.info("花费%d金币, %s, 获得%s", cost, msg, reward_info)

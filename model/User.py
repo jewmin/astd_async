@@ -132,7 +132,6 @@ class User(BaseObject):  # noqa: F405
         self.eatmooncaketevent       = False  # 中秋月饼
         self.superfanpai             = False  # 超级翻牌
         self.springfestivalwishevent = False  # 许愿
-        self.paradeevent             = False  # 排兵布阵
         self.kfwdeventreward         = False  # 武斗庆典
         self.shenhuo                 = False  # 百炼精铁
         

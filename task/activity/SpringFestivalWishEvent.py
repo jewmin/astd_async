@@ -37,6 +37,6 @@ class SpringFestivalWishEvent(ActivityTask):
                 for idx, wish in enumerate(info["愿望"], 1):
                     if wish == 0:
                         await springFestivalWish.receiveWishReward(self.account, id=idx)
-                return self.immediate
+                # return self.immediate
 
         return self.next_half_hour

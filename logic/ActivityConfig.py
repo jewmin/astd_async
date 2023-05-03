@@ -42,13 +42,13 @@ activity_config = {
     },
     # 酒神觉醒
     "YuanDanQiFu": {
-        "enable": False,  # 开启
-        "gold": 2,  # 花费金币<=N
-        "all_open_gold": 10,  # 全开花费金币<=N
+        "enable": True,  # 开启
+        "gold": 0,  # 花费金币<=N
+        "all_open_gold": 0,  # 全开花费金币<=N
         "all_open_fuqi": 200,  # 全开需要福气>=N
         "all_open_jiu": 5,  # 全开需要酒>=N
         "all_open_xs": 2,  # 全开需要倍数>=N
-        "type": [0],  # 0觉醒酒 1杜康酒
+        "type": [0, 1],  # 0觉醒酒 1杜康酒
     },
     # 抓捕活动
     "ArrestEvent": {
@@ -103,7 +103,7 @@ activity_config = {
     # 群雄煮酒
     "QingMingEvent": {
         "enable": True,  # 开启
-        "buycost": 10,  # 购买轮数花费金币<=N
+        "buycost": 0,  # 购买轮数花费金币<=N
         "golddrinkcost": 0,  # 酒仙附体花费金币<=N
         "golddrink": [True, True, True, True, True, True, True, False],  # 酒仙附体限制
         "drink": [30, 40, 50, 60, 70, 75, 95, 999],  # 醉意限制

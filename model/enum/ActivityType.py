@@ -41,7 +41,6 @@ class ActivityTypeString:
         "eatmooncaketevent": "中秋月饼",
         "superfanpai": "超级翻牌",
         "springfestivalwishevent": "许愿",
-        "paradeevent": "排兵布阵",
         "kfwdeventreward": "武斗庆典",
         "shenhuo": "百炼精铁",
     }
