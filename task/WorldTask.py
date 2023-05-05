@@ -68,13 +68,6 @@ class WorldTask(BaseTask):
                 if event_info["悬赏已完成"] and event_info["悬赏剩余时间"] == 0:
                     await world.deliverNewCityEvent(self.account)
 
-        # 逃跑
-        if self.account.user.arreststate == 100:
-            cd = await jail.escape(self.account)
-            if cd:
-                self.logger.info("等待逃跑冷却时间: %s", self.account.time_mgr.GetDatetimeString(cd * 1000))
-                return cd
-
         area_info = await world.getNewArea(self.account)
         await world.getNewAreaToken(self.account)
 
@@ -94,6 +87,11 @@ class WorldTask(BaseTask):
             else:
                 area_map[y][x] = 0
 
+        # 城防恢复
+        if (cityhprecovercd := area_info["城防恢复cd"]) > 0:
+            self.logger.info("等待城防恢复时间: %s", self.account.time_mgr.GetDatetimeString(cityhprecovercd))
+            return cityhprecovercd // 1000
+
         # 封地奖励
         fengdi_config = config["world"]["fengdi"]
         if fengdi_config["enable"]:
@@ -103,11 +101,22 @@ class WorldTask(BaseTask):
             elif fengdi.nextcd == 0 and fengdi.remainnum > 0:
                 if self.account.user.areaid in area_info["封地城池"]:
                     await world.generateBigG(self.account, areaId=self.account.user.areaid)
+                elif len(area_info["封地城池"]) > 0:
+                    for area_id, a_area in area_info["封地城池"].items():
+                        if a_area["fengdicd"] >= fengdi_config["cd"]:
+                            next_area = await self.get_next_move_area(area_id, area_info)
+                            if next_area is not None:
+                                await world.transferInNewArea(self.account, areaId=area_id, area=next_area)
+                                return self.immediate
+            elif fengdi.nextcd > 0:
+                return fengdi.nextcd // 1000
 
-        # 城防恢复
-        if (cityhprecovercd := area_info["城防恢复cd"]) > 0:
-            self.logger.info("等待城防恢复时间: %s", self.account.time_mgr.GetDatetimeString(cityhprecovercd))
-            return cityhprecovercd // 1000
+        # 逃跑
+        if self.account.user.arreststate == 100:
+            cd = await jail.escape(self.account)
+            if cd:
+                self.logger.info("等待逃跑冷却时间: %s", self.account.time_mgr.GetDatetimeString(cd * 1000))
+                return cd
 
         # 冷却时间
         if self.account.user.tokencdflag and (tokencd := self.account.user.tokencd) > 0:
@@ -226,19 +235,19 @@ class WorldTask(BaseTask):
             else:
                 return area_info["移动cd"] // 1000
 
-        # 封地生产
-        if fengdi_config["enable"]:
-            fengdi = self.account.user.fengdi
-            if fengdi.nextcd == 0 and fengdi.remainnum > 0:
-                if len(area_info["封地城池"]) > 0:
-                    for area_id, a_area in area_info["封地城池"].items():
-                        if a_area["fengdicd"] >= fengdi_config["cd"]:
-                            next_area = await self.get_next_move_area(area_id, area_info)
-                            if next_area is not None:
-                                await world.transferInNewArea(self.account, areaId=area_id, area=next_area)
-                                return self.immediate
-            elif fengdi.nextcd > 0:
-                return self.one_minute
+        # # 封地生产
+        # if fengdi_config["enable"]:
+        #     fengdi = self.account.user.fengdi
+        #     if fengdi.nextcd == 0 and fengdi.remainnum > 0:
+        #         if len(area_info["封地城池"]) > 0:
+        #             for area_id, a_area in area_info["封地城池"].items():
+        #                 if a_area["fengdicd"] >= fengdi_config["cd"]:
+        #                     next_area = await self.get_next_move_area(area_id, area_info)
+        #                     if next_area is not None:
+        #                         await world.transferInNewArea(self.account, areaId=area_id, area=next_area)
+        #                         return self.immediate
+        #     elif fengdi.nextcd > 0:
+        #         return self.one_minute
 
         # 集结
         if nation_task_info["集结城池"]:

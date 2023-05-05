@@ -46,6 +46,7 @@ import protocol.gemCard as gemCard
 import protocol.paradeEvent as paradeEvent
 import protocol.kfEvent as kfEvent
 import protocol.yuandanqifu as yuandanqifu
+import protocol.giftEvent as giftEvent
 
 __all__ = (
     'dayTreasureGame',
@@ -95,4 +96,5 @@ __all__ = (
     "kfEvent",
     "warbeast",
     "yuandanqifu",
+    "giftEvent",
 )

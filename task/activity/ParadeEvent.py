@@ -6,7 +6,7 @@ from protocol import *
 class ParadeEvent(ActivityTask):
     def __init__(self, account):
         super().__init__(account)
-        self.name = "活动<排兵布阵>"
+        self.name = "活动<阅兵庆典>"
         self.type = "paradeevent"
 
     async def _Exec(self):

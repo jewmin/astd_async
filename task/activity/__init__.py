@@ -18,6 +18,8 @@ from task.activity.ParadeEvent import ParadeEvent
 from task.activity.KFEvent import KFEvent
 from task.activity.YuanDanQiFu import YuanDanQiFu
 from task.activity.QingMingEvent import QingMingEvent
+from task.activity.DuanWuEvent import DuanWuEvent
+from task.activity.GiftEvent import GiftEvent
 
 __all__ = (
     BoatEvent,
@@ -40,4 +42,6 @@ __all__ = (
     KFEvent,
     YuanDanQiFu,
     QingMingEvent,
+    DuanWuEvent,
+    GiftEvent
 )

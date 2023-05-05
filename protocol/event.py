@@ -221,3 +221,62 @@ async def qingmingDrink(account: 'Account', result: 'ServerResult', wineId, gold
         if gold:
             msg = "使用酒仙附体, " + msg
         account.logger.info("花费%d金币, %s, 获得%s", cost, msg, reward_info)
+
+
+@ProtocolMgr.Protocol("百家宴")
+async def getDuanwuEventInfo(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        info = {
+            "奖励": result.GetValueList("rewards"),
+            "轮数": result.GetValue("remainround"),
+            "购买轮数花费金币": result.GetValue("buyroundcost"),
+            "普通粽子": result.GetValue("zongziinfo.hunger"),
+            "金币粽子": result.GetValue("zongziinfo.goldhunger"),
+            "花费金币": result.GetValue("zongziinfo.goldcost"),
+            "饥饿": result.GetValue("hunger"),
+        }
+        return info
+
+
+@ProtocolMgr.Protocol("吃粽子", ("gold",))
+async def eatZongzi(account: 'Account', result: 'ServerResult', gold, cost=0):
+    if result and result.success:
+        reward_info = RewardInfo()  # noqa: F405
+        reward = Reward()
+        reward.type = 42
+        reward.lv = 1
+        reward.num = result.GetValue("reward.tickets")
+        reward.itemname = "点券"
+        reward_info.reward.append(reward)
+        account.logger.info("花费%d金币, 吃粽子, 获得%s", cost, reward_info)
+
+
+@ProtocolMgr.Protocol("购买轮数")
+async def buyRound(account: 'Account', result: 'ServerResult', cost=0):
+    if result and result.success:
+        account.logger.info("花费%d金币, 购买轮数", cost)
+
+
+@ProtocolMgr.Protocol("再吃一轮")
+async def nextRound(account: 'Account', result: 'ServerResult'):
+    if result and result.success:
+        account.logger.info("再吃一轮")
+
+
+@ProtocolMgr.Protocol("领取奖励", ("rewardId", "dbId"))
+async def getRewardById(account: 'Account', result: 'ServerResult', rewardId, dbId):
+    if result and result.success:
+        reward_info = RewardInfo()  # noqa: F405
+        reward = Reward()
+        reward.type = 49
+        reward.lv = 1
+        reward.num = result.GetValue("reward.bigginfo.num")
+        reward.itemname = f'大将令[{result.GetValue("reward.bigginfo.name")}]'
+        reward_info.reward.append(reward)
+        reward = Reward()
+        reward.type = 42
+        reward.lv = 1
+        reward.num = result.GetValue("reward.tickets")
+        reward.itemname = "点券"
+        reward_info.reward.append(reward)
+        account.logger.info("领取奖励, 获得%s", reward_info)

@@ -89,7 +89,7 @@ activity_config = {
         "gold_hunger": 3,  # 粽子花费金币<=N
         "limit_hunger": 8,  # 免费粽子，饥饿度<=N
         "gold_round": 0,  # 轮数花费金币<=N
-        "general": ["刘邦", "赵敏", "孟获", "袁绍"],  # 大将令列表
+        "general": ["张良", "孟获", "戚继光", "孙尚香"],  # 大将令列表
     },
     # 宝塔活动
     "TowerStage": {
