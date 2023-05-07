@@ -13,6 +13,7 @@ class CommonTask(BaseTask):
         await self._Exec()
 
     async def _Exec(self):
+        await server.getPlayerInfoByUserId(self.account)
         await server.getExtraInfo(self.account)
         await mainCity.mainCity(self.account)
         await equip.getUpgradeInfo(self.account, show=True)
