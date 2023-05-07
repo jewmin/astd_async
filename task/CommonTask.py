@@ -63,5 +63,8 @@ class CommonTask(BaseTask):
         if config["mainCity"]["auto_trade"]:
             await market.getPlayerMerchant(self.account)
 
+        # 征收活动
+        await gift.getEventGiftInfo(self.account)
+
         self.logger.warning("活动列表: %s", self.account.user.HaveActivities())
         return self.next_half_hour

@@ -47,6 +47,9 @@ import protocol.paradeEvent as paradeEvent
 import protocol.kfEvent as kfEvent
 import protocol.yuandanqifu as yuandanqifu
 import protocol.giftEvent as giftEvent
+import protocol.snowTrading as snowTrading
+import protocol.dumpEvent as dumpEvent
+import protocol.gift as gift
 
 __all__ = (
     'dayTreasureGame',
@@ -97,4 +100,7 @@ __all__ = (
     "warbeast",
     "yuandanqifu",
     "giftEvent",
+    "snowTrading",
+    "dumpEvent",
+    "gift",
 )
