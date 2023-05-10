@@ -45,4 +45,4 @@ async def transport(account: 'Account', result: 'ServerResult', choose, cast_typ
     cast_tuple = ("", "木质", "白银", "黄金")
     if result and result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
-        account.logger.info("雪地通商, 掉落[%s]宝箱+%d, 获得%s", result.GetValue("stonestate.storneloss"), cast_tuple[cast_type], reward_info)
+        account.logger.info("雪地通商, 掉落[%s]宝箱+%d, 获得%s", cast_tuple[cast_type], result.GetValue("stonestate.storneloss"), reward_info)

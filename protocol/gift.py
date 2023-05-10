@@ -10,9 +10,11 @@ if TYPE_CHECKING:
 @ProtocolMgr.Protocol("征收活动")
 async def getEventGiftInfo(account: 'Account', result: 'ServerResult'):
     if result and result.success:
-        for idx, reward in enumerate(result.GetValue("rewardnum")):
-            if reward == 1:
-                await receiveEventReward(account, id=idx)
+        rewardnum = result.GetValue("rewardnum")
+        if rewardnum:
+            for idx, reward in enumerate():
+                if reward == 1:
+                    await receiveEventReward(account, id=idx)
 
 
 @ProtocolMgr.Protocol("领取礼包", ("id",))
