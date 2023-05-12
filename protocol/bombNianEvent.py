@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("抓年兽")
 async def getBombNianInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "领奖状态": result.GetValue("canget"),
         }
@@ -38,21 +38,21 @@ async def getBombNianInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("捡起奖励", ("giftId",))
 async def openGift(account: 'Account', result: 'ServerResult', giftId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("捡起奖励, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("放鞭炮", ("bombType",))
 async def bombNian(account: 'Account', result: 'ServerResult', bombType, cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["bombnianreward"]["rewardinfo"])  # noqa: F405
         account.logger.info("花费%d金币, 放鞭炮, 获得%s", cost, reward_info)
 
 
 @ProtocolMgr.Protocol("捕抓年兽")
 async def huntNian(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         if result.GetValue("huntstate", 0) == 1:
             reward_info = RewardInfo(result.result["huntnianreward"]["rewardinfo"])  # noqa: F405
             account.logger.info("捕抓年兽成功, 获得%s", reward_info)
@@ -62,6 +62,6 @@ async def huntNian(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取排名奖励")
 async def getRankReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rankreward"]["rewardinfo"])  # noqa: F405
         account.logger.info("领取年兽排名奖励, 获得%s", reward_info)

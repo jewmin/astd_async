@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("超级翻牌")
 async def getSuperFanpaiInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "购买次数花费金币": result.GetValue("superfanpaiinfo.buyone"),
             "卡牌全开花费金币": result.GetValue("superfanpaiinfo.buyall"),
@@ -24,7 +24,7 @@ async def getSuperFanpaiInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("翻牌", ("cardId",))
 async def fanOne(account: 'Account', result: 'ServerResult', cardId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         for card in result.GetValueList("card"):
             if card["ischoose"] == 1:
@@ -39,13 +39,13 @@ async def fanOne(account: 'Account', result: 'ServerResult', cardId):
 
 @ProtocolMgr.Protocol("购买次数")
 async def buyTimes(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 购买次数", cost)
 
 
 @ProtocolMgr.Protocol("卡牌全开")
 async def getAll(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         reward = Reward()  # noqa: F405
         reward.type = 5
@@ -57,5 +57,5 @@ async def getAll(account: 'Account', result: 'ServerResult', cost=0):
 
 @ProtocolMgr.Protocol("洗牌")
 async def xiPai(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("洗牌")

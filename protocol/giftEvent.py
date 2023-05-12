@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("充值赠礼")
 async def getGoldBoxEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "宝箱": result.GetValue("boxnum"),
             "在线奖励": result.GetValue("onlinereward", 0),
@@ -19,13 +19,13 @@ async def getGoldBoxEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取在线奖励")
 async def recvOnlineReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取在线奖励, 获得宝箱+%d", result.GetValue("rewardbox"))
 
 
 @ProtocolMgr.Protocol("开启充值赠礼宝箱")
 async def openGoldBoxEvent(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         if "baoshi" in result.GetValue("reward"):
             account.logger.info("开启充值赠礼宝箱, 获得宝石+%d", result.GetValue("reward.baoshi"))
         elif "gold" in result.GetValue("reward"):

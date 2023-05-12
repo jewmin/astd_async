@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("宝塔活动")
 async def getTowerEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "阶段": result.GetValue("stage"),
             "选中宝塔": result.GetValue("curtowerid", 0),
@@ -27,13 +27,13 @@ async def doAcceptByTowerId(account: 'Account', tower):
 
 @ProtocolMgr.Protocol("选择宝塔", ("towerId",))
 async def acceptByTowerId(account: 'Account', result: 'ServerResult', towerId, tower):
-    if result and result.success:
+    if result.success:
         account.logger.info("选择宝塔[%s], 要求: %s宝石, 奖励: %s宝石 %d筑造石", tower["name"], GetShortReadable(tower["baoshi"]), GetShortReadable(tower["reward"]), tower["rewardbuildingstone"])
 
 
 @ProtocolMgr.Protocol("完成宝塔")
 async def finishTower(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         reward = Reward()  # noqa: F405
         reward.type = 5

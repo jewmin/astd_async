@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("新春拜年")
 async def getMemoryEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "拜年免费次数": result.GetValue("freetimes", 0),
             "拜年花费金币": result.GetValue("wishcost", 100),
@@ -22,7 +22,7 @@ async def getMemoryEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("拜年")
 async def newYearVisit(account: 'Account', result: 'ServerResult', gold=0):
-    if result and result.success:
+    if result.success:
         name = result.GetValue("name")
         light = result.GetValue("light", 0)
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
@@ -41,14 +41,14 @@ async def newYearVisit(account: 'Account', result: 'ServerResult', gold=0):
 
 @ProtocolMgr.Protocol("回忆图", ("rewardId",))
 async def openPicReward(account: 'Account', result: 'ServerResult', rewardId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("新春拜年, 领取回忆图奖励, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("红包", ("type",))
 async def openHongbao(account: 'Account', result: 'ServerResult', type, gold=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         msg = []
         if gold > 0:

@@ -70,6 +70,7 @@ class WorldTask(BaseTask):
 
         area_info = await world.getNewArea(self.account)
         await world.getNewAreaToken(self.account)
+        await general.getGeneralToughenInfo(self.account)
 
         # 设置地图障碍
         area_map = self.account.user.area_map

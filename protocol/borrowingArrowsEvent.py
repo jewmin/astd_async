@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("草船借箭")
 async def getPlayerBorrowingArrowsEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "剩余军功": result.GetValue("borrowingarrowseventinfo.arrowsleft", 0),
             "总军功": result.GetValue("borrowingarrowseventinfo.arrowstotal", 0),
@@ -27,7 +27,7 @@ async def getPlayerBorrowingArrowsEventInfo(account: 'Account', result: 'ServerR
 
 @ProtocolMgr.Protocol("发船")
 async def setSail(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         if cost > 0:
             account.logger.info("花费%d金币, 发船", cost)
         else:
@@ -37,7 +37,7 @@ async def setSail(account: 'Account', result: 'ServerResult', cost=0):
 @ProtocolMgr.Protocol("选择区域", ("streamId",))
 async def choiceStream(account: 'Account', result: 'ServerResult', streamId):
     choice_tuple = ("下游", "中游", "上游")
-    if result and result.success:
+    if result.success:
         msg = [f"选择{choice_tuple[streamId]}, 承重+{result.GetValue('borrowingarrows.arrowsstream')}"]
         if result.GetValue("borrowingarrows.borrowingresult") == 0:
             msg.append("超重")
@@ -46,25 +46,25 @@ async def choiceStream(account: 'Account', result: 'ServerResult', streamId):
 
 @ProtocolMgr.Protocol("返航")
 async def deliverArrows(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("返航")
 
 
 @ProtocolMgr.Protocol("领取钥匙", ("keyId",))
 async def getKey(account: 'Account', result: 'ServerResult', keyId):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取钥匙")
 
 
 @ProtocolMgr.Protocol("开启宝箱", ("rewardType",))
 async def unlockReward(account: 'Account', result: 'ServerResult', rewardType):
     reward_tuple = ("镔铁", "点卷", "宝物", "宝石")
-    if result and result.success:
+    if result.success:
         account.logger.info("开启[%s]宝箱", reward_tuple[rewardType])
 
 
 @ProtocolMgr.Protocol("邀功", ("rewardType",))
 async def exchangeReward(account: 'Account', result: 'ServerResult', rewardType, cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("花费%s军功, 邀功, 获得%s", cost, reward_info)

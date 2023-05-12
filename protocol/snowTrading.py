@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("雪地通商")
 async def getSnowTradingInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "加固雪橇花费金币": result.GetValue("reinforcecost"),
             "购买次数花费金币": result.GetValue("buyroundcost"),
@@ -23,26 +23,26 @@ async def getSnowTradingInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取雪地通商奖励", ("cases",))
 async def getCaseNumReward(account: 'Account', result: 'ServerResult', cases):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("领取雪地通商奖励, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("购买次数")
 async def buyRound(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 购买次数", cost)
 
 
 @ProtocolMgr.Protocol("加固雪橇")
 async def reinforceSled(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 加固雪橇", cost)
 
 
 @ProtocolMgr.Protocol("雪地通商", ("choose",))
 async def transport(account: 'Account', result: 'ServerResult', choose, cast_type):
     cast_tuple = ("", "木质", "白银", "黄金")
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("雪地通商, 掉落[%s]宝箱+%d, 获得%s", cast_tuple[cast_type], result.GetValue("stonestate.storneloss"), reward_info)

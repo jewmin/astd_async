@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("战兽")
 async def getInfoList(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "战兽列表": result.GetValueList("warbeastlist.warbeast"),
             "已有战兽": result.GetValueList("warbeast"),
@@ -21,7 +21,7 @@ async def getInfoList(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("喂养战兽", ("warbeastId", "foodType"))
 async def feed(account: 'Account', result: 'ServerResult', warbeastId, foodType):
-    if result and result.success:
+    if result.success:
         warbeast = result.GetValue("warbeast")
         account.logger.info("喂养战兽[%d], 当前进度(%d/%d)", warbeast["warbeastid"], warbeast["exp"], warbeast["upexp"])
         return warbeast
@@ -29,11 +29,11 @@ async def feed(account: 'Account', result: 'ServerResult', warbeastId, foodType)
 
 @ProtocolMgr.Protocol("上下阵战兽", ("warbeastId",))
 async def standby(account: 'Account', result: 'ServerResult', warbeastId):
-    if result and result.success:
+    if result.success:
         pass
 
 
 @ProtocolMgr.Protocol("战兽信息", ("warbeastId",))
 async def getInfo(account: 'Account', result: 'ServerResult', warbeastId):
-    if result and result.success:
+    if result.success:
         pass

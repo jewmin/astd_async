@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("装备铸造")
 async def getSpecialEquipCastInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "免费铸造次数": int(result.result["freetimes"]),
             "铸造消耗金币": int(result.result["firstcost"]),
@@ -25,7 +25,7 @@ async def getSpecialEquipCastInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("铸造", ("type",))
 async def specialEquipCast(account: 'Account', result: 'ServerResult', type, msg):
-    if result and result.success:
+    if result.success:
         special_equip_cast_list = BaseObjectList()  # noqa: F405
         special_equip_cast_list.HandleXml('specialequipcast', result.result["specialequipcast"])
         account.logger.info("%s, 获得%s", msg, ", ".join(str(special_equip_cast.rewardinfo) for special_equip_cast in special_equip_cast_list))
@@ -33,7 +33,7 @@ async def specialEquipCast(account: 'Account', result: 'ServerResult', type, msg
 
 @ProtocolMgr.Protocol("水晶石")
 async def getCrystal(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "水晶石": result.result["baoshidto"],
         }
@@ -42,7 +42,7 @@ async def getCrystal(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("水晶石进阶", ("storeId",))
 async def upgradeCrystal(account: 'Account', result: 'ServerResult', storeId, baoshidto):
-    if result and result.success:
+    if result.success:
         account.logger.info("水晶石lv.%s[%s(%s)]进阶成功", baoshidto["baoshilevel"], baoshidto["goodsname"], baoshidto["generalname"])
         return True
 
@@ -52,7 +52,7 @@ async def upgradeCrystal(account: 'Account', result: 'ServerResult', storeId, ba
 
 @ProtocolMgr.Protocol("水晶石融合", ("storeId", "baoshiId"))
 async def meltCrystal(account: 'Account', result: 'ServerResult', storeId, baoshiId, baoshidto):
-    if result and result.success:
+    if result.success:
         account.logger.info("水晶石lv.%s[%s(%s)]融合1颗宝石lv.18成功", baoshidto["baoshilevel"], baoshidto["goodsname"], baoshidto["generalname"])
         return True
 
@@ -62,7 +62,7 @@ async def meltCrystal(account: 'Account', result: 'ServerResult', storeId, baosh
 
 @ProtocolMgr.Protocol("套装")
 async def getUpgradeInfo(account: 'Account', result: 'ServerResult', show=False):
-    if result and result.success:
+    if result.success:
         account.user.magic = int(result.result["magic"])
         account.user.molistone = int(result.result["molistone"])
         account.user.tickets = int(result.result["ticketnumber"])
@@ -76,7 +76,7 @@ async def getUpgradeInfo(account: 'Account', result: 'ServerResult', show=False)
 
 @ProtocolMgr.Protocol("套装强化", ("composite", "num"))
 async def upgradeMonkeyTao(account: 'Account', result: 'ServerResult', composite, num, equipdto):
-    if result and result.success:
+    if result.success:
         changeinfo = result.result["changeinfo"]
         account.user.tickets = int(changeinfo["remaintickets"])
         equipdto.HandleXml(changeinfo)
@@ -90,7 +90,7 @@ async def upgradeMonkeyTao(account: 'Account', result: 'ServerResult', composite
 
 @ProtocolMgr.Protocol("套装蓄力", ("composite",))
 async def useXuli(account: 'Account', result: 'ServerResult', composite):
-    if result and result.success:
+    if result.success:
         if "addinfo" in result.result["xuliinfo"]:
             addinfo = result.result["xuliinfo"]["addinfo"]
             account.logger.info("套装蓄力, %s+%s", addinfo["name"], addinfo["val"])
@@ -100,7 +100,7 @@ async def useXuli(account: 'Account', result: 'ServerResult', composite):
 
 @ProtocolMgr.Protocol("专属仓库")
 async def getAllSpecialEquip(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         equipdto_list = BaseObjectList()  # noqa: F405
         equipdto_list.HandleXml("equipdto", result.result["equipdto"])
         return equipdto_list
@@ -108,20 +108,20 @@ async def getAllSpecialEquip(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("熔炼专属", ("specialId", "all"))
 async def smeltSpecialEquip(account: 'Account', result: 'ServerResult', specialId, all, equipdto):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("熔炼%s, 获得%s", equipdto, reward_info)
 
 
 @ProtocolMgr.Protocol("武将装备")
 async def getEquip(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         return result.result["general"]
 
 
 @ProtocolMgr.Protocol("淬炼详情", ("generalId",))
 async def getXiZhugeInfo(account: 'Account', result: 'ServerResult', generalId):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "免费淬炼次数": int(result.result.get("freenum", 0)),
             "最大属性": int(result.result["maxattr"]),
@@ -134,7 +134,7 @@ async def getXiZhugeInfo(account: 'Account', result: 'ServerResult', generalId):
 
 @ProtocolMgr.Protocol("淬炼", ("storeId",))
 async def xiZhuge(account: 'Account', result: 'ServerResult', storeId):
-    if result and result.success:
+    if result.success:
         attrs = map(int, result.result["newattr"].split(","))
         dict_info = {
             "新属性": {"int": attrs[0], "lea": attrs[1], "str": attrs[2]}
@@ -144,7 +144,7 @@ async def xiZhuge(account: 'Account', result: 'ServerResult', storeId):
 
 @ProtocolMgr.Protocol("淬炼确认", ("storeId", "type"))
 async def xiZhugeConfirm(account: 'Account', result: 'ServerResult', storeId, type):
-    if result and result.success:
+    if result.success:
         if type == 1:
             account.logger.info("淬炼成功, 替换属性")
         else:
@@ -158,7 +158,7 @@ async def moli(account: 'Account', result: 'ServerResult', composite, num):
 
 @ProtocolMgr.Protocol("同级合成", ("baoshiId",))
 async def updateBaoshiWholeLevel(account: 'Account', result: 'ServerResult', baoshiId):
-    if result and result.success:
+    if result.success:
         num = result.result["num"]
         baoshilevel = result.result["baoshilevel"]
         numup = result.result["numup"]

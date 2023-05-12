@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("酒神觉醒")
 async def getQifuEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "类型": result.GetValue("type"),
             "状态": result.GetValue("qifustate"),
@@ -31,30 +31,30 @@ async def getQifuEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("双倍祈福")
 async def qifuActive(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("激活%d倍祈福", result.GetValue("xs"))
 
 
 @ProtocolMgr.Protocol("选择祈福", ("indexId",))
 async def qifuChoose(account: 'Account', result: 'ServerResult', indexId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["reward"]["rewardinfo"])  # noqa: F405
         account.logger.info("选择祈福[%s], 福气+%d, 获得%s", result.GetValue("reward.indexid"), result.GetValue("reward.fuqi"), reward_info)
 
 
 @ProtocolMgr.Protocol("下一轮祈福")
 async def nextQifu(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("进入下一轮祈福")
 
 
 @ProtocolMgr.Protocol("开始祈福")
 async def startQifu(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 开始祈福", cost)
 
 
 @ProtocolMgr.Protocol("金币全开")
 async def qifuChooseAll(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 全开宝箱", cost)

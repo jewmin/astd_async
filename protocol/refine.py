@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("高级炼制工坊")
 async def getRefineBintieFactory(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "行动力状态": result.GetValue("status"),
             "消耗银币": result.GetValue("coppercost"),
@@ -26,14 +26,14 @@ async def getRefineBintieFactory(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("炼制", ("mode",))
 async def doRefineBintieFactory(account: 'Account', result: 'ServerResult', mode, copper, active):
-    if result and result.success:
+    if result.success:
         account.user.add_task_finish_num(TaskType.RefineBintie, 1)
         account.logger.info("消耗%s银币, %d行动力炼制, 获得%s", Format.GetShortReadable(copper), active, RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("精炼工房")
 async def getRefineInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "行动力状态": result.GetValue("status"),
             "消耗银币": result.GetValue("copper"),
@@ -58,7 +58,7 @@ async def getRefineInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("精炼")
 async def refine(account: 'Account', result: 'ServerResult', copper, active):
-    if result and result.success:
+    if result.success:
         account.user.add_task_finish_num(TaskType.Refine, 1)
         msg = f"消耗{copper}银币、{active}行动力精炼"
         if "eventintro" in result.result:
@@ -74,5 +74,5 @@ async def refine(account: 'Account', result: 'ServerResult', copper, active):
 
 @ProtocolMgr.Protocol("升级精炼工人", ("refinerOrder",))
 async def refreshOneRefiner(account: 'Account', result: 'ServerResult', refinerOrder, refiner, cost):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币升级精炼工人[%s(%s)]", cost, refiner["name"], refiner["color"])

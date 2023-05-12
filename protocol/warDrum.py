@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("战鼓")
 async def getWarDrumInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "最大等级": result.GetValue("maxupdatelevel"),
             "库存点券": result.GetValue("ticketnum"),
@@ -41,7 +41,7 @@ async def getWarDrumInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("强化战鼓", ("type",))
 async def strengthenWarDrum(account: 'Account', result: 'ServerResult', type, steelnum, bowldernum, ticketnum):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "战鼓": result.GetValue("wardrumdto.name", ""),
             "当前进度": result.GetValue("wardrumdto.effectnum", 0),

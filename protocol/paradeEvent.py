@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("阅兵庆典")
 async def getParadeEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "免费阅兵次数": result.GetValue("freetimes"),
             "免费阅兵轮数": result.GetValue("freeroundtimes"),
@@ -22,20 +22,20 @@ async def getParadeEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取阅兵奖励", ("rewardId",))
 async def getParadeReward(account: 'Account', result: 'ServerResult', rewardId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("领取阅兵奖励, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("购买阅兵轮数")
 async def addRoundTimes(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 购买阅兵轮数", cost)
 
 
 @ProtocolMgr.Protocol("开始阅兵")
 async def paradeArmy(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         msg = f"花费{cost}金币, 开始阅兵, 获得{reward_info}"
         if "bigreward" in result.result:
@@ -46,5 +46,5 @@ async def paradeArmy(account: 'Account', result: 'ServerResult', cost=0):
 
 @ProtocolMgr.Protocol("下一位武将")
 async def getNextGeneral(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("下一位武将[%s]准备阅兵", result.GetValue("generalname"))

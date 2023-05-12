@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("王朝寻宝")
 async def getNewTreasureGameInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dice_num = result.GetValue("dicenum", 0)
         account.logger.info("王朝寻宝, 当前骰子: %d", dice_num)
         return dice_num
@@ -17,7 +17,7 @@ async def getNewTreasureGameInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("开始探宝")
 async def startNewTGame(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "当前骰子": result.GetValue("dicenum", 0),
             "可购买骰子": result.GetValue("golddicenum", 0),
@@ -57,7 +57,7 @@ def _handle_treasure_event(dict_info: dict, result: dict):
 
 @ProtocolMgr.Protocol("执行探宝事件", ("open",))
 async def handlerEvent(account: 'Account', result: 'ServerResult', open, msg):
-    if result and result.success:
+    if result.success:
         if "rewardinfo" in result.result:
             msg += f", 获得{RewardInfo(result.result['rewardinfo'])}"  # noqa: F405
         account.logger.info(msg)
@@ -65,7 +65,7 @@ async def handlerEvent(account: 'Account', result: 'ServerResult', open, msg):
 
 @ProtocolMgr.Protocol("掷骰子")
 async def useNewTDice(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         msg = f"掷到{result.GetValue('movenum')}点"
         if "pointreward" in result.result:
             msg += f", {_handle_point_reward(result.result['pointreward'])}"
@@ -90,7 +90,7 @@ def _handle_point_reward(point_reward_list: list):
 
 @ProtocolMgr.Protocol("换地图")
 async def transfer(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         msg = "更换寻宝地图"
         if "pointreward" in result.result:
             msg += f", {_handle_point_reward(result.result['pointreward'])}"
@@ -99,5 +99,5 @@ async def transfer(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("探宝完毕")
 async def awayNewTGame(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("探宝完毕")

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("征战", sub_module=False)
 async def battle(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "征战事件": result.result["battleevent"] if result.result["battleevent"] else {},
             "免费强攻令": result.GetValue("freeattnum", 0),
@@ -19,7 +19,7 @@ async def battle(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("强攻NPC", ("armyId",))
 async def forceBattleArmy(account: 'Account', result: 'ServerResult', armyId):
-    if result and result.success:
+    if result.success:
         account.logger.info(
             "强攻NPC, %s, 你损失兵力%s, 敌方损失兵力%s",
             result.GetValue("battlereport.message"),
@@ -30,7 +30,7 @@ async def forceBattleArmy(account: 'Account', result: 'ServerResult', armyId):
 
 @ProtocolMgr.Protocol("征战NPC", ("armyId",))
 async def battleArmy(account: 'Account', result: 'ServerResult', armyId):
-    if result and result.success:
+    if result.success:
         account.logger.info(
             "征战NPC, %s, 你损失兵力%s, 敌方损失兵力%s",
             result.GetValue("battlereport.message"),
@@ -41,7 +41,7 @@ async def battleArmy(account: 'Account', result: 'ServerResult', armyId):
 
 @ProtocolMgr.Protocol("进行征战事件")
 async def doBattleEvent(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         if "process" in result.result["battleevent"]:
             account.logger.info("进行征战事件: %s", result.result["battleevent"]["process"])
         else:
@@ -50,11 +50,11 @@ async def doBattleEvent(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取征战事件奖励")
 async def recvBattleEventReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取征战事件奖励, 获得%s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("征战地图", ("powerId",))
 async def getPowerInfo(account: 'Account', result: 'ServerResult', powerId):
-    if result and result.success:
+    if result.success:
         return result.GetValue("army")

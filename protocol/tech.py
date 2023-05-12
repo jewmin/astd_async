@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("科技")
 async def getNewTech(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "科技": result.GetValue("technology"),
             "可用宝石": result.GetValue("baoshi18num"),
@@ -20,7 +20,7 @@ async def getNewTech(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("研究科技", ("techId",))
 async def researchNewTech(account: 'Account', result: 'ServerResult', techId, tech):
-    if result and result.success:
+    if result.success:
         account.logger.info("消耗%s%s, 研究科技[%s], 进度+%d", tech["consumenum"], get_tech_consume_name(tech["consumerestype"], tech["techname"], result.GetValue("addprogress")))
 
 

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("新年敲钟")
 async def getRingEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "奖励": result.GetValueList("ringstate"),
             "对联状态": result.GetValue("reelstatus"),
@@ -28,7 +28,7 @@ async def getRingEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取进度奖励", ("rewardId", "type"))
 async def getProgressReward(account: 'Account', result: 'ServerResult', rewardId, type):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("领取进度奖励, 获得%s", reward_info)
 
@@ -36,7 +36,7 @@ async def getProgressReward(account: 'Account', result: 'ServerResult', rewardId
 @ProtocolMgr.Protocol("打开对联")
 async def openReel(account: 'Account', result: 'ServerResult'):
     reel_tuple = ("随机", "福", "禄", "寿")
-    if result and result.success:
+    if result.success:
         msg = [f"打开对联: {result.GetValue('words')}"]
         needs = map(int, result.result["need"][:-1].split(","))
         for need in needs:
@@ -46,7 +46,7 @@ async def openReel(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("敲钟", ("bellId",))
 async def ring(account: 'Account', result: 'ServerResult', bellId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         msg = [f"敲钟, 获得{reward_info}"]
         if "bigreward" in result.result:
@@ -57,12 +57,12 @@ async def ring(account: 'Account', result: 'ServerResult', bellId):
 
 @ProtocolMgr.Protocol("放弃对联")
 async def giveUpReel(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("放弃对联")
 
 
 @ProtocolMgr.Protocol("领取红包")
 async def recvRedPaper(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("领取红包, 获得%s", reward_info)

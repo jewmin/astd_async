@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("御用精纺厂")
 async def royaltyWeaveInfo2(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "行动力状态": result.GetValue("activestatus"),
             "消耗行动力": result.GetValue("needactive"),
@@ -34,7 +34,7 @@ async def royaltyWeaveInfo2(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("一键纺织", ("times",))
 async def royaltyWeave2(account: 'Account', result: 'ServerResult', times, active):
-    if result and result.success:
+    if result.success:
         account.user.add_task_finish_num(TaskType.Weave, times)
         msg = f"花费{active}行动力一键纺织"
         once_num = result.GetValue("oncenum")
@@ -46,11 +46,11 @@ async def royaltyWeave2(account: 'Account', result: 'ServerResult', times, activ
 
 @ProtocolMgr.Protocol("换购")
 async def convertRoyaltyWeaveNew2(account: 'Account', result: 'ServerResult', need_weave_num):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d布匹换购, 获得%s", need_weave_num, RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("刷新换购商人")
 async def refreshRoyaltyWeaveNew(account: 'Account', result: 'ServerResult', cost):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币刷新换购商人, 商人(%s, 可换购%s)", cost, result.result["tradername"], RewardInfo(result.result["rewardinfo"]))  # noqa: F405

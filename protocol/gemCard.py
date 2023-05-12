@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("宝石翻牌")
 async def getGemCardInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "免费翻倍次数": result.GetValue("gemcardinfo.freedouble"),
             "翻倍花费金币": result.GetValue("doublecost"),
@@ -26,7 +26,7 @@ async def getGemCardInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取", ("cost", "doubleCard", "list"))
 async def receiveGem(account: 'Account', result: 'ServerResult', cost, doubleCard, list, double_cost, cost_cost, baoshi):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         reward = Reward()  # noqa: F405
         reward.type = 5

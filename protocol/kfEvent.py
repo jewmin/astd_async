@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("武斗庆典")
 async def getKfwdEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "奖励": result.GetValue("rewardgold", 0),
         }
@@ -17,5 +17,5 @@ async def getKfwdEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("武斗庆典奖励")
 async def getKfwdReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取武斗庆典奖励, 获得宝箱+%d", result.GetValue("tickets"))

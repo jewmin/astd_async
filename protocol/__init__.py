@@ -50,6 +50,7 @@ import protocol.giftEvent as giftEvent
 import protocol.snowTrading as snowTrading
 import protocol.dumpEvent as dumpEvent
 import protocol.gift as gift
+import protocol.kfpvp as kfpvp
 
 __all__ = (
     'dayTreasureGame',
@@ -103,4 +104,5 @@ __all__ = (
     "snowTrading",
     "dumpEvent",
     "gift",
+    "kfpvp",
 )

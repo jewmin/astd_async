@@ -8,13 +8,13 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("加入征战军团", ("teamId",))
 async def joinTeam(account: 'Account', result: 'ServerResult', teamId):
-    if result and result.success:
+    if result.success:
         account.logger.info("加入征战军团[%s]", teamId)
 
 
 @ProtocolMgr.Protocol("征战军团", ("armiesId",))
 async def getTeamInfo(account: 'Account', result: 'ServerResult', armiesId):
-    if result and result.success:
+    if result.success:
         if teams := result.GetValueList("team"):
             teamid = teams[0]["teamid"]
             account.user.teamid = teamid

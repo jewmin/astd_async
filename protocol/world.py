@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("世界")
 async def getNewArea(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.user.astar.ignore_barrier(False)
         account.user.fengdi.HandleXml(result.result["fengdi"])
         dict_info = {
@@ -49,20 +49,20 @@ async def getNewArea(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("迁移")
 async def getTranferInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         if result.GetValue("canget", 0) == 1:
             await getTransferToken(account)
 
 
 @ProtocolMgr.Protocol("领取攻击令")
 async def getTransferToken(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取攻击令, 攻击令+%d", result.GetValue("token", 0))
 
 
 @ProtocolMgr.Protocol("移动", ("areaId",))
 async def transferInNewArea(account: 'Account', result: 'ServerResult', areaId, area):
-    if result and result.success:
+    if result.success:
         account.logger.info("移动, 城池[%s]", area["areaname"])
         return True
     else:
@@ -72,13 +72,13 @@ async def transferInNewArea(account: 'Account', result: 'ServerResult', areaId, 
 
 @ProtocolMgr.Protocol("清除移动冷却时间")
 async def cdMoveRecoverConfirm(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("清除移动冷却时间")
 
 
 @ProtocolMgr.Protocol("屠城嘉奖")
 async def getTuCityInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         if result.GetValue("recvednum", 0) < result.GetValue("maxrecvednum", 0):
             for info in result.GetValueList("info"):
                 await getTuCityReward(account, playerId=info["playerid"], areaId=info["areaid"])
@@ -86,19 +86,19 @@ async def getTuCityInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("搜刮屠城嘉奖", ("playerId", "areaId"))
 async def getTuCityReward(account: 'Account', result: 'ServerResult', playerId, areaId):
-    if result and result.success:
+    if result.success:
         account.logger.info("搜刮屠城嘉奖, %s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("屠城", ("areaId",))
 async def tuCity(account: 'Account', result: 'ServerResult', areaId):
-    if result and result.success:
+    if result.success:
         account.logger.info("屠城, 宝石+%d", result.GetValue("baoshi", 0))
 
 
 @ProtocolMgr.Protocol("个人令")
 async def getNewAreaToken(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.user.tokenlist.HandleXml('token', result.result["tokenlist"])
         account.user.remaintutimes = result.GetValue("tucity.remaintutimes", 0)
         account.user.tucd = result.GetValue("tucity.tucd", 0)
@@ -106,19 +106,19 @@ async def getNewAreaToken(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("使用建造令", ("newTokenId",))
 async def useConstuctToken(account: 'Account', result: 'ServerResult', newTokenId):
-    if result and result.success:
+    if result.success:
         account.logger.info("使用建造令lv.%d, 城防+%d", result.GetValue("tokenlevel", 0), result.GetValue("effect", 0))
 
 
 @ProtocolMgr.Protocol("使用战绩令", ("newTokenId",))
 async def useScoreToken(account: 'Account', result: 'ServerResult', newTokenId):
-    if result and result.success:
+    if result.success:
         account.logger.info("使用战绩令lv.%d", result.GetValue("tokenlevel", 0))
 
 
 @ProtocolMgr.Protocol("使用鼓舞令", ("newTokenId",))
 async def useInspireToken(account: 'Account', result: 'ServerResult', newTokenId):
-    if result and result.success:
+    if result.success:
         account.logger.info("使用鼓舞令lv.%d", result.GetValue("tokenlevel", 0))
 
 
@@ -135,7 +135,7 @@ async def useToken(account: 'Account', token: Token):  # noqa: F405
 
 @ProtocolMgr.Protocol("战绩")
 async def getBattleRankingInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "宝箱": result.GetValue("box", 0),
             "上轮战绩排名奖励": result.GetValue("lastrankingreward", 0) != 0,
@@ -147,32 +147,32 @@ async def getBattleRankingInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取战绩奖励", ("pos",))
 async def getBattleScoreReward(account: 'Account', result: 'ServerResult', pos):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取战绩奖励, 宝石+%d, 宝箱+%d", result.GetValue("baoshi", 0), result.GetValue("box", 0))
 
 
 @ProtocolMgr.Protocol("打开战绩宝箱")
 async def openScoreBox(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("打开战绩宝箱, %s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("领取上轮战绩排名奖励")
 async def getBattleRankReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取上轮战绩排名奖励, 宝石+%d", result.GetValue("baoshi", 0))
 
 
 @ProtocolMgr.Protocol("领取封地奖励")
 async def recvFengdiReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取封地奖励, %s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
         account.user.fengdi.HandleXml(result.result["fengdi"])
 
 
 @ProtocolMgr.Protocol("封地资源列表", ("areaId",))
 async def generateBigG(account: 'Account', result: 'ServerResult', areaId):
-    if result and result.success:
+    if result.success:
         for produceinfo in result.GetValueList("produceinfo"):
             if produceinfo["resid"] == 4:
                 await startProduce(account, areaId=areaId, resId=4, produceinfo=produceinfo)
@@ -181,7 +181,7 @@ async def generateBigG(account: 'Account', result: 'ServerResult', areaId):
 
 @ProtocolMgr.Protocol("封地生产资源", ("areaId", "resId"))
 async def startProduce(account: 'Account', result: 'ServerResult', areaId, resId, produceinfo):
-    if result and result.success:
+    if result.success:
         res_list = {
             1: "宝石",
             2: "镔铁",
@@ -194,7 +194,7 @@ async def startProduce(account: 'Account', result: 'ServerResult', areaId, resId
 
 @ProtocolMgr.Protocol("悬赏")
 async def getNewCityEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "悬赏任务列表": [],
             "悬赏星数奖励": result.GetValueList("starreward"),
@@ -214,32 +214,32 @@ async def getNewCityEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取悬赏星数奖励", ("pos",))
 async def recvNewCityEventStarReward(account: 'Account', result: 'ServerResult', pos):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取悬赏星数奖励, %s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("领取悬赏任务", ("pos",))
 async def acceptNewCityEvent(account: 'Account', result: 'ServerResult', pos, task):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取%d星悬赏任务", task["星级"])
 
 
 @ProtocolMgr.Protocol("领取悬赏奖励")
 async def deliverNewCityEvent(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取悬赏奖励, %s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
 
 
 @ProtocolMgr.Protocol("国家宝箱")
 async def getNewAreaTreasureInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         return result.GetValue("treasurenum", 0)
     return 0
 
 
 @ProtocolMgr.Protocol("连开5个国家宝箱")
 async def draw5NewAreaTreasure(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         t2n = {
             1: "银币",
             2: "攻击令",
@@ -264,7 +264,7 @@ async def draw5NewAreaTreasure(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("攻击敌人", ("areaId", "scopeId", "cityId"))
 async def attackOtherAreaCity(account: 'Account', result: 'ServerResult', areaId, scopeId, cityId):
-    if result and result.success:
+    if result.success:
         if result.GetValue("worldevent", 0) == 1:
             account.user.spy_areaid = account.user.areaid
 
@@ -304,7 +304,7 @@ async def attackOtherAreaCity(account: 'Account', result: 'ServerResult', areaId
 
 @ProtocolMgr.Protocol("决斗", ("areaId", "scopeId", "cityId", "type"))
 async def useWorldDaoju(account: 'Account', result: 'ServerResult', areaId, scopeId, cityId, type, desc, city):
-    if result and result.success:
+    if result.success:
         account.logger.info("对玩家[%s]%s", city["playername"], desc)
         toareaid = result.GetValue("toareaid", 0)
         toscopeid = result.GetValue("toscopeid", 0)
@@ -317,7 +317,7 @@ async def useWorldDaoju(account: 'Account', result: 'ServerResult', areaId, scop
 
 @ProtocolMgr.Protocol("决斗信息", ("type",))
 async def getPkInfo(account: 'Account', result: 'ServerResult', type):
-    if result and result.success:
+    if result.success:
         pk_info = {
             "阶段": result.GetValue("stage"),
             "结果": result.GetValue("pkresult"),

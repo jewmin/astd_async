@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("获取龙舟信息", ("notice",))
 async def getBoatEventInfo(account: 'Account', result: 'ServerResult', notice=0):
-    if result and result.success:
+    if result.success:
         info = {
             "组队中": result.GetValue("inteam", 0),
             "阶段": result.GetValue("stage", 0),
@@ -24,37 +24,37 @@ async def getBoatEventInfo(account: 'Account', result: 'ServerResult', notice=0)
 
 @ProtocolMgr.Protocol("升级龙舟")
 async def upgradeBoat(account: 'Account', result: 'ServerResult', cost):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 升级龙舟", cost)
 
 
 @ProtocolMgr.Protocol("加入龙舟队伍", ("teamId",))
 async def joinBoatEventTeam(account: 'Account', result: 'ServerResult', teamId):
-    if result and result.success:
+    if result.success:
         account.logger.info("加入龙舟队伍[%s]", teamId)
 
 
 @ProtocolMgr.Protocol("创建龙舟队伍")
 async def creatBoatEventTeam(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("创建龙舟队伍")
 
 
 @ProtocolMgr.Protocol("报名龙舟大赛", ("signUpId",))
 async def signUpBoatEvent(account: 'Account', result: 'ServerResult', signUpId=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("报名龙舟大赛")
 
 
 @ProtocolMgr.Protocol("开始龙舟大赛")
 async def startBoatComp(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("开始龙舟大赛")
 
 
 @ProtocolMgr.Protocol("龙舟冲刺")
 async def dashBoatEvent(account: 'Account', result: 'ServerResult', cost):
-    if result and result.success:
+    if result.success:
         if cost > 0:
             account.logger.info("花费%d金币, 龙舟冲刺", cost)
         else:
@@ -63,7 +63,7 @@ async def dashBoatEvent(account: 'Account', result: 'ServerResult', cost):
 
 @ProtocolMgr.Protocol("领取龙舟大赛奖励")
 async def recvBoatEventFinalReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         msg = ["领取龙舟大赛奖励"]
         if "signreward" in result.result:
             reward_info = RewardInfo(result.result["signreward"]["rewardinfo"])  # noqa: F405
@@ -79,7 +79,7 @@ async def recvBoatEventFinalReward(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("抓捕活动")
 async def getArrestEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "可领取抓捕令": result.GetValue("cangettoken", 0),
             "抓捕令": result.GetValue("arresttokennum", 0),
@@ -94,13 +94,13 @@ async def getArrestEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取抓捕令")
 async def recvArrestToken(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("领取%d抓捕令", result.GetValue("arresttokennum", 0))
 
 
 @ProtocolMgr.Protocol("审问俘虏", ("highLv",))
 async def shenSlaves(account: 'Account', result: 'ServerResult', cost, highLv=0):
-    if result and result.success:
+    if result.success:
         msg = []
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         if cost > 0:
@@ -113,20 +113,20 @@ async def shenSlaves(account: 'Account', result: 'ServerResult', cost, highLv=0)
 
 @ProtocolMgr.Protocol("享用端午密粽")
 async def eatRiceDumpling(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("享用端午密粽, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("购买抓捕令")
 async def buyArrestToken(account: 'Account', result: 'ServerResult', cost):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 购买抓捕令", cost)
 
 
 @ProtocolMgr.Protocol("大宴群雄")
 async def getBGEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "花费金币": result.GetValue("goldcost"),
             "宴请奖励": result.GetValueList("progressstate"),
@@ -136,21 +136,21 @@ async def getBGEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("开启宴请宝箱", ("rewardId",))
 async def getBanquetReward(account: 'Account', result: 'ServerResult', rewardId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("开启宴请宝箱, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("宴请群雄")
 async def doBGEvent(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["bginfo"]["rewardinfo"])  # noqa: F405
         account.logger.info("花费%d金币, 宴请群雄, 获得%s", cost, reward_info)
 
 
 @ProtocolMgr.Protocol("赏月送礼")
 async def getMGEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "免费轮数": result.GetValue("freeround"),
             "购买轮数花费金币": result.GetValue("buyroundcost"),
@@ -167,26 +167,26 @@ async def getMGEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("领取士气奖励", ("rewardId",))
 async def recvMoralReward(account: 'Account', result: 'ServerResult', rewardId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("领取士气奖励, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("吃月饼")
 async def eatMoonCake(account: 'Account', result: 'ServerResult', name, cost):
-    if result and result.success:
+    if result.success:
         account.logger.info("武将[%s]: 花费%d金币, 吃月饼", name, cost)
 
 
 @ProtocolMgr.Protocol("下一位")
 async def nextGeneral(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("下一位武将[%s]", result.GetValue("gmginfo.name"))
 
 
 @ProtocolMgr.Protocol("群雄煮酒")
 async def getQingmingInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "购买轮数花费金币": result.GetValue("buycost"),
             "酒仙附体花费金币": result.GetValue("golddrinkcost"),
@@ -202,20 +202,20 @@ async def getQingmingInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("群雄煮酒大礼")
 async def getQingmingBigReward(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         account.logger.info("领取群雄煮酒大礼, 获得%s", reward_info)
 
 
 @ProtocolMgr.Protocol("购买群雄煮酒轮数")
 async def buyQingmingRound(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 购买群雄煮酒轮数", cost)
 
 
 @ProtocolMgr.Protocol("饮酒", ("wineId", "gold"))
 async def qingmingDrink(account: 'Account', result: 'ServerResult', wineId, gold, cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo(result.result["rewardinfo"])  # noqa: F405
         msg = "饮酒"
         if gold:
@@ -225,7 +225,7 @@ async def qingmingDrink(account: 'Account', result: 'ServerResult', wineId, gold
 
 @ProtocolMgr.Protocol("百家宴")
 async def getDuanwuEventInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "奖励": result.GetValueList("rewards"),
             "轮数": result.GetValue("remainround"),
@@ -240,7 +240,7 @@ async def getDuanwuEventInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("吃粽子", ("gold",))
 async def eatZongzi(account: 'Account', result: 'ServerResult', gold, cost=0):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         reward = Reward()
         reward.type = 42
@@ -253,19 +253,19 @@ async def eatZongzi(account: 'Account', result: 'ServerResult', gold, cost=0):
 
 @ProtocolMgr.Protocol("购买轮数")
 async def buyRound(account: 'Account', result: 'ServerResult', cost=0):
-    if result and result.success:
+    if result.success:
         account.logger.info("花费%d金币, 购买轮数", cost)
 
 
 @ProtocolMgr.Protocol("再吃一轮")
 async def nextRound(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         account.logger.info("再吃一轮")
 
 
 @ProtocolMgr.Protocol("领取奖励", ("rewardId", "dbId"))
 async def getRewardById(account: 'Account', result: 'ServerResult', rewardId, dbId):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         reward = Reward()
         reward.type = 49
@@ -280,3 +280,29 @@ async def getRewardById(account: 'Account', result: 'ServerResult', rewardId, db
         reward.itemname = "点券"
         reward_info.reward.append(reward)
         account.logger.info("领取奖励, 获得%s", reward_info)
+
+
+@ProtocolMgr.Protocol("充值送红包")
+async def getPayHongbaoEventInfo(account: 'Account', result: 'ServerResult'):
+    if result.success:
+        info = {
+            "红包": result.GetValue("hongbaonum"),
+            "红包上限": result.GetValue("hongbaolimit"),
+            "福袋": result.GetValue("luckybagnum"),
+            "共享红包信息": result.GetValue("hongbaoinfo.cangetnum"),
+        }
+        return info
+
+
+@ProtocolMgr.Protocol("打开红包")
+async def openPayHongbao(account: 'Account', result: 'ServerResult'):
+    if result.success:
+        reward_info = RewardInfo(result.result["hongbaoreward"]["rewardinfo"])  # noqa: F405
+        account.logger.info("打开红包, 获得%s", reward_info)
+
+
+@ProtocolMgr.Protocol("拜年", ("rewardId", "playerId"))
+async def recvShareHongbao(account: 'Account', result: 'ServerResult', rewardId, playerId):
+    if result.success:
+        reward_info = RewardInfo(result.result["hongbaoreward"]["rewardinfo"])  # noqa: F405
+        account.logger.info("拜年, 获得%d个红包, %s", result.GetValue("thishongbaonum"), reward_info)

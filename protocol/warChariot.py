@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("战车")
 async def getWarChariotInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "当前等级": result.GetValue("equiplevel"),
             "可提升等级": result.GetValue("needtofull"),
@@ -27,7 +27,7 @@ async def getWarChariotInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("强化战车", ("chuiziCri",))
 async def strengthenWarChariot(account: 'Account', result: 'ServerResult', chuiziCri, tips):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "总进度": result.GetValue("total"),
             "当前进度": result.GetValue("upgradeeffectnum"),

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("宝石倾销")
 async def getDetail(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         info = {
             "锦囊": result.GetValue("totalbags"),
             "商品": result.GetValueList("goodlist.good")[0],
@@ -19,7 +19,7 @@ async def getDetail(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("购买", ("id",))
 async def buy(account: 'Account', result: 'ServerResult', id, good):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         reward = Reward()  # noqa: F405
         reward.type = 5
@@ -32,7 +32,7 @@ async def buy(account: 'Account', result: 'ServerResult', id, good):
 
 @ProtocolMgr.Protocol("开启锦囊", ("num",))
 async def openBags(account: 'Account', result: 'ServerResult', num):
-    if result and result.success:
+    if result.success:
         reward_info = RewardInfo()  # noqa: F405
         reward = Reward()  # noqa: F405
         reward.type = 5

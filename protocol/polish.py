@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("炼化")
 async def getBaowuPolishInfo(account: 'Account', result: 'ServerResult'):
-    if result and result.success:
+    if result.success:
         dict_info = {
             "炼化机会": result.GetValue("num"),
             "专属玉佩": result.GetValueList("specialtreasure"),
@@ -19,7 +19,7 @@ async def getBaowuPolishInfo(account: 'Account', result: 'ServerResult'):
 
 @ProtocolMgr.Protocol("玉佩炼化", ("storeId",))
 async def polish(account: 'Account', result: 'ServerResult', storeId, baowu):
-    if result and result.success:
+    if result.success:
         old_attribute_base = baowu["attribute_base"]
         baowu["polishtimes"] = result.GetValue("baowu.polishtimes")
         baowu["attribute_base"] = result.GetValue("baowu.attribute_base")
@@ -35,7 +35,7 @@ async def polish(account: 'Account', result: 'ServerResult', storeId, baowu):
 
 @ProtocolMgr.Protocol("专属玉佩开光", ("storeId",))
 async def consecrateSpecialTreasure(account: 'Account', result: 'ServerResult', storeId, special_treasure):
-    if result and result.success:
+    if result.success:
         msg = "专属玉佩开光"
         if "additionalattribute" in result.result:
             msg += ", 激活属性"
@@ -48,13 +48,13 @@ async def consecrateSpecialTreasure(account: 'Account', result: 'ServerResult', 
 
 @ProtocolMgr.Protocol("专属玉佩进化", ("storeId",))
 async def evolveSpecialTreasure(account: 'Account', result: 'ServerResult', storeId):
-    if result and result.success:
+    if result.success:
         account.logger.info("专属玉佩进化")
 
 
 @ProtocolMgr.Protocol("玉佩升级", ("storeId", "storeId2", "type"))
 async def upgradeBaowu(account: 'Account', result: 'ServerResult', storeId, storeId2, type, special_treasure, baowu, desc):
-    if result and result.success:
+    if result.success:
         if result.GetValue("upgraderesult", 0) == 1:
             if "baowu" in result.result:
                 account.logger.info("%s升级成功, 统+%s 勇+%s 智+%s", desc, result.GetValue("baowu.succlea", 0), result.GetValue("baowu.succstr", 0), result.GetValue("baowu.succint", 0))

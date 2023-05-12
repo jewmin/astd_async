@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("熔化", ("gold", "meltGold", "magic", "storeId", "type"))
 async def melt(account: 'Account', result: 'ServerResult', gold, meltGold, magic, storeId, type, baowu):
-    if result and result.success:
+    if result.success:
         account.logger.info("熔化[%s(统+%s 勇+%s 智+%s)], 获得玉石+%s", baowu["name"], baowu["attribute_lea"], baowu["attribute_str"], baowu["attribute_int"], result.GetValue("gainbowlder", 0))
 
 

@@ -8,5 +8,5 @@ if TYPE_CHECKING:
 
 @ProtocolMgr.Protocol("查看城区", ("areaId", "scopeId"))
 async def getAllCity(account: 'Account', result: 'ServerResult', areaId, scopeId):
-    if result and result.success:
+    if result.success:
         return result.GetValueList("city")

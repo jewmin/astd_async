@@ -72,3 +72,9 @@ async def getExtraInfo(account: 'Account', result: 'ServerResult'):
 async def getPlayerExtraInfo2(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.user.UpdatePlayerExtraInfo2(result.result["player"])
+
+
+@ProtocolMgr.Protocol("城防恢复")
+async def getAntiAddictionInfo(account: 'Account', result: 'ServerResult'):
+    if result.success:
+        result.GetValue("deadcd")
