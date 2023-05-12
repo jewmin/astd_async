@@ -289,7 +289,7 @@ async def getPayHongbaoEventInfo(account: 'Account', result: 'ServerResult'):
             "红包": result.GetValue("hongbaonum"),
             "红包上限": result.GetValue("hongbaolimit"),
             "福袋": result.GetValue("luckybagnum"),
-            "共享红包信息": result.GetValue("hongbaoinfo.cangetnum"),
+            "共享红包信息": result.GetValue("hongbaoinfo", {}),
         }
         return info
 
