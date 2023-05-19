@@ -12,7 +12,7 @@ async def getEventGiftInfo(account: 'Account', result: 'ServerResult'):
     if result.success:
         rewardnum = result.GetValue("rewardnum")
         if rewardnum:
-            for idx, reward in enumerate():
+            for idx, reward in enumerate(rewardnum):
                 if reward == 1:
                     await receiveEventReward(account, id=idx)
 
