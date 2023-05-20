@@ -168,6 +168,8 @@ async def recvFengdiReward(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.logger.info("领取封地奖励, %s", RewardInfo(result.result["rewardinfo"]))  # noqa: F405
         account.user.fengdi.HandleXml(result.result["fengdi"])
+    else:
+        account.user.fengdi.finish = 0
 
 
 @ProtocolMgr.Protocol("封地资源列表", ("areaId",))
