@@ -77,8 +77,11 @@ class WorldTask(BaseTask):
         for (y, x), a_area in area_info["所有城池"].items():
             if a_area["areaname"] in ("许都", "成都", "武昌"):  # 主城
                 area_map[y][x] = 0
-            elif "tucitycd" in a_area and a_area["tucitynation"] == self.account.user.nation:  # 屠城
-                area_map[y][x] = 1
+            elif "tucitycd" in a_area:
+                if a_area["tucitynation"] == self.account.user.nation:  # 屠城
+                    area_map[y][x] = 1
+                else:
+                    area_map[y][x] = 0
             elif area_info["穿越"]:  # 穿越
                 area_map[y][x] = 1
             elif event_info["悬赏剩余时间"] > 0:  # 悬赏

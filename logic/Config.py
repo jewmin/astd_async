@@ -192,7 +192,7 @@ config = {
         "refine": {  # 精炼
             "enable": True,  # 开启功能
             "finish_task": True,  # 完成日常任务
-            "do_high": True,  # 高效状态
+            "do_high": False,  # 高效状态
             "do_tired": False,  # 疲劳状态
             "refresh_refiner": {  # 升级精炼工人
                 "per_cost": 0,  # 花费金币<=N

@@ -81,7 +81,7 @@ class ActiveTask(BaseTask):
             dict_info["工人们"] = sorted(dict_info["工人们"], key=lambda value: value["id"], reverse=True)
             sn = ""
             for var in dict_info["工人们"]:
-                sn += var["id"]
+                sn += str(var["id"])
             if sn in active_config["refresh_refiner"]["list"]:
                 index = active_config["refresh_refiner"]["list"][sn]
                 await refine.refreshOneRefiner(self.account, refinerOrder=dict_info["工人们"][index]["order"], refiner=dict_info["工人们"][index], cost=dict_info["升级单个工人消耗金币"])
