@@ -19,3 +19,12 @@ async def getKfwdEventInfo(account: 'Account', result: 'ServerResult'):
 async def getKfwdReward(account: 'Account', result: 'ServerResult'):
     if result.success:
         account.logger.info("领取武斗庆典奖励, 获得宝箱+%d", result.GetValue("tickets"))
+
+
+@ProtocolMgr.Protocol("武斗会龙虎榜")
+async def getKfwdEventOtherInfo(account: 'Account', result: 'ServerResult'):
+    if result.success:
+        info = {
+            "奖励": result.GetValue("playerboxinfo.boxnum", 0),
+        }
+        return info

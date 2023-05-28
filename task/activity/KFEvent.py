@@ -20,4 +20,12 @@ class KFEvent(ActivityTask):
         if info["奖励"] > 0:
             await kfEvent.getKfwdReward(self.account)
 
+        info = await kfEvent.getKfwdEventOtherInfo(self.account)
+        if info is None:
+            return self.next_half_hour
+        
+        while info["奖励"] > 0:
+            info["奖励"] -= 1
+            await kfwd.openBoxById(self.account, gold=1)
+
         return self.next_half_hour
