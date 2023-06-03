@@ -24,6 +24,8 @@ from task.activity.SnowTrading import SnowTrading
 from task.activity.DumpEvent import DumpEvent
 from task.activity.PayHongBaoEvent import PayHongBaoEvent
 from task.activity.KfPVP import KfPVP
+from task.activity.GoldGiftType import GoldGiftType
+from task.activity.KFZB import KFZB
 
 __all__ = (
     BoatEvent,
@@ -52,4 +54,6 @@ __all__ = (
     DumpEvent,
     PayHongBaoEvent,
     KfPVP,
+    GoldGiftType,
+    KFZB,
 )

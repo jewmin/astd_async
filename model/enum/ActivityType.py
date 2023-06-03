@@ -43,4 +43,5 @@ class ActivityTypeString:
         "springfestivalwishevent": "许愿",
         "kfwdeventreward": "武斗庆典",
         "shenhuo": "百炼精铁",
+        "goldgifttype": "盛宴活动",
     }

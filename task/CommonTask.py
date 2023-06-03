@@ -67,5 +67,12 @@ class CommonTask(BaseTask):
         # 征收活动
         await gift.getEventGiftInfo(self.account)
 
+        # 军资回馈
+        info = await gift.getRepayEventGiftInfo(self.account)
+        if info is not None:
+            for index, status in enumerate(info["领取状态"]):
+                if status == 1:
+                    await gift.receiveRepayEventReward(self.account, id=info["奖励"][index])
+
         self.logger.warning("活动列表: %s", self.account.user.HaveActivities())
         return self.next_half_hour
