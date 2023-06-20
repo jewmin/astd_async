@@ -54,7 +54,7 @@ activity_config = {
     "ArrestEvent": {
         "enable": True,  # 开启
         "high_gold": 0,  # 使用鞭子花费金币<=N
-        "buy_gold": 5,  # 购买抓捕令花费金币<=N
+        "buy_gold": 0,  # 购买抓捕令花费金币<=N
     },
     # 充值赠礼
     "GiftEvent": {
@@ -70,7 +70,7 @@ activity_config = {
         "enable": True,  # 开启
         "unlock": {0: 1, 1: 4, 2: 2, 3: 3},  # 开启宝箱顺序，"镔铁", "点卷", "宝物", "宝石"
         "cost_limit": 150000,  # 邀功花费军功<=N
-        "sail_gold": 5,  # 发船花费金币<=N
+        "sail_gold": 0,  # 发船花费金币<=N
         "arrow_diff": 10000,  # 承重差<=N
     },
     # 新年敲钟
@@ -86,7 +86,7 @@ activity_config = {
     # 百家宴
     "DuanWuEvent": {
         "enable": True,  # 开启
-        "gold_hunger": 3,  # 粽子花费金币<=N
+        "gold_hunger": 0,  # 粽子花费金币<=N
         "limit_hunger": 8,  # 免费粽子，饥饿度<=N
         "gold_round": 0,  # 轮数花费金币<=N
         "general": ["张良", "孟获", "戚继光", "孙尚香"],  # 大将令列表
@@ -177,7 +177,7 @@ activity_config = {
     # 中秋月饼
     "EatMoonCakeEvent": {
         "enable": True,  # 开启
-        "gold": 7,  # 花费金币<=N
+        "gold": 0,  # 花费金币<=N
     },
     # 许愿
     "SpringFestivalWishEvent": {

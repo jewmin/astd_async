@@ -30,6 +30,7 @@ class Account:
         self.user: User = None
         self.time_mgr: TimeMgr = None
         self.task_mgr: TaskMgr = None
+        self.timeout = 3600 * 2
 
     async def Login(self) -> None:
         cookies = {}
@@ -69,9 +70,14 @@ class Account:
     def InitCompleted(self) -> None:
         self.running = True
         self.task_mgr.RunAllTasks()
+        asyncio.get_event_loop().call_later(self.timeout, lambda: asyncio.get_event_loop().create_task(self.ReLogin()))
 
     async def AddTasks(self) -> None:
         for task_class in task.__all__:
             self.task_mgr.AddTask(task_class(self))
         for t in self.task_mgr.tasks.values():
             await t.Init()
+
+    async def ReLogin(self):
+        self.task_mgr.StopAllTasks("超时重登")
+        await self.Login()
