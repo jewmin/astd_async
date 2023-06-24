@@ -22,7 +22,7 @@ activity_config = {
     # 大宴群雄
     "BGEvent": {
         "enable": True,  # 开启
-        "limit_cost": 10,  # 花费金币<=N
+        "limit_cost": 5,  # 花费金币<=N
     },
     # 大练兵
     "Training": {
@@ -159,7 +159,7 @@ activity_config = {
             "cost": 0,  # 加固雪橇花费金币<=N
             "type": 3,  # 宝箱类型>=N 1:木质 2:白银 3:黄金
         },
-        "buyroundcost": 5,  # 购买次数花费金币<=N
+        "buyroundcost": 0,  # 购买次数花费金币<=N
     },
     # 群雄争霸
     "KFZB": {
@@ -187,7 +187,7 @@ activity_config = {
     "MemoryEvent": {
         "enable": True,  # 开启
         "hongbaocost": 0,  # 开红包花费金币<=N
-        "wishcost": 8,  # 拜年花费金币<=N
+        "wishcost": 0,  # 拜年花费金币<=N
     },
     # 龙舟
     "BoatEvent": {
