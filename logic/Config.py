@@ -372,7 +372,7 @@ config = {
         },
         "crystal": {  # 水晶石进阶
             "enable": True,  # 开启
-            "level": 21,  # 水晶石等级>=N
+            "level": 5,  # 水晶石等级>=N
         },
         "goods": {  # 仓库
             "enable": True,  # 开启
