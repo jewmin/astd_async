@@ -7,7 +7,7 @@ class KFZB(ActivityTask):
     def __init__(self, account):
         super().__init__(account)
         self.name = "活动<群雄争霸>"
-        self.type = "goldboxevent"
+        self.type = "worldpk"
 
     async def _Exec(self):
         if not self.Enable():
@@ -22,6 +22,6 @@ class KFZB(ActivityTask):
                 await kfzb.support(self.account, competitorId=info["攻方"]["competitorid"], playername=info["攻方"]["playername"], cost=info["鼓舞花费金币"])
             else:
                 await kfzb.support(self.account, competitorId=info["守方"]["competitorid"], playername=info["守方"]["playername"], cost=info["鼓舞花费金币"])
-            return self.immediate()
+            return self.immediate
 
         return self.one_minute

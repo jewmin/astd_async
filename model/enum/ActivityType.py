@@ -18,6 +18,7 @@ class ActivityTypeString:
         "memoryevent": "新春拜年",
         "towerstage": "宝塔活动",
         "goldboxevent": "群雄争霸",
+        "worldpk": "群雄争霸",
         "nationdaygoldboxevent": "充值赠礼",
         "showkfwd": "武斗会",
         "showkfpvp": "英雄帖",

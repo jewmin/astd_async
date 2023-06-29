@@ -109,6 +109,7 @@ class User(BaseObject):  # noqa: F405
         self.memoryevent             = False  # 新春拜年
         self.towerstage              = False  # 宝塔活动
         self.goldboxevent            = False  # 群雄争霸
+        self.worldpk                 = False  # 群雄争霸
         self.nationdaygoldboxevent   = False  # 充值赠礼
         self.showkfwd                = False  # 武斗会
         self.showkfpvp               = False  # 英雄帖
