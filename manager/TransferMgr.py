@@ -9,7 +9,7 @@ async def Response(resp: ClientResponse) -> str:
     elif resp.status != 200 and resp.status != 304:
         return f"code:{resp.status}"
     else:
-        if resp.headers["content-type"] == "application/x-gzip-compressed":
+        if resp.headers.get("content-type") == "application/x-gzip-compressed":
             content = decompress(resp._body)
             try:
                 start = content.index(b'<?xml')

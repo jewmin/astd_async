@@ -22,7 +22,7 @@ class ParadeEvent(ActivityTask):
                 await paradeEvent.getParadeReward(self.account, rewardId=parade_state["id"])
 
         if info["免费阅兵轮数"] <= 0:
-            if info["购买轮数花费金币"] <= self.GetConfig("round_cost") and info["购买轮数花费金币"] <= self.GetAvailableGold():
+            if info["购买轮数花费金币"] <= self.GetConfig("round_cost") and self.IsAvailableAndSubGold(info["购买轮数花费金币"]):
                 await paradeEvent.addRoundTimes(self.account, cost=info["购买轮数花费金币"])
                 return self.immediate
             else:

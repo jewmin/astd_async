@@ -76,7 +76,7 @@ activity_config = {
     # 新年敲钟
     "RingEvent": {
         "enable": True,  # 开启
-        "cost": 4,  # 敲钟花费金币<=N
+        "cost": 0,  # 敲钟花费金币<=N
         "reward": 2,  # 奖励选项 1:大将令 2:镔铁
     },
     # 武斗会

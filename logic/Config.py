@@ -308,7 +308,7 @@ config = {
         },
         "war_beast_temple": {  # 战兽圣殿
             "enable": True,  # 开启
-            "gold": 10,  # 花费金币<=N
+            "gold": 0,  # 花费金币<=N
         },
         "war_beast": {  # 战兽
             "enable": True,  # 开启

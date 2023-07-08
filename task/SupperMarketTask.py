@@ -47,7 +47,7 @@ class SupperMarketTask(BaseTask):
                     await market.buySupperMarketCommodity(self.account, commodityId=supper_market_dto.id, supper_market_dto=supper_market_dto)
                     with_draw_supper_market_dto_set.add(supper_market_dto)
                 elif price_type == "gold" and config["market"]["buy_gold_item"]:
-                    if price <= self.get_available("gold"):
+                    if self.is_available_and_sub("gold", price):
                         await market.buySupperMarketCommodity(self.account, commodityId=supper_market_dto.id, supper_market_dto=supper_market_dto)
                         with_draw_supper_market_dto_set.add(supper_market_dto)
             supper_market_dto_set -= with_draw_supper_market_dto_set
@@ -68,7 +68,7 @@ class SupperMarketTask(BaseTask):
                                 await tickets.doGetTicketsReward(self.account, "银币", 1)
                             await market.buySupperMarketSpecialGoods(self.account, commodityId=supper_market_special_dto.id, supper_market_special_dto=supper_market_special_dto)
                         elif price_type == "gold":
-                            if price <= self.get_available("gold"):
+                            if self.is_available_and_sub("gold", price):
                                 await market.buySupperMarketSpecialGoods(self.account, commodityId=supper_market_special_dto.id, supper_market_special_dto=supper_market_special_dto)
 
             if fresh_time is not None:

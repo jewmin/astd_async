@@ -154,6 +154,13 @@ class User(BaseObject):  # noqa: F405
         reserve = config["global"]["reserve"].get(key, 0)
         return max(value - reserve, 0)
 
+    def is_available_and_sub(self, key, value):
+        if self.get_available(key) >= value:
+            old_value = getattr(self, key)
+            setattr(self, key, old_value - value)
+            return True
+        return False
+
     @property
     def gold(self):
         return self.sys_gold + self.user_gold

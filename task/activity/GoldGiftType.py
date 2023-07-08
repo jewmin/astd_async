@@ -51,7 +51,7 @@ class GoldGiftType(ActivityTask):
                         if room["nation"] == self.account.user.nation:
                             await kfBanquet.joinBanquet(self.account, room=room["rank"], playername=room["playername"])
                             return self.immediate
-                elif info["加入盛宴花费金币"] <= self.GetConfig("buyjoingold") and info["加入盛宴花费金币"] <= self.GetAvailableGold():
+                elif info["加入盛宴花费金币"] <= self.GetConfig("buyjoingold") and self.IsAvailableAndSubGold(info["加入盛宴花费金币"]):
                     await kfBanquet.buyBanquetNum(self.account, num=1, cost=info["加入盛宴花费金币"])
                     return self.immediate
 

@@ -142,7 +142,7 @@ class ActiveTask(BaseTask):
             cost = trader["cost"].split(":")
             real_cost = int(cost[1])
             if cost[0] == "gold":
-                if real_cost <= active_config["limit"]["gold"] and real_cost <= self.get_available("gold"):
+                if real_cost <= active_config["limit"]["gold"] and self.is_available_and_sub("gold", real_cost):
                     return await self.do_trade(trader, "金币", real_cost, trader_active)
             elif cost[0] == "copper":
                 if real_cost <= active_config["limit"]["copper"]:
@@ -158,7 +158,7 @@ class ActiveTask(BaseTask):
                 cost = trader["cost"].split(":")
                 real_cost = int(cost[1])
                 if cost[0] == "gold":
-                    if real_cost <= active_config["limit"]["gold"] and real_cost <= self.get_available("gold"):
+                    if real_cost <= active_config["limit"]["gold"] and self.is_available_and_sub("gold", real_cost):
                         return await self.do_trade(trader, "金币", real_cost, trader_active)
                 elif cost[0] == "copper":
                     if real_cost <= active_config["limit"]["copper"]:
@@ -179,18 +179,18 @@ class ActiveTask(BaseTask):
         if dict_info["事件"] == 1:
             is_double = 0
             if not dict_info["可领取状态"]:
-                is_double = 1 if dict_info["双倍奖励消耗金币"] <= active_config["double_cost"] and dict_info["双倍奖励消耗金币"] <= self.get_available("gold") else -1
+                is_double = 1 if dict_info["双倍奖励消耗金币"] <= active_config["double_cost"] and self.is_available_and_sub("gold", dict_info["双倍奖励消耗金币"]) else -1
             await caravan.getKingReward(self.account, isdouble=is_double, pos=dict_info["位置"], cost=dict_info["双倍奖励消耗金币"])
 
         elif dict_info["事件"] == 2:
             for index, status in enumerate(dict_info["可领取状态"]):
                 cost = dict_info["消耗金币"][index]
-                if status == "1" and cost <= active_config["use_cost"] and cost <= self.get_available("gold"):
+                if status == "1" and cost <= active_config["use_cost"] and self.is_available_and_sub("gold", cost):
                     await caravan.getTraderReward(self.account, isBuy=index + 1, cost=cost)
             await caravan.getTraderReward(self.account, isBuy=-1, cost=0)
 
         elif dict_info["事件"] == 3:
             is_double = 0
-            if dict_info["双倍奖励消耗金币"] <= active_config["double_cost"] and dict_info["双倍奖励消耗金币"] <= self.get_available("gold"):
+            if dict_info["双倍奖励消耗金币"] <= active_config["double_cost"] and self.is_available_and_sub("gold", dict_info["双倍奖励消耗金币"]):
                 is_double = 1
             await caravan.getWesternTradeReward(self.account, isdouble=is_double, cost=dict_info["双倍奖励消耗金币"])

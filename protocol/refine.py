@@ -63,7 +63,7 @@ async def refine(account: 'Account', result: 'ServerResult', copper, active):
         msg = f"消耗{copper}银币、{active}行动力精炼"
         if "eventintro" in result.result:
             msg += f", 触发精炼事件<{result.result['eventintro']}>"
-        bao_ji = result.GetValue("baoji")
+        bao_ji = result.GetValue("baoji", 0)
         if bao_ji > 0:
             msg += f", {bao_ji}倍暴击"
         msg += f", 获得玉石+{result.result['bowlder']}"

@@ -48,7 +48,7 @@ class RingEvent(ActivityTask):
                 if info["敲钟"][0]["免费次数"] > 0:
                     await ringEvent.ring(self.account, bellId=0)
                     return self.immediate
-                elif info["敲钟"][0]["花费金币"] <= self.GetConfig("cost", 0) and info["敲钟"][0]["花费金币"] <= self.GetAvailableGold():
+                elif info["敲钟"][0]["花费金币"] <= self.GetConfig("cost", 0) and self.IsAvailableAndSubGold(info["敲钟"][0]["花费金币"]):
                     await ringEvent.ring(self.account, bellId=0)
                     return self.immediate
                 else:
@@ -56,7 +56,7 @@ class RingEvent(ActivityTask):
                     if info["敲钟"][bell_id]["免费次数"] > 0:
                         await ringEvent.ring(self.account, bellId=bell_id)
                         return self.immediate
-                    elif info["敲钟"][bell_id]["花费金币"] <= self.GetConfig("cost", 0) and info["敲钟"][bell_id]["花费金币"] <= self.GetAvailableGold():
+                    elif info["敲钟"][bell_id]["花费金币"] <= self.GetConfig("cost", 0) and self.IsAvailableAndSubGold(info["敲钟"][bell_id]["花费金币"]):
                         await ringEvent.ring(self.account, bellId=bell_id)
                         return self.immediate
                     else:
@@ -67,7 +67,7 @@ class RingEvent(ActivityTask):
                 if info["敲钟"][bell_id]["免费次数"] > 0:
                     await ringEvent.ring(self.account, bellId=bell_id)
                     return self.immediate
-                elif info["敲钟"][bell_id]["花费金币"] <= self.GetConfig("cost", 0) and info["敲钟"][bell_id]["花费金币"] <= self.GetAvailableGold():
+                elif info["敲钟"][bell_id]["花费金币"] <= self.GetConfig("cost", 0) and self.IsAvailableAndSubGold(info["敲钟"][bell_id]["花费金币"]):
                     await ringEvent.ring(self.account, bellId=bell_id)
                     return self.immediate
                 else:
@@ -78,7 +78,7 @@ class RingEvent(ActivityTask):
                 if reel["免费次数"] > 0:
                     await ringEvent.ring(self.account, bellId=bell_id)
                     return self.immediate
-                elif reel["花费金币"] <= self.GetConfig("cost", 0) and reel["花费金币"] <= self.GetAvailableGold():
+                elif reel["花费金币"] <= self.GetConfig("cost", 0) and self.IsAvailableAndSubGold(reel["花费金币"]):
                     await ringEvent.ring(self.account, bellId=bell_id)
                     return self.immediate
 

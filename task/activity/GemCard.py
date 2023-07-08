@@ -30,7 +30,7 @@ class GemCard(ActivityTask):
                             card["combo"] += 1
                             is_combo = True
                             break
-                elif info["升级花费金币"] <= self.GetConfig("upgradegold") and info["升级花费金币"] <= self.GetAvailableGold():
+                elif info["升级花费金币"] <= self.GetConfig("upgradegold") and self.IsAvailableAndSubGold(info["升级花费金币"]):
                     for card in info["卡牌"]:
                         if card["id"] == combo_id:
                             card["combo"] += 1
@@ -41,7 +41,7 @@ class GemCard(ActivityTask):
             if (is_combo and info["组合倍数"] >= self.GetConfig("comboxs") and total >= self.GetConfig("total")) or (info["免费次数"] <= info["免费翻倍次数"]):
                 if info["免费翻倍次数"] > 0:
                     double = 1
-                elif info["翻倍花费金币"] <= self.GetConfig("doublecost") and info["翻倍花费金币"] <= self.GetAvailableGold():
+                elif info["翻倍花费金币"] <= self.GetConfig("doublecost") and self.IsAvailableAndSubGold(info["翻倍花费金币"]):
                     double = 1
                     double_cost = info["翻倍花费金币"]
                 else:
@@ -54,7 +54,7 @@ class GemCard(ActivityTask):
             total *= 100
             await gemCard.receiveGem(self.account, cost=cost, doubleCard=double, list=card_list, double_cost=double_cost, cost_cost=cost_cost, baoshi=total)
             return self.immediate
-        elif info["购买次数花费金币"] <= self.GetConfig("buygold") and info["购买次数花费金币"] <= self.GetAvailableGold():
+        elif info["购买次数花费金币"] <= self.GetConfig("buygold") and self.IsAvailableAndSubGold(info["购买次数花费金币"]):
             return self.immediate
 
         return self.next_half_hour

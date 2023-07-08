@@ -24,7 +24,7 @@ class ArrestEvent(ActivityTask):
         if info["俘虏"] > 0:
             if info["免费鞭子次数"] > 0:
                 await event.shenSlaves(self.account, cost=0, highLv=1)
-            elif info["鞭子花费金币"] <= self.GetConfig("high_gold", 0) and info["鞭子花费金币"] <= self.GetAvailableGold():
+            elif info["鞭子花费金币"] <= self.GetConfig("high_gold", 0) and self.IsAvailableAndSubGold(info["鞭子花费金币"]):
                 await event.shenSlaves(self.account, cost=info["鞭子花费金币"], highLv=1)
             else:
                 await event.shenSlaves(self.account, cost=0, highLv=0)
@@ -34,7 +34,7 @@ class ArrestEvent(ActivityTask):
             await event.eatRiceDumpling(self.account)
             return self.immediate
 
-        if info["抓捕令"] == 0 and info["购买抓捕令花费金币"] <= self.GetConfig("buy_gold", 0) and info["购买抓捕令花费金币"] <= self.GetAvailableGold():
+        if info["抓捕令"] == 0 and info["购买抓捕令花费金币"] <= self.GetConfig("buy_gold", 0) and self.IsAvailableAndSubGold(info["购买抓捕令花费金币"]):
             await event.buyArrestToken(self.account, cost=info["购买抓捕令花费金币"])
             return self.immediate
 

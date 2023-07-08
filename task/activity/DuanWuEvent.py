@@ -26,7 +26,7 @@ class DuanWuEvent(ActivityTask):
                 if info["普通粽子"] <= self.GetConfig("limit_hunger"):
                     await event.eatZongzi(self.account, gold=0, cost=0)
                     return self.immediate
-                elif info["花费金币"] <= self.GetConfig("gold_hunger") and info["花费金币"] <= self.GetAvailableGold():
+                elif info["花费金币"] <= self.GetConfig("gold_hunger") and self.IsAvailableAndSubGold(info["花费金币"]):
                     await event.eatZongzi(self.account, gold=1, cost=info["花费金币"])
                     return self.immediate
                 else:
@@ -35,7 +35,7 @@ class DuanWuEvent(ActivityTask):
             else:
                 await event.nextRound(self.account)
                 return self.immediate
-        elif info["购买轮数花费金币"] <= self.GetConfig("gold_round") and info["购买轮数花费金币"] <= self.GetAvailableGold():
+        elif info["购买轮数花费金币"] <= self.GetConfig("gold_round") and self.IsAvailableAndSubGold(info["购买轮数花费金币"]):
             await event.buyRound(self.account, cost=info["购买轮数花费金币"])
             return self.immediate
 

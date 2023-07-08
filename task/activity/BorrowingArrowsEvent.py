@@ -42,7 +42,7 @@ class BorrowingArrowsEvent(ActivityTask):
             if info["免费发船"] > 0:
                 await borrowingArrowsEvent.setSail(self.account, cost=0)
                 return self.immediate
-            elif info["发船花费金币"] <= self.GetConfig("sail_gold", 0) and info["发船花费金币"] <= self.GetAvailableGold():
+            elif info["发船花费金币"] <= self.GetConfig("sail_gold", 0) and self.IsAvailableAndSubGold(info["发船花费金币"]):
                 await borrowingArrowsEvent.setSail(self.account, cost=info["发船花费金币"])
                 return self.immediate
             else:

@@ -152,7 +152,7 @@ class PolishTask(BaseTask):
                 num -= 1
                 if not await polish.polish(self.account, storeId=baowu["storeid"], baowu=baowu):
                     return True, num
-            elif use_gold and gold <= self.get_available("gold"):
+            elif use_gold and self.is_available_and_sub("gold", gold):
                 num -= 1
                 if not await polish.polish(self.account, storeId=baowu["storeid"], baowu=baowu):
                     return True, num

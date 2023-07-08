@@ -12,7 +12,7 @@ async def jail(account: 'Account', result: 'ServerResult'):
     if result.success:
         if "remaintime" not in result.result:
             per_gold = int(result.result["pergold"])
-            if per_gold <= account.user.get_available("gold"):
+            if account.user.is_available_and_sub("gold", per_gold):
                 await techResearch(account)
         return result.result["jailwork"]
     return ()

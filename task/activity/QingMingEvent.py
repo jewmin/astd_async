@@ -35,7 +35,7 @@ class QingMingEvent(ActivityTask):
                     await event.qingmingDrink(self.account, wineId=wine["id"], gold=0)
                     return self.immediate
 
-                if wine_num == 40 and info["酒仙附体花费金币"] <= self.GetConfig("golddrinkcost") and info["酒仙附体花费金币"] <= self.GetAvailableGold():
+                if wine_num == 40 and info["酒仙附体花费金币"] <= self.GetConfig("golddrinkcost") and self.IsAvailableAndSubGold(info["酒仙附体花费金币"]):
                     await event.qingmingDrink(self.account, wineId=wine["id"], gold=1, cost=info["酒仙附体花费金币"])
                     return self.immediate
 
@@ -45,7 +45,7 @@ class QingMingEvent(ActivityTask):
                 await event.qingmingDrink(self.account, wineId=info["酒"][2]["id"], gold=0)
             return self.immediate
 
-        if info["购买轮数花费金币"] <= self.GetConfig("buycost") and info["购买轮数花费金币"] <= self.GetAvailableGold():
+        if info["购买轮数花费金币"] <= self.GetConfig("buycost") and self.IsAvailableAndSubGold(info["购买轮数花费金币"]):
             await event.buyQingmingRound(self.account, cost=info["购买轮数花费金币"])
             return self.immediate
 

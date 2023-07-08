@@ -21,12 +21,12 @@ class ImposeTask(BaseTask):
                 await mainCity.impose(self.account)
                 return self.immediate
 
-            if force_impose_cost <= config["impose"]["force"] and force_impose_cost <= self.get_available("gold"):
+            if force_impose_cost <= config["impose"]["force"] and self.is_available_and_sub("gold", force_impose_cost):
                 await mainCity.forceImpose(self.account)
                 return self.immediate
 
             if config["impose"]["finish_task"]:
-                if not self.account.user.is_finish_task(TaskType.ForceImpose) and force_impose_cost <= self.get_available("gold"):
+                if not self.account.user.is_finish_task(TaskType.ForceImpose) and self.is_available_and_sub("gold", force_impose_cost):
                     await mainCity.forceImpose(self.account)
                     return self.immediate
 
@@ -35,7 +35,7 @@ class ImposeTask(BaseTask):
                         await mainCity.impose(self.account)
                         return self.immediate
 
-                    if force_impose_cost <= self.get_available("gold"):
+                    if self.is_available_and_sub("gold", force_impose_cost):
                         await mainCity.forceImpose(self.account)
                         return self.immediate
 

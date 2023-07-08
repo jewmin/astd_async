@@ -21,7 +21,7 @@ class YuanDanQiFu(ActivityTask):
 
         if info["类型"] in self.GetConfig("type"):
             if info["状态"] == 0:
-                if info["祈福花费金币"] <= self.GetConfig("gold") and info["祈福花费金币"] <= self.GetAvailableGold():
+                if info["祈福花费金币"] <= self.GetConfig("gold") and self.IsAvailableAndSubGold(info["祈福花费金币"]):
                     await yuandanqifu.startQifu(self.account, cost=info["祈福花费金币"])
                     return self.immediate
             elif info["状态"] == 1:
@@ -30,7 +30,7 @@ class YuanDanQiFu(ActivityTask):
                 await yuandanqifu.qifuChoose(self.account, indexId=2)
                 return self.immediate
             elif info["状态"] == 2:
-                if info["本次祈福倍数"] >= self.GetConfig("all_open_xs") and info["全开花费金币"] <= self.GetConfig("all_open_gold") and info["全开花费金币"] <= self.GetAvailableGold():
+                if info["本次祈福倍数"] >= self.GetConfig("all_open_xs") and info["全开花费金币"] <= self.GetConfig("all_open_gold") and self.IsAvailableAndSubGold(info["全开花费金币"]):
                     if info["福气"] >= info["最大福气"]:
                         await yuandanqifu.qifuActive(self.account)
                     await yuandanqifu.qifuChooseAll(self.account, cost=info["全开花费金币"])

@@ -24,12 +24,12 @@ class SnowTrading(ActivityTask):
         if info["免费通商次数"] > 0:
             reinforce_config = self.GetConfig("reinforce")
             if reinforce_config["enable"]:
-                if not info["已加固雪橇"] and info["宝箱类型"] >= reinforce_config["type"] and info["加固雪橇花费金币"] <= reinforce_config["cost"] and info["加固雪橇花费金币"] <= self.GetAvailableGold():
+                if not info["已加固雪橇"] and info["宝箱类型"] >= reinforce_config["type"] and info["加固雪橇花费金币"] <= reinforce_config["cost"] and self.IsAvailableAndSubGold(info["加固雪橇花费金币"]):
                     await snowTrading.reinforceSled(self.account, cost=info["加固雪橇花费金币"])
                     return self.immediate
             await snowTrading.transport(self.account, choose=self.GetConfig("choose"), cast_type=info["宝箱类型"])
             return self.immediate
-        elif info["购买次数花费金币"] <= self.GetConfig("buyroundcost") and info["购买次数花费金币"] <= self.GetAvailableGold():
+        elif info["购买次数花费金币"] <= self.GetConfig("buyroundcost") and self.IsAvailableAndSubGold(info["购买次数花费金币"]):
             await snowTrading.buyRound(self.account, cost=info["购买次数花费金币"])
             return self.immediate
 

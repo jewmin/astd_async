@@ -23,3 +23,6 @@ class ActivityTask(BaseTask):
 
     def GetAvailableGold(self):
         return self.account.user.get_available("gold")
+
+    def IsAvailableAndSubGold(self, value):
+        return self.account.user.is_available_and_sub("gold", value)

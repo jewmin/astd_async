@@ -67,6 +67,9 @@ class BaseTask:
     def get_available(self, key):
         return self.account.user.get_available(key)
 
+    def is_available_and_sub(self, key, value):
+        return self.account.user.is_available_and_sub(key, value)
+
     @property
     def immediate(self) -> int:
         """马上"""

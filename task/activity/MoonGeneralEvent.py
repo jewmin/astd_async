@@ -27,13 +27,13 @@ class MoonGeneralEvent(ActivityTask):
         if not finish and info["送礼免费次数"] > 0:
             await event.eatMoonCake(self.account, name=info["武将"], cost=0)
             return self.immediate
-        elif not finish and info["送礼花费金币"] <= self.GetConfig("cakecost") and info["送礼花费金币"] <= self.GetAvailableGold():
+        elif not finish and info["送礼花费金币"] <= self.GetConfig("cakecost") and self.IsAvailableAndSubGold(info["送礼花费金币"]):
             await event.eatMoonCake(self.account, name=info["武将"], cost=info["送礼花费金币"])
             return self.immediate
         elif info["有下一位武将"]:
             await event.nextGeneral(self.account)
             return self.immediate
-        elif info["购买轮数花费金币"] <= self.GetConfig("buyroundcost") and info["购买轮数花费金币"] <= self.GetAvailableGold():
+        elif info["购买轮数花费金币"] <= self.GetConfig("buyroundcost") and self.IsAvailableAndSubGold(info["购买轮数花费金币"]):
             await event.nextGeneral(self.account)
             return self.immediate
 

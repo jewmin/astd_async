@@ -25,11 +25,11 @@ class SpecialEquipTask(BaseTask):
                     await equip.specialEquipCast(self.account, type=1, msg="免费铸造")
                     return self.immediate
 
-                if dict_info["铸造消耗金币"] <= special_equip_config["firstcost"] and dict_info["铸造消耗金币"] <= self.get_available("gold"):
+                if dict_info["铸造消耗金币"] <= special_equip_config["firstcost"] and self.is_available_and_sub("gold", dict_info["铸造消耗金币"]):
                     await equip.specialEquipCast(self.account, type=1, msg=f"花费{dict_info['铸造消耗金币']}金币铸造")
                     return self.immediate
 
-                if dict_info["精火铸造消耗金币"] <= special_equip_config["secondcost"] and dict_info["精火铸造消耗金币"] <= self.get_available("gold"):
+                if dict_info["精火铸造消耗金币"] <= special_equip_config["secondcost"] and self.is_available_and_sub("gold", dict_info["精火铸造消耗金币"]):
                     await equip.specialEquipCast(self.account, type=2, msg=f"花费{dict_info['精火铸造消耗金币']}金币精火铸造")
                     return self.immediate
 

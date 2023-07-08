@@ -242,7 +242,7 @@ async def getDuanwuEventInfo(account: 'Account', result: 'ServerResult'):
 async def eatZongzi(account: 'Account', result: 'ServerResult', gold, cost=0):
     if result.success:
         reward_info = RewardInfo()  # noqa: F405
-        reward = Reward()
+        reward = Reward()  # noqa: F405
         reward.type = 42
         reward.lv = 1
         reward.num = result.GetValue("reward.tickets")
@@ -267,13 +267,13 @@ async def nextRound(account: 'Account', result: 'ServerResult'):
 async def getRewardById(account: 'Account', result: 'ServerResult', rewardId, dbId):
     if result.success:
         reward_info = RewardInfo()  # noqa: F405
-        reward = Reward()
+        reward = Reward()  # noqa: F405
         reward.type = 49
         reward.lv = 1
         reward.num = result.GetValue("reward.bigginfo.num")
         reward.itemname = f'大将令[{result.GetValue("reward.bigginfo.name")}]'
         reward_info.reward.append(reward)
-        reward = Reward()
+        reward = Reward()  # noqa: F405
         reward.type = 42
         reward.lv = 1
         reward.num = result.GetValue("reward.tickets")

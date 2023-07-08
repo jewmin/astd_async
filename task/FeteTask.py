@@ -25,7 +25,7 @@ class FeteTask(BaseTask):
 
             fete_list, free_all_fete = await fete.fete(self.account)
             for item in fete_list:
-                if item.gold <= fete_config.get(item.name, 0) and item.gold <= self.get_available("gold"):
+                if item.gold <= fete_config.get(item.name, 0) and self.is_available_and_sub("gold", item.gold):
                     await fete.dofete(self.account, feteId=item.id, gold=item.gold, god=item.name)
                     return self.immediate
 
